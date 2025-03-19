@@ -106,19 +106,6 @@ sp <- ServiceProvider$new(
 # Retrieve log entries
 log_entries <- sp$loggingService$GetLogEntries()
 print(log_entries)
-
-# Retrieve items by time entity
-start_time <- "2023-01-01T00:00:00Z"
-end_time <- "2023-12-31T23:59:59Z"
-entity_name <- "ExampleEntity"
-
-items <- sp$repositoryService$GetItemsByTimeEntity(
-  entity = entity_name,
-  start_time = start_time,
-  end_time = end_time
-)
-
-print(items)
 ```
 
 ## License
