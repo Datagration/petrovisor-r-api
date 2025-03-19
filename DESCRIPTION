@@ -1,0 +1,18 @@
+Package: Myrconn.PetroVisor.Client
+Type: Package
+Title: Wrapper for PetroVisor API
+Version: 2.1.2002.9000
+Description: This package is a wrapper for PetroVisor API.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Maintainer: Ramez Abdalla <ramez.abdalla@weatherford.com>
+Author: Andreas Schweiger <andreas.schweiger@weatherford.com>
+RoxygenNote: 7.3.2
+Imports:
+  httr,
+  jsonlite,
+  base64enc,
+  R6
+Suggests:
+  testthat
