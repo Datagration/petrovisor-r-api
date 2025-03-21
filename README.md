@@ -24,7 +24,7 @@ remotes::install_github("Datagration/petrovisor-r-api")
 Authenticate with the PetroVisor API using an API key, username/password, or refresh token.
 
 ```r
-library(petrovisor.r.api)
+library(Myrconn.PetroVisor.Client)
 
 # Create an instance of the AuthenticationService
 auth_service <- AuthenticationService$new()
@@ -54,30 +54,19 @@ sp <- ServiceProvider$new(
   client_token = "your_token_here"
 )
 
+#Create a new instance of the ServiceProvider using username and password
+sp <- ServiceProvider$new(
+  url = "https://identity.us1.petrovisor.com",
+  workspace = "your_workspace_name",
+  user = "your_user_name",
+  password = "your_password"
+)
+
 # Access logging service
 log_entries <- sp$loggingService$GetLogEntries()
 
 # Access repository service
-entities <- sp$repositoryService$GetEntities()
-```
-
-### Repository Service: Get Items by Time Entity
-
-Retrieve items by time entity using the `RepositoryService`.
-
-```r
-# Retrieve items by time entity
-start_time <- "2023-01-01T00:00:00Z"
-end_time <- "2023-12-31T23:59:59Z"
-entity_name <- "ExampleEntity"
-
-items <- sp$repositoryService$GetItemsByTimeEntity(
-  entity = entity_name,
-  start_time = start_time,
-  end_time = end_time
-)
-
-print(items)
+entity_names <- sp$repositoryService$GetNamesOfItems("Entity")
 ```
 
 ## Test Use Case
@@ -86,14 +75,6 @@ Here is a simple test use case to verify the functionality of the package:
 
 ```r
 library(Myrconn.PetroVisor.Client)
-
-# Authenticate and retrieve a token
-auth_service <- AuthenticationService$new()
-token <- auth_service$get_access_token(
-  username = "test_user",
-  password = "test_password",
-  discovery_url = "https://identity.us1.petrovisor.com"
-)
 
 # Initialize the ServiceProvider
 sp <- ServiceProvider$new(
