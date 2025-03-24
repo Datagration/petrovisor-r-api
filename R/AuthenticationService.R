@@ -189,6 +189,11 @@ AuthenticationService <- R6::R6Class("AuthenticationService",
       library(httr)
       library(jsonlite)
       library(base64enc)
+
+      if (!is.null(discovery_url) && !endsWith(discovery_url, "/")) {
+        discovery_url <- paste0(discovery_url, "/")
+      }
+
       url <- paste0(discovery_url, ".well-known/openid-configuration")
       response <- httr::GET(url)
       discovery_doc <- content(response, "text")
