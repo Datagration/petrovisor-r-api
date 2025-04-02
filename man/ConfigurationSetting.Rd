@@ -9,8 +9,8 @@ Class representing a PetroVisor ConfigurationSetting object.
 \examples{
 \dontrun{
 ConfigurationSetting$new(name = "MyStringValue",
-                         valueType = "String",
-                         stringValue = "Hello World!")
+                         value_type = "String",
+                         string_value = "Hello World!")
 }
 }
 \section{Public fields}{
@@ -18,27 +18,36 @@ ConfigurationSetting$new(name = "MyStringValue",
 \describe{
 \item{\code{name}}{The name of the configuration setting.}
 
-\item{\code{numericValue}}{The numeric value of the configuration setting.}
+\item{\code{numeric_value}}{The numeric value of the configuration setting.}
 
-\item{\code{stringValue}}{The string value of the configuration setting.}
+\item{\code{string_value}}{The string value of the configuration setting.}
 
-\item{\code{listValue}}{The list value of the configuration setting (type list).}
+\item{\code{list_value}}{The list value of the configuration setting (type list).}
 
-\item{\code{enumerationValue}}{The enumeration value of the configuration setting
+\item{\code{enumeration_value}}{The enumeration value of the configuration setting
 (named list).}
 
-\item{\code{dictionaryValue}}{The dictionary value of the configuration setting
+\item{\code{dictionary_value}}{The dictionary value of the configuration setting
 (named list).}
 
-\item{\code{valueType}}{The value type of the configuration setting. Must be one of:
-\code{"Numeric"}, \code{"String"}, \code{"Numeric with unit"},
-\code{"List"}, \code{"Enumeration"}, \code{"Dictionary"}}
+\item{\code{value_type}}{The value type of the configuration setting.
+Must be one of: \code{"Numeric"}, \code{"String"},
+\code{"NumericWithUnit"}, \code{"List"}, \code{"Enumeration"},
+\code{"Dictionary"}, \code{"StringWithType"}, \code{"ListWithType"},
+\code{"StringFromValues"}, \code{"ListFromValues"}}
 
-\item{\code{unitName}}{The name of the unit associated with the numeric value if the
-valueType is \code{"Numeric with unit"}.}
+\item{\code{unit_name}}{The name of the unit associated with the numeric value if
+the valueType is \code{"Numeric with unit"}.}
 
-\item{\code{isSystem}}{This flaf specifies, whether the configuration setting is a
+\item{\code{possible_values}}{A list containing the possible values of the
+configuration setting.}
+
+\item{\code{is_system}}{This flaf specifies, whether the configuration setting is a
 PetroVisor system setting (immutable).}
+
+\item{\code{description}}{The description of the item.}
+
+\item{\code{labels}}{A list of strings holding the labels of the item.}
 }
 \if{html}{\out{</div>}}
 }
@@ -58,15 +67,18 @@ Create a new ConfigurationSetting instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfigurationSetting$new(
   name = NULL,
-  numericValue = NULL,
-  stringValue = NULL,
-  listValue = NULL,
-  enumerationValue = NULL,
-  dictionaryValue = NULL,
-  valueType = c("Numeric", "String", "Numeric with unit", "List", "Enumeration",
-    "Dictionary"),
-  unitName = NULL,
-  isSystem = NULL
+  numeric_value = NULL,
+  string_value = NULL,
+  list_value = list(),
+  enumeration_value = list(),
+  dictionary_value = list(),
+  value_type = c("Numeric", "String", "NumericWithUnit", "List", "Enumeration",
+    "Dictionary", "StringWithType", "ListWithType", "StringFromValues", "ListFromValues"),
+  unit_name = NULL,
+  possible_values = list(),
+  is_system = NULL,
+  description = NULL,
+  labels = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -75,27 +87,36 @@ Create a new ConfigurationSetting instance.
 \describe{
 \item{\code{name}}{The name of the configuration setting.}
 
-\item{\code{numericValue}}{The numeric value of the configuration setting.}
+\item{\code{numeric_value}}{The numeric value of the configuration setting.}
 
-\item{\code{stringValue}}{The string value of the configuration setting.}
+\item{\code{string_value}}{The string value of the configuration setting.}
 
-\item{\code{listValue}}{The list value of the configuration setting (type list).}
+\item{\code{list_value}}{The list value of the configuration setting.}
 
-\item{\code{enumerationValue}}{The enumeration value of the configuration
+\item{\code{enumeration_value}}{The enumeration value of the configuration
 setting (named list).}
 
-\item{\code{dictionaryValue}}{The dictionary value of the configuration setting
+\item{\code{dictionary_value}}{The dictionary value of the configuration setting
 (named list).}
 
-\item{\code{valueType}}{The value type of the configuration setting. Must be one
-of: \code{"Numeric"}, \code{"String"}, \code{"Numeric with unit"},
-\code{"List"}, \code{"Enumeration"}, \code{"Dictionary"}}
+\item{\code{value_type}}{The value type of the configuration setting.
+Must be one of: \code{"Numeric"}, \code{"String"},
+\code{"NumericWithUnit"}, \code{"List"}, \code{"Enumeration"},
+\code{"Dictionary"}, \code{"StringWithType"}, \code{"ListWithType"},
+\code{"StringFromValues"}, \code{"ListFromValues"}}
 
-\item{\code{unitName}}{The name of the unit associated with the numeric value if
-the valueType is \code{"Numeric with unit"}.}
+\item{\code{unit_name}}{The name of the unit associated with the numeric value
+if the valueType is \code{"Numeric with unit"}.}
 
-\item{\code{isSystem}}{This flaf specifies, whether the configuration setting is
-a PetroVisor system setting (immutable).}
+\item{\code{possible_values}}{A list containing the possible values of the
+configuration setting.}
+
+\item{\code{is_system}}{This flaf specifies, whether the configuration setting
+is a PetroVisor system setting (immutable).}
+
+\item{\code{description}}{The description of the item.}
+
+\item{\code{labels}}{A list of strings holding the labels of the item.}
 }
 \if{html}{\out{</div>}}
 }

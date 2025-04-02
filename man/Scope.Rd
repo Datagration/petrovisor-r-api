@@ -11,7 +11,7 @@ Class representing a PetroVisor scope object.
 Scope$new(name = "MyScope",
           start = "2020-01-01T00:00:00.000Z",
           end = "2020-03-01T00:00:00.000Z",
-          timeIncrement = "Daily")
+          time_increment = "Daily")
 }
 }
 \section{Public fields}{
@@ -23,21 +23,22 @@ Scope$new(name = "MyScope",
 
 \item{\code{end}}{The scope's end date.}
 
-\item{\code{timeIncrement}}{The scope's time increment. Allowed values are:
+\item{\code{time_increment}}{The scope's time increment. Allowed values are:
 \code{"EveryMinute"}, \code{"EveryFiveMinutes"},
 \code{"EveryFifteenMinutes"}, \code{"Hourly"}, \code{"Daily"},
 \code{"Monthly"}, \code{"Quarterly"}, \code{"Yearly"}}
 
+\item{\code{depth_increment}}{The scope's depth increment. Allowed values are:
+\code{"Meter"}, \code{"HalfMeter"}, \code{"EighthMeter"},
+\code{"TenthMeter"}, \code{"Foot"}, \code{"HalfFoot"}}
+
+\item{\code{start_depth}}{The scope's start depth.}
+
+\item{\code{end_depth}}{The scope's end depth.}
+
 \item{\code{formula}}{The scope's definition as string (P# syntax).}
 
-\item{\code{isLocked}}{This flag specifies whether the scope is locked
-(i.e. managed through the repository). Defaults to \code{FALSE}.}
-
-\item{\code{user}}{The user the scopes belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the scope is marked as favorite
-item, and thus shown in the favorites tab on the home module in PetroVisor.
-Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the scope.}
 }
@@ -61,13 +62,15 @@ Create a new Scope instance.
   name = NULL,
   start = NULL,
   end = NULL,
-  timeIncrement = c("EveryMinute", "EveryFiveMinutes", "EveryFifteenMinutes", "Hourly",
-    "Daily", "Monthly", "Quarterly", "Yearly"),
+  time_increment = c("", "EveryMinute", "EveryFiveMinutes", "EveryFifteenMinutes",
+    "Hourly", "Daily", "Monthly", "Quarterly", "Yearly"),
+  depth_increment = c("", "Meter", "HalfMeter", "EighthMeter", "TenthMeter", "Foot",
+    "HalfFoot"),
+  start_depth = NULL,
+  end_depth = NULL,
   formula = NULL,
-  isLocked = FALSE,
-  user = NULL,
-  isFavorite = FALSE,
-  labels = NULL
+  description = NULL,
+  labels = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -80,21 +83,22 @@ Create a new Scope instance.
 
 \item{\code{end}}{The scope's end date.}
 
-\item{\code{timeIncrement}}{The scope's time increment. Allowed values are:
+\item{\code{time_increment}}{The scope's time increment. Allowed values are:
 \code{"EveryMinute"}, \code{"EveryFiveMinutes"},
 \code{"EveryFifteenMinutes"}, \code{"Hourly"}, \code{"Daily"},
 \code{"Monthly"}, \code{"Quarterly"}, \code{"Yearly"}}
 
+\item{\code{depth_increment}}{The scope's depth increment. Allowed values are:
+\code{"Meter"}, \code{"HalfMeter"}, \code{"EighthMeter"},
+\code{"TenthMeter"}, \code{"Foot"}, \code{"HalfFoot"}}
+
+\item{\code{start_depth}}{The scope's start depth.}
+
+\item{\code{end_depth}}{The scope's end depth.}
+
 \item{\code{formula}}{The scope's definition as string (P# syntax).}
 
-\item{\code{isLocked}}{This flag specifies whether the scope is locked
-(i.e. managed through the repository). Defaults to \code{FALSE}.}
-
-\item{\code{user}}{The user the scopes belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the scope is marked as
-favorite item, and thus shown in the favorites tab on the home module
-in PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the scope.}
 }

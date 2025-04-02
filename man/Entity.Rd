@@ -8,7 +8,11 @@ Class representing a PetroVisor entity object.
 }
 \examples{
 \dontrun{
-Entity$new(name = "NewWell", entityTypeName = "Well", alias = "NewWellAlias")
+Entity$new(
+  name = "NewWell",
+  entity_type_name = "Well",
+  alias = "NewWellAlias",
+  is_opportunity = FALSE)
 }
 }
 \section{Public fields}{
@@ -16,9 +20,11 @@ Entity$new(name = "NewWell", entityTypeName = "Well", alias = "NewWellAlias")
 \describe{
 \item{\code{name}}{The name of the entity.}
 
-\item{\code{entityTypeName}}{The name of the entity's type.}
+\item{\code{entity_type_name}}{The name of the entity's type.}
 
 \item{\code{alias}}{The alias of the entity.}
+
+\item{\code{is_opportunity}}{Whether the entity is an opportunity or not.}
 }
 \if{html}{\out{</div>}}
 }
@@ -36,7 +42,12 @@ Entity$new(name = "NewWell", entityTypeName = "Well", alias = "NewWellAlias")
 \subsection{Method \code{new()}}{
 Create a new Entity instance.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Entity$new(name = NULL, entityTypeName = NULL, alias = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Entity$new(
+  name = NULL,
+  entity_type_name = NULL,
+  alias = NULL,
+  is_opportunity = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -44,9 +55,11 @@ Create a new Entity instance.
 \describe{
 \item{\code{name}}{The name of entity.}
 
-\item{\code{entityTypeName}}{The name of the entity' type.}
+\item{\code{entity_type_name}}{The name of the entity' type.}
 
 \item{\code{alias}}{The alias of the entity.}
+
+\item{\code{is_opportunity}}{Whether the entity is an opportunity or not.}
 }
 \if{html}{\out{</div>}}
 }

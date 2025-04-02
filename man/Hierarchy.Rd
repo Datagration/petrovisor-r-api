@@ -11,7 +11,7 @@ Class representing a PetroVisor hierarchy object.
 Hierarchy$new(name = "MyHierarchy",
               relationship = list(Well1 = "Parent1",
                                   Well2 = "Parent1",
-                                  Well3 = "Parent2"))
+                                  Parent1 = NA))
 }
 }
 \section{Public fields}{
@@ -22,14 +22,11 @@ Hierarchy$new(name = "MyHierarchy",
 \item{\code{relationship}}{The child-parent relationships (named list) stored in the
 hierarchy.}
 
-\item{\code{isLocked}}{This flag specifies whether the hierarchy is locked.
-Defaults to \code{FALSE}.}
+\item{\code{is_time_dependent}}{Whether the hierarchy is time dependent or static.}
 
-\item{\code{user}}{The user the hierarchy belongs to.}
+\item{\code{time_stamp}}{The time stamp of the time dependent hierarchy.}
 
-\item{\code{isFavorite}}{This flag specifies whether the hierarchy is marked as
-favorite item, and thus shown in the favorites tab on the home module in
-PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the scope.}
 }
@@ -52,10 +49,10 @@ Create a new Scope instance.
 \if{html}{\out{<div class="r">}}\preformatted{Hierarchy$new(
   name = NULL,
   relationship = NULL,
-  isLocked = FALSE,
-  user = NULL,
-  isFavorite = FALSE,
-  labels = NULL
+  is_time_dependent = FALSE,
+  time_stamp = NULL,
+  description = NULL,
+  labels = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -67,14 +64,12 @@ Create a new Scope instance.
 \item{\code{relationship}}{The child-parent relationships (named list) stored in
 the hierarchy.}
 
-\item{\code{isLocked}}{This flag specifies whether the hierarchy is locked.
-Defaults to \code{FALSE}.}
+\item{\code{is_time_dependent}}{Whether the hierarchy is time dependent or
+static.}
 
-\item{\code{user}}{The user the hierarchy belongs to.}
+\item{\code{time_stamp}}{The time stamp of the time dependent hierarchy.}
 
-\item{\code{isFavorite}}{This flag specifies whether the hierarchy is marked as
-favorite item, and thus shown in the favorites tab on the home module
-in PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the scope.}
 }

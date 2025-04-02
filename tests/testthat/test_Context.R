@@ -1,46 +1,57 @@
-##### CONTEXT #####
-context("Context instanciation and conversion to list")
+context("Context Tests")
 
-test_that("Context instanciation and conversion works",{
-  eset <- EntitySet$new(name = "MyEset",
-                        entities = c(Entity$new(name = "Well1",
-                                                entityTypeName = "Well",
-                                                alias = "WellAlias1"),
-                                     Entity$new(name = "Well2",
-                                                entityTypeName = "Well",
-                                                alias = "WellAlias2")),
-                        formula = "EsetFormula",
-                        isLocked = FALSE,
-                        user = "MyUser",
-                        isFavorite = FALSE,
+test_that("Context instanciation and conversion works", {
+  e1 <- Entity$new(name = "MyWell1",
+                   entity_type_name = "Well",
+                   alias = "MyAlias1")
+
+  e2 <- Entity$new(name = "MyWell2",
+                   entity_type_name = "Well",
+                   alias = "MyAlias2")
+
+  parent <- Entity$new(name = "Test Parent",
+                       entity_type_name = "Field",
+                       alias = "Test Parent",
+                       is_opportunity = FALSE)
+
+  eset <- EntitySet$new(name = "MyEntitySet",
+                        entities = list(e1, e2),
+                        formula = "MyEsetFormula",
+                        description = "My new entity set",
                         labels = list("label1", "label2"))
 
-  scope <- Scope$new(name = "MyScope",
-                     start = "2020-01-01T00:00:00.000Z",
+  scope <- Scope$new(name = "Test R Scope",
+                     start = "2020-03-01T00:00:00.000Z",
                      end = "2020-03-01T00:00:00.000Z",
-                     timeIncrement = "Daily",
-                     formula = "ScopeFormula",
-                     isLocked = FALSE,
-                     user = "MyUser",
-                     isFavorite = FALSE,
+                     time_increment = "Daily",
+                     depth_increment = "Meter",
+                     start_depth = 0,
+                     end_depth = 5000,
+                     formula = "Test Formula",
+                     description = "Test description",
                      labels = list("label1", "label2"))
 
-  hierarchy <- Hierarchy$new(name = "MyHierarchy",
-                             relationship = list(Well1 = "FieldA",
-                                                 Well2 = "FieldB"),
-                             isLocked = FALSE,
-                             user = "MyUser",
-                             isFavorite = TRUE,
-                             labels = list("label1", "label2"))
+  # build relationship
+  relationship <- list()
+  relationship[[e1$name]] <- parent$name
+  relationship[[e1$name]] <- parent$name
+  relationship[[parent$name]] <- NA
+
+  hierarchy <- Hierarchy$new(name = "Hierarchy R Test",
+                             relationship = relationship,
+                             is_time_dependent = FALSE,
+                             time_stamp = NULL,
+                             description = "Test R Description")
 
   context <- Context$new(name = "MyContext",
-                         entitySet = eset,
+                         entity_set = eset,
                          scope = scope,
                          hierarchy = hierarchy,
-                         formula = "MyContextFormula",
-                         isLocked = TRUE,
-                         user = "MyUser",
-                         isFavorite = TRUE,
+                         loading_scenario_name = "Loading Scenario",
+                         saving_scenario_name = "Saving Scenario",
+                         scenario_data_only = FALSE,
+                         formula = "MyFormula",
+                         description = "Description",
                          labels = list("label1", "label2"))
 
   listed <- context$toList()
@@ -50,15 +61,15 @@ test_that("Context instanciation and conversion works",{
                     EntitySet = eset$toList(),
                     Scope = scope$toList(),
                     Hierarchy = hierarchy$toList(),
-                    Formula = "MyContextFormula",
-                    IsLocked = TRUE,
-                    User = "MyUser",
-                    IsFavorite = TRUE,
+                    LoadScenarioName = "Loading Scenario",
+                    ScenarioDataOnly = FALSE,
+                    SavingScenarioName = "Saving Scenario",
+                    Formula = "MyFormula",
+                    Description = "Description",
                     Labels = list("label1", "label2")))
 })
 
-test_that("Context instanciation and conversion works
-          (empty constructor)",{
+test_that("Context instanciation and conversion works (empty constructor)", {
   context <- Context$new()
 
   listed <- context$toList()
@@ -68,9 +79,155 @@ test_that("Context instanciation and conversion works
                     EntitySet = "",
                     Scope = "",
                     Hierarchy = "",
+                    LoadScenarioName = "",
+                    ScenarioDataOnly = FALSE,
+                    SavingScenarioName = "",
                     Formula = "",
-                    IsLocked = FALSE,
-                    User = "",
-                    IsFavorite = FALSE,
-                    Labels = ""))
+                    Description = "",
+                    Labels = list()))
+})
+
+test_that("Context can be created", {
+  # create entities for the entity set
+  entity_one <- Entity$new(name = "TestNameOne",
+                           entity_type_name = "Well",
+                           alias = "TestAliasOne",
+                           is_opportunity = FALSE)
+  sp$repositoryService$AddOrEditItem("Entity", entity_one)
+
+  entity_two <- Entity$new(name = "TestNameTwo",
+                           entity_type_name = "Well",
+                           alias = "TestAliasTwo",
+                           is_opportunity = FALSE)
+  sp$repositoryService$AddOrEditItem("Entity", entity_two)
+
+  entity_set <- EntitySet$new(name = "Eset R Test",
+                              entities = list(entity_one, entity_two))
+  sp$repositoryService$AddOrEditItem("EntitySet", entity_set)
+
+  # create scope
+  scope <- Scope$new(name = "Test R Scope",
+                     start = "2020-03-01T00:00:00.000Z",
+                     end = "2020-03-01T00:00:00.000Z",
+                     time_increment = "Daily",
+                     depth_increment = "Meter",
+                     start_depth = 10,
+                     end_depth = 1500,
+                     description = "Test R Scope")
+  sp$repositoryService$AddOrEditItem("Scope", scope)
+
+  # create hierarchy
+  parent <- Entity$new(name = "Test Parent",
+                       entity_type_name = "Field",
+                       alias = "Test Parent",
+                       is_opportunity = FALSE)
+  sp$repositoryService$AddOrEditItem("Entity", parent)
+
+  # build relationship
+  relationship <- list()
+  relationship[[entity_one$name]] <- parent$name
+  relationship[[entity_two$name]] <- parent$name
+  relationship[[parent$name]] <- NA
+
+  hierarchy <- Hierarchy$new(name = "Hierarchy R Test",
+                             relationship = relationship,
+                             is_time_dependent = FALSE,
+                             time_stamp = NULL,
+                             description = "Test R Description")
+
+  sp$repositoryService$AddOrEditItem("Hierarchy", hierarchy)
+
+  # create scenario
+  scenario <- Scenario$new(name = "Test R Scenario")
+  sp$repositoryService$AddOrEditItem("Scenario", scenario)
+
+  # create context
+  context <- Context$new(name = "Test R Context",
+                         entity_set = entity_set,
+                         scope = scope,
+                         hierarchy = hierarchy,
+                         loading_scenario_name = "Test R Scenario",
+                         saving_scenario_name = "Test R Scenario",
+                         scenario_data_only = FALSE,
+                         description = "Test R Context Description")
+
+  result <- sp$repositoryService$AddOrEditItem("Context", context)
+
+  expect_equal(result$status_code, 201)
+})
+
+test_that("Context can be retrieved", {
+  context <- sp$repositoryService$GetItemByName("Context", "Test R Context")
+
+  # create items for checking equality
+  # create entities for the entity set
+  entity_one <- Entity$new(name = "TestNameOne",
+                           entity_type_name = "Well",
+                           alias = "TestAliasOne",
+                           is_opportunity = NULL)
+
+  entity_two <- Entity$new(name = "TestNameTwo",
+                           entity_type_name = "Well",
+                           alias = "TestAliasTwo",
+                           is_opportunity = NULL)
+
+  entity_set <- EntitySet$new(name = "Eset R Test",
+                              entities = list(entity_one, entity_two),
+                              formula = "Entity Set \"Eset R Test\"\n\t\"TestNameOne\"\n\t\"TestNameTwo\"\nEnd Set")
+
+  # create scope
+  scope <- Scope$new(name = "Test R Scope",
+                     start = "2020-03-01T00:00:00",
+                     end = "2020-03-01T00:00:00",
+                     time_increment = "Daily",
+                     depth_increment = "Meter",
+                     start_depth = 10,
+                     end_depth = 1500,
+                     formula = "Scope \"Test R Scope\" \n\tBetween #03/01/2020 00:00# \n\tAnd #03/01/2020 00:00# \n\tStep Daily \n\tFrom 10 \n\tTo 1500 \n\tDepth Step Meter \nEnd Scope")
+
+  # create hierarchy
+  parent <- Entity$new(name = "Test Parent",
+                       entity_type_name = "Field",
+                       alias = "Test Parent",
+                       is_opportunity = NULL)
+
+  # build relationship
+  relationship <- list("Test Parent", "Test Parent", NULL)
+  names(relationship) <- c("TestNameOne", "TestNameTwo", "Test Parent")
+
+  hierarchy <- Hierarchy$new(name = "Hierarchy R Test",
+                             relationship = relationship,
+                             is_time_dependent = FALSE,
+                             time_stamp = NULL,
+                             description = "Test R Description")
+
+  # create context
+  ctx <- Context$new(name = "Test R Context",
+                     entity_set = entity_set,
+                     scope = scope,
+                     hierarchy = hierarchy,
+                     loading_scenario_name = "Test R Scenario",
+                     saving_scenario_name = "Test R Scenario",
+                     scenario_data_only = NULL,
+                     formula = "Context \"Test R Context\"\n\tEntity Set \"Eset R Test\"\n\tScope \"Test R Scope\"\n\tHierarchy \"Hierarchy R Test\"\n\tScenario \"Test R Scenario\" Saving Scenario\nEnd Context\n\n",
+                     description = "Test R Context Description")
+
+  # check equality
+  expect_equal(context, ctx)
+})
+
+test_that("Context can be deleted", {
+  result <- sp$repositoryService$DeleteItem("Context", "Test R Context")
+
+  expect_equal(result$status_code, 200)
+  expect_error(sp$repositoryService$GetItemByName("Context", "Test R Context"))
+
+  # clean up - remove items created during tests
+  sp$repositoryService$DeleteItem("Hierarchy", "Hierarchy R Test")
+  sp$repositoryService$DeleteItem("EntitySet", "Eset R Test")
+  sp$repositoryService$DeleteItem("Scope", "Test R Scope")
+  sp$repositoryService$DeleteItem("Scenario", "Test R Scenario")
+  sp$repositoryService$DeleteItem("Entity", "TestNameOne")
+  sp$repositoryService$DeleteItem("Entity", "TestNameTwo")
+  sp$repositoryService$DeleteItem("Entity", "Test Parent")
 })

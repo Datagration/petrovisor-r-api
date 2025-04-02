@@ -9,15 +9,17 @@ Class representing a PetroVisor signal object.
 \examples{
 \dontrun{
 Signal$new(name = "my signal",
-           shortName = "my sig",
-           measurementName = "Length",
-           storageUnitName = "m",
-           aggregationType = "Average",
-           containerAggregationType = "Sum",
-           signalType = "Time-dependent",
-           defaultColor = 0,
-           defaultLineType = "Solid",
-           settingName = NULL)
+           short_name = "my sig",
+           measurement_name = "Length",
+           storage_unit_name = "m",
+           aggregation_type = "Average",
+           container_aggregation_type = "Sum",
+           signal_type = "Time-dependent",
+           default_color = 0,
+           default_line_type = "Solid",
+           setting_name = NULL,
+           labels = list(),
+           description = NULL)
 }
 }
 \section{Public fields}{
@@ -25,24 +27,28 @@ Signal$new(name = "my signal",
 \describe{
 \item{\code{name}}{The name of the signal.}
 
-\item{\code{shortName}}{The signal's short name.}
+\item{\code{short_name}}{The signal's short name.}
 
-\item{\code{measurementName}}{The signal's measurement name.}
+\item{\code{measurement_name}}{The signal's measurement name.}
 
-\item{\code{storageUnitName}}{The name of the signal's storage unit.}
+\item{\code{storage_unit_name}}{The name of the signal's storage unit.}
 
-\item{\code{aggregationType}}{The signal's aggregation type.}
+\item{\code{aggregation_type}}{The signal's aggregation type.}
 
-\item{\code{containerAggregationType}}{The signal's container aggregation type.}
+\item{\code{container_aggregation_type}}{The signal's container aggregation type.}
 
-\item{\code{signalType}}{The signal's type.}
+\item{\code{signal_type}}{The signal's type.}
 
-\item{\code{defaultColor}}{The signal's default color.}
+\item{\code{default_color}}{The signal's default color.}
 
-\item{\code{defaultLineType}}{The signal's default line type.}
+\item{\code{default_line_type}}{The signal's default line type.}
 
-\item{\code{settingName}}{(Optional) The name of the enumeration linked to the
+\item{\code{setting_name}}{(Optional) The name of the enumeration linked to the
 signal.}
+
+\item{\code{labels}}{A list of strings holding the labels of the signal.}
+
+\item{\code{description}}{The description of the signal.}
 }
 \if{html}{\out{</div>}}
 }
@@ -62,16 +68,20 @@ Create a new Signal instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Signal$new(
   name = NULL,
-  shortName = NULL,
-  measurementName = NULL,
-  storageUnitName = NULL,
-  aggregationType = c("Sum", "Average", "Max", "Min", "Count"),
-  containerAggregationType = c("Sum", "Average", "Max", "Min", "Count"),
-  signalType = c("Static", "Time-dependent", "Depth-dependent", "String", "PVT",
-    "String time-dependent"),
-  defaultColor = 0,
-  defaultLineType = c("Solid", "Dash", "DashDot"),
-  settingName = NULL
+  short_name = NULL,
+  measurement_name = NULL,
+  storage_unit_name = NULL,
+  aggregation_type = c("Sum", "Average", "Mode", "Max", "Min", "Count", "Count Distinct",
+    "First", "Last", "None"),
+  container_aggregation_type = c("Sum", "Average", "Mode", "Max", "Min", "Count",
+    "Count Distinct", "First", "Last", "None"),
+  signal_type = c("Static", "TimeDependent", "DepthDependent", "String", "PVT",
+    "StringTimeDependent", "StringDepthDependent"),
+  default_color = 0,
+  default_line_type = c("Solid", "Dash", "DashDot"),
+  setting_name = NULL,
+  labels = list(),
+  description = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -80,24 +90,29 @@ Create a new Signal instance.
 \describe{
 \item{\code{name}}{The name of the signal.}
 
-\item{\code{shortName}}{The signal's short name.}
+\item{\code{short_name}}{The signal's short name.}
 
-\item{\code{measurementName}}{The signal's measurement name.}
+\item{\code{measurement_name}}{The signal's measurement name.}
 
-\item{\code{storageUnitName}}{The name of the signal's storage unit.}
+\item{\code{storage_unit_name}}{The name of the signal's storage unit.}
 
-\item{\code{aggregationType}}{The signal's aggregation type.}
+\item{\code{aggregation_type}}{The signal's aggregation type.}
 
-\item{\code{containerAggregationType}}{The signal's container aggregation type.}
+\item{\code{container_aggregation_type}}{The signal's container aggregation
+type.}
 
-\item{\code{signalType}}{The signal's type.}
+\item{\code{signal_type}}{The signal's type.}
 
-\item{\code{defaultColor}}{The signal's default color.}
+\item{\code{default_color}}{The signal's default color.}
 
-\item{\code{defaultLineType}}{The signal's default line type.}
+\item{\code{default_line_type}}{The signal's default line type.}
 
-\item{\code{settingName}}{(Optional) The name of the enumeration linked to the
+\item{\code{setting_name}}{(Optional) The name of the enumeration linked to the
 signal.}
+
+\item{\code{labels}}{A list of strings holding the labels of the signal.}
+
+\item{\code{description}}{The description of the signal.}
 }
 \if{html}{\out{</div>}}
 }

@@ -8,7 +8,7 @@ Class representing a PetroVisor tag object.
 }
 \examples{
 \dontrun{
-Tag$new(name = "NewTag", tagGroup = "Group 1")
+Tag$new(name = "NewTag", tag_group = "Group 1")
 }
 }
 \section{Public fields}{
@@ -16,7 +16,7 @@ Tag$new(name = "NewTag", tagGroup = "Group 1")
 \describe{
 \item{\code{name}}{The name of the tag.}
 
-\item{\code{tagGroup}}{The tag's tag group.}
+\item{\code{tag_group}}{The tag's tag group.}
 }
 \if{html}{\out{</div>}}
 }
@@ -34,7 +34,7 @@ Tag$new(name = "NewTag", tagGroup = "Group 1")
 \subsection{Method \code{new()}}{
 Create a new Tag instance.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tag$new(name = NULL, tagGroup = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Tag$new(name = NULL, tag_group = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -42,7 +42,7 @@ Create a new Tag instance.
 \describe{
 \item{\code{name}}{The name of tag.}
 
-\item{\code{tagGroup}}{The tag's tag group.}
+\item{\code{tag_group}}{The tag's tag group.}
 }
 \if{html}{\out{</div>}}
 }

@@ -7,33 +7,34 @@ library("R6")
 #' @export Tag
 #'
 #' @field name The name of the tag.
-#' @field tagGroup The tag's tag group.
+#' @field tag_group The tag's tag group.
 #'
 #' @examples
 #' \dontrun{
-#' Tag$new(name = "NewTag", tagGroup = "Group 1")
+#' Tag$new(name = "NewTag", tag_group = "Group 1")
 #'}
 Tag <- R6Class("Tag",
   public = list(
     name = NULL,
-    tagGroup = NULL,
+    tag_group = NULL,
 
     #' @description Create a new Tag instance.
     #'
     #' @param name The name of tag.
-    #' @param tagGroup The tag's tag group.
-    initialize = function(name = NULL, tagGroup = NULL){
+    #' @param tag_group The tag's tag group.
+    initialize = function(name = NULL, tag_group = NULL) {
       self$name <- name
-      self$tagGroup <- tagGroup
+      self$tag_group <- tag_group
     },
 
     #' @description Convert the object to a list. This function is mainly used
     #' by the RepositoryService to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
+    toList = function() {
       dl <- list(
-        Name = if(is.null(self$name)) "" else self$name,
-        TagGroup = if(is.null(self$tagGroup)) "" else self$tagGroup)
+        Name = if (is.null(self$name)) "" else self$name,
+        TagGroup = if (is.null(self$tag_group)) "" else self$tag_group
+      )
       return(dl)
     }
   )

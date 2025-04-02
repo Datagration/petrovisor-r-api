@@ -7,14 +7,9 @@ library("R6")
 #' @export EntitySet
 #'
 #' @field name The name of the entity set.
-#' @field entities A list of entities (instances of class Entity).
+#' @field entities list of entity objects.
 #' @field formula The entity set's definition as string (P# syntax).
-#' @field isLocked This flag specifies whether the entity set is locked
-#'   (i.e. managed through the repository). Defaults to \code{FALSE}.
-#' @field user The user the entity set belongs to.
-#' @field isFavorite This flag specifies whether the entity set is marked as
-#'   favorite item, and thus shown in the favorites tab on the home module in
-#'   PetroVisor. Defaults to \code{FALSE}.
+#' @field description The description of the item.
 #' @field labels A list of strings holding the labels of the entity set.
 #' @examples
 #' \dontrun{
@@ -31,62 +26,48 @@ EntitySet <- R6Class("EntitySet",
     name = NULL,
     entities = NULL,
     formula = NULL,
-    isLocked = NULL,
-    user = NULL,
-    isFavorite = NULL,
+    description = NULL,
     labels = NULL,
 
-    #' @description Create a new Scope instance.
+    #' @description Create a new EntitySet instance.
     #'
-    #' @param name The name of the scope.
-    #' @param entities A list of entities (instances of class Entity).
-    #' @param formula The scope's definition as string (P# syntax).
-    #' @param isLocked This flag specifies whether the scope is locked
-    #'   (i.e. managed through the repository). Defaults to \code{FALSE}.
-    #' @param user The user the scopes belongs to.
-    #' @param isFavorite This flag specifies whether the scope is marked as
-    #'   favorite item, and thus shown in the favorites tab on the home module
-    #'   in PetroVisor. Defaults to \code{FALSE}.
-    #' @param labels A list of strings holding the labels of the scope.
+    #' @param name The name of the entity set.
+    #' @param entities list of entity objects.
+    #' @param formula The entity set's definition as string (P# syntax).
+    #' @param description The description of the item.
+    #' @param labels A list of strings holding the labels of the entity set.
     initialize = function(name = NULL,
                           entities = NULL,
                           formula = NULL,
-                          isLocked = FALSE,
-                          user = NULL,
-                          isFavorite = FALSE,
-                          labels = NULL){
+                          description = NULL,
+                          labels = list()) {
       self$name <- name
       self$entities <- entities
       self$formula <- formula
-      self$isLocked <- isLocked
-      self$user <- user
-      self$isFavorite <- isFavorite
+      self$description <- description
       self$labels <- labels
     },
 
     #' @details Convert the object to a list. This function is mainly used
     #' by the RepositoryService to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
+    toList = function() {
       # create list from list of entities
-      entityList <- list()
-      if(!is.null(self$entities)){
-        for (i in 1:length(self$entities)){
-          entityList[[i]] <- self$entities[[i]]$toList()
+      entity_list <- list()
+      if (!is.null(self$entities)) {
+        for (i in seq_along(self$entities)){
+          entity_list[[i]] <- self$entities[[i]]$toList()
         }
       } else {
-        entityList[[1]] <- ""
+        entity_list[[1]] <- ""
       }
 
-
       dl <- list(
-        Name = if(is.null(self$name)) "" else self$name,
-        Entities = if(is.null(self$entities)) "" else entityList,
-        Formula = if(is.null(self$formula)) "" else self$formula,
-        IsLocked = if(is.null(self$isLocked)) "" else self$isLocked,
-        User = if(is.null(self$user)) "" else self$user,
-        IsFavorite = if(is.null(self$isFavorite)) "" else self$isFavorite,
-        Labels = if(is.null(self$labels)) "" else self$labels
+        Name = if (is.null(self$name)) "" else self$name,
+        Entities = if (is.null(self$entities)) "" else entity_list,
+        Formula = if (is.null(self$formula)) "" else self$formula,
+        Description = if (is.null(self$description)) "" else self$description,
+        Labels = self$labels
       )
       return(dl)
     }

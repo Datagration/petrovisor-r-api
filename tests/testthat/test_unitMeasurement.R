@@ -1,9 +1,8 @@
-##### UNIT MEASUREMENT #####
-context("Unit measurement instanciation and conversion to list")
+context("UnitMeasurement Tests")
 
-test_that("Unit measurement instanciation and conversion works",{
+test_that("Unit measurement instanciation and conversion works", {
   um <- UnitMeasurement$new(name = "MyMeasurement",
-                            canonicalUnitName = "MyCanonicalUnitName")
+                            canonical_unit_name = "MyCanonicalUnitName")
 
   listed <- um$toList()
 
@@ -12,7 +11,7 @@ test_that("Unit measurement instanciation and conversion works",{
                     CanonicalUnitName = "MyCanonicalUnitName"))
 })
 
-test_that("Unit measurement instanciation and conversion works (empty constructor)",{
+test_that("Unit measurement instanciation and conversion works (empty constructor)", {
   um <- UnitMeasurement$new()
 
   listed <- um$toList()
@@ -20,4 +19,11 @@ test_that("Unit measurement instanciation and conversion works (empty constructo
   expect_equal(listed,
                list(Name = "",
                     CanonicalUnitName = ""))
+})
+
+test_that("UnitMeasurement can be retrieved", {
+  um <- sp$repositoryService$GetItemByName("UnitMeasurement", "Volume")
+
+  expect_equal(um, UnitMeasurement$new(name = "Volume",
+                                       canonical_unit_name = "m3"))
 })

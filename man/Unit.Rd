@@ -9,7 +9,7 @@ Class representing a PetroVisor unit object.
 \examples{
 \dontrun{
 Unit$new(name = "hyper m",
-         measurementName = "Length",
+         measurement_name = "Length",
          factor = 10000000000000,
          summand = 0)
 }
@@ -19,7 +19,7 @@ Unit$new(name = "hyper m",
 \describe{
 \item{\code{name}}{The name of the unit.}
 
-\item{\code{measurementName}}{The unit's measurement name.}
+\item{\code{measurement_name}}{The unit's measurement name.}
 
 \item{\code{factor}}{The unit's factor. Used for conversion between the unit and
 it's base (SI) unit.}
@@ -43,7 +43,7 @@ it's base (SI) unit.}
 \subsection{Method \code{new()}}{
 Create a new Unit instance.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Unit$new(name = NULL, measurementName = NULL, factor = NULL, summand = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Unit$new(name = NULL, measurement_name = NULL, factor = NULL, summand = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -51,7 +51,7 @@ Create a new Unit instance.
 \describe{
 \item{\code{name}}{The name of the unit.}
 
-\item{\code{measurementName}}{The unit's measurement name.}
+\item{\code{measurement_name}}{The unit's measurement name.}
 
 \item{\code{factor}}{The unit's factor. Used for conversion between the unit and
 it's base (SI) unit.}
