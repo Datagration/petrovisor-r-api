@@ -22,18 +22,11 @@ EntitySet$new(name = "MyEntities",
 \describe{
 \item{\code{name}}{The name of the entity set.}
 
-\item{\code{entities}}{A list of entities (instances of class Entity).}
+\item{\code{entities}}{list of entity objects.}
 
 \item{\code{formula}}{The entity set's definition as string (P# syntax).}
 
-\item{\code{isLocked}}{This flag specifies whether the entity set is locked
-(i.e. managed through the repository). Defaults to \code{FALSE}.}
-
-\item{\code{user}}{The user the entity set belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the entity set is marked as
-favorite item, and thus shown in the favorites tab on the home module in
-PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the entity set.}
 }
@@ -51,38 +44,29 @@ PetroVisor. Defaults to \code{FALSE}.}
 \if{html}{\out{<a id="method-EntitySet-new"></a>}}
 \if{latex}{\out{\hypertarget{method-EntitySet-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new Scope instance.
+Create a new EntitySet instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{EntitySet$new(
   name = NULL,
   entities = NULL,
   formula = NULL,
-  isLocked = FALSE,
-  user = NULL,
-  isFavorite = FALSE,
-  labels = NULL
+  description = NULL,
+  labels = list()
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the scope.}
+\item{\code{name}}{The name of the entity set.}
 
-\item{\code{entities}}{A list of entities (instances of class Entity).}
+\item{\code{entities}}{list of entity objects.}
 
-\item{\code{formula}}{The scope's definition as string (P# syntax).}
+\item{\code{formula}}{The entity set's definition as string (P# syntax).}
 
-\item{\code{isLocked}}{This flag specifies whether the scope is locked
-(i.e. managed through the repository). Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
-\item{\code{user}}{The user the scopes belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the scope is marked as
-favorite item, and thus shown in the favorites tab on the home module
-in PetroVisor. Defaults to \code{FALSE}.}
-
-\item{\code{labels}}{A list of strings holding the labels of the scope.}
+\item{\code{labels}}{A list of strings holding the labels of the entity set.}
 }
 \if{html}{\out{</div>}}
 }

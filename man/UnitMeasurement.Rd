@@ -8,7 +8,7 @@ Class representing a PetroVisor unit measurement object.
 }
 \examples{
 \dontrun{
-UnitMeasurement$new(name = "Length", canonicalUnitName = "m")
+UnitMeasurement$new(name = "Length", canonical_unit_name = "m")
 }
 }
 \section{Public fields}{
@@ -16,7 +16,7 @@ UnitMeasurement$new(name = "Length", canonicalUnitName = "m")
 \describe{
 \item{\code{name}}{The name of the unit measurement.}
 
-\item{\code{canonicalUnitName}}{The name of the unit measurement's canonical unit.}
+\item{\code{canonical_unit_name}}{The name of the unit measurement's canonical unit.}
 }
 \if{html}{\out{</div>}}
 }
@@ -34,7 +34,7 @@ UnitMeasurement$new(name = "Length", canonicalUnitName = "m")
 \subsection{Method \code{new()}}{
 Create a new UnitMeasurement instance.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{UnitMeasurement$new(name = NULL, canonicalUnitName = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{UnitMeasurement$new(name = NULL, canonical_unit_name = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -42,7 +42,7 @@ Create a new UnitMeasurement instance.
 \describe{
 \item{\code{name}}{The name of the unit measurement.}
 
-\item{\code{canonicalUnitName}}{The name of the unit measurement's canonical
+\item{\code{canonical_unit_name}}{The name of the unit measurement's canonical
 unit.}
 }
 \if{html}{\out{</div>}}

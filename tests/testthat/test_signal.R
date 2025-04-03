@@ -1,17 +1,18 @@
-##### SIGNAL #####
-context("Signal instanciation and conversion to list")
+context("Signal Tests")
 
-test_that("Signal instanciation and conversion works",{
+test_that("Signal instanciation and conversion works", {
   signal <- Signal$new(name = "MySignal",
-                       shortName = "MyShorName",
-                       measurementName = "Length",
-                       storageUnitName = "m",
-                       aggregationType = "Average",
-                       containerAggregationType = "Sum",
-                       signalType = "Time-dependent",
-                       defaultColor = 0,
-                       defaultLineType = "Dash",
-                       settingName = "MySetting")
+                       short_name = "MyShorName",
+                       measurement_name = "Length",
+                       storage_unit_name = "m",
+                       aggregation_type = "Average",
+                       container_aggregation_type = "Sum",
+                       signal_type = "TimeDependent",
+                       default_color = 0,
+                       default_line_type = "Dash",
+                       setting_name = "MySetting",
+                       labels = list("label1", "label2"),
+                       description = "My description")
 
   listed <- signal$toList()
 
@@ -22,13 +23,15 @@ test_that("Signal instanciation and conversion works",{
                     StorageUnitName = "m",
                     AggregationType = "Average",
                     ContainerAggregationType = "Sum",
-                    SignalType = "Time-dependent",
+                    SignalType = "TimeDependent",
                     DefaultColor = 0,
                     DefaultLineType = "Dash",
-                    SettingName = "MySetting"))
+                    SettingName = "MySetting",
+                    Description = "My description",
+                    Labels = list("label1", "label2")))
 })
 
-test_that("Signal instanciation and conversion works (empty constructor)",{
+test_that("Signal instanciation and conversion works (empty constructor)", {
   signal <- Signal$new()
 
   listed <- signal$toList()
@@ -43,5 +46,50 @@ test_that("Signal instanciation and conversion works (empty constructor)",{
                     SignalType = "Static",
                     DefaultColor = 0,
                     DefaultLineType = "Solid",
-                    SettingName = ""))
+                    SettingName = "",
+                    Description = "",
+                    Labels = list()))
+})
+
+test_that("Signal can be created", {
+  signal <- Signal$new(name = "test r signal",
+                       short_name = "trs",
+                       measurement_name = "Volume",
+                       storage_unit_name = "m3",
+                       aggregation_type = "Sum",
+                       container_aggregation_type = "Sum",
+                       signal_type = "TimeDependent",
+                       default_color = 3711337,
+                       default_line_type = "Dash",
+                       setting_name = NULL,
+                       labels = list(),
+                       description = "My description")
+
+  result <- sp$repositoryService$AddOrEditItem("Signal", signal)
+
+  expect_equal(result$status_code, 201)
+})
+
+test_that("Signal can be retrieved", {
+  signal <- sp$repositoryService$GetItemByName("Signal", "test r signal")
+
+  expect_equal(signal, Signal$new(name = "test r signal",
+                                  short_name = "trs",
+                                  measurement_name = "Volume",
+                                  storage_unit_name = "m3",
+                                  aggregation_type = "Sum",
+                                  container_aggregation_type = "Sum",
+                                  signal_type = "TimeDependent",
+                                  default_color = 3711337,
+                                  default_line_type = "Dash",
+                                  setting_name = NULL,
+                                  labels = list(),
+                                  description = "My description"))
+})
+
+test_that("Signal can be deleted", {
+  result <- sp$repositoryService$DeleteItem("Signal", "test r signal")
+
+  expect_equal(result$status_code, 200)
+  expect_error(sp$repositoryService$GetItemByName("Signal", "test r signal"))
 })

@@ -7,28 +7,40 @@ library("R6")
 #' @export Entity
 #'
 #' @field name The name of the entity.
-#' @field entityTypeName The name of the entity's type.
+#' @field entity_type_name The name of the entity's type.
 #' @field alias The alias of the entity.
+#' @field is_opportunity Whether the entity is an opportunity or not.
 #'
 #' @examples
 #' \dontrun{
-#' Entity$new(name = "NewWell", entityTypeName = "Well", alias = "NewWellAlias")
+#' Entity$new(
+#'   name = "NewWell",
+#'   entity_type_name = "Well",
+#'   alias = "NewWellAlias",
+#'   is_opportunity = FALSE)
 #' }
 Entity <- R6Class("Entity",
   public = list(
     name = NULL,
-    entityTypeName = NULL,
+    entity_type_name = NULL,
     alias = NULL,
+    is_opportunity = FALSE,
 
     #' @description Create a new Entity instance.
     #'
     #' @param name The name of entity.
-    #' @param entityTypeName The name of the entity' type.
+    #' @param entity_type_name The name of the entity' type.
     #' @param alias The alias of the entity.
-    initialize = function(name = NULL, entityTypeName = NULL, alias = NULL) {
+    #' @param is_opportunity Whether the entity is an opportunity or not.
+    initialize = function(
+        name = NULL,
+        entity_type_name = NULL,
+        alias = NULL,
+        is_opportunity = FALSE) {
       self$name <- name
-      self$entityTypeName <- entityTypeName
+      self$entity_type_name <- entity_type_name
       self$alias <- alias
+      self$is_opportunity <- is_opportunity
     },
 
     #' @details Convert the object to a list. This function is mainly used
@@ -37,12 +49,17 @@ Entity <- R6Class("Entity",
     toList = function() {
       dl <- list(
         Name = if (is.null(self$name)) "" else self$name,
-        EntityTypeName = if (is.null(self$entityTypeName)) {
+        EntityTypeName = if (is.null(self$entity_type_name)) {
           ""
         } else {
-          self$entityTypeName
+          self$entity_type_name
         },
-        Alias = if (is.null(self$alias)) "" else self$alias
+        Alias = if (is.null(self$alias)) "" else self$alias,
+        IsOpportunity = if (is.null(self$is_opportunity)) {
+          FALSE
+        } else {
+          self$is_opportunity
+        }
       )
       return(dl)
     }

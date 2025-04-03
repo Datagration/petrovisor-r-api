@@ -9,7 +9,7 @@ Class representing a PetroVisor context object.
 \examples{
 \dontrun{
 Context$new(name = "MyContext",
-          entitySet = EntitySet$new(name = "MyEntities",
+          entity_set = EntitySet$new(name = "MyEntities",
               entities = c(Entity$new(name = "Well1",
                                       entityTypeName = "Well",
                                       alias = "WellAlias1"),
@@ -27,23 +27,24 @@ Context$new(name = "MyContext",
 \describe{
 \item{\code{name}}{The name of the context.}
 
-\item{\code{entitySet}}{The context's entity set (object of class EntitySet).}
+\item{\code{entity_set}}{The context's entity set (object of class EntitySet).}
 
 \item{\code{scope}}{The context's scope (object of class Scope).}
 
 \item{\code{hierarchy}}{(Optional) The hierarchy used for automatic aggregation
 (Object of type Hierarchy).}
 
+\item{\code{loading_scenario_name}}{(Optional) The name of the loading scenario.}
+
+\item{\code{saving_scenario_name}}{(Optional) The name of the saving scenario.}
+
+\item{\code{scenario_data_only}}{(Optional) Whether to load data from the specified
+loading scenario only. If \code{FALSE}, data will be merged with workspace
+data.}
+
 \item{\code{formula}}{The context's definition as string (P# syntax).}
 
-\item{\code{isLocked}}{This flag specifies whether the context is locked.
-Defaults to \code{FALSE}.}
-
-\item{\code{user}}{The user the context belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the context is marked as
-favorite item, and thus shown in the favorites tab on the home module in
-PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the context.}
 }
@@ -65,14 +66,15 @@ Create a new Context instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Context$new(
   name = NULL,
-  entitySet = NULL,
+  entity_set = NULL,
   scope = NULL,
   hierarchy = NULL,
+  loading_scenario_name = NULL,
+  saving_scenario_name = NULL,
+  scenario_data_only = FALSE,
   formula = NULL,
-  isLocked = FALSE,
-  user = NULL,
-  isFavorite = FALSE,
-  labels = NULL
+  description = NULL,
+  labels = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -81,23 +83,24 @@ Create a new Context instance.
 \describe{
 \item{\code{name}}{The name of the context.}
 
-\item{\code{entitySet}}{The context's entity set (object of class EntitySet).}
+\item{\code{entity_set}}{The context's entity set (object of class EntitySet).}
 
 \item{\code{scope}}{The context's scope (object of class Scope).}
 
 \item{\code{hierarchy}}{(Optional) The hierarchy used for automatic aggregation
 (Object of type Hierarchy).}
 
+\item{\code{loading_scenario_name}}{(Optional) The name of the loading scenario.}
+
+\item{\code{saving_scenario_name}}{(Optional) The name of the saving scenario.}
+
+\item{\code{scenario_data_only}}{(Optional) Whether to load data from the
+specified loading scenario only. If \code{FALSE}, data will be merged
+with workspace data.}
+
 \item{\code{formula}}{The context's definition as string (P# syntax).}
 
-\item{\code{isLocked}}{This flag specifies whether the context is locked.
-Defaults to \code{FALSE}.}
-
-\item{\code{user}}{The user the context belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the context is marked as
-favorite item, and thus shown in the favorites tab on the home module
-in PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the context.}
 }

@@ -1,21 +1,51 @@
-context("Entity instanciation and conversion to list")
+context("Entity Tests")
 
-test_that("Entity instanciation and conversion works",{
+test_that("Entity instanciation and conversion works", {
   entity <- Entity$new(name = "TestName",
-                       entityTypeName = "Well",
-                       alias = "TestAlias")
-  entityList <- entity$toList()
+                       entity_type_name = "Well",
+                       alias = "TestAlias",
+                       is_opportunity = FALSE)
+  entity_list <- entity$toList()
 
-  expect_equal(entityList, list(Name = "TestName",
-                                EntityTypeName = "Well",
-                                Alias = "TestAlias"))
+  expect_equal(entity_list, list(Name = "TestName",
+                                 EntityTypeName = "Well",
+                                 Alias = "TestAlias",
+                                 IsOpportunity = FALSE))
 })
 
-test_that("Entity instanciation and conversion works (empty constructor)",{
+test_that("Entity instanciation and conversion works (empty constructor)", {
   entity <- Entity$new()
-  entityList <- entity$toList()
+  entity_list <- entity$toList()
 
-  expect_equal(entityList, list(Name = "",
-                                EntityTypeName = "",
-                                Alias = ""))
+  expect_equal(entity_list, list(Name = "",
+                                 EntityTypeName = "",
+                                 Alias = "",
+                                 IsOpportunity = FALSE))
+})
+
+test_that("Entity can be created", {
+  entity <- Entity$new(name = "TestName",
+                       entity_type_name = "Well",
+                       alias = "TestAlias",
+                       is_opportunity = FALSE)
+
+  result <- sp$repositoryService$AddOrEditItem("Entity", entity)
+
+  expect_equal(result$status_code, 201)
+})
+
+test_that("Entity can be retrieved", {
+  entity <- sp$repositoryService$GetItemByName("Entity", "TestName")
+
+  expect_equal(entity, Entity$new(name = "TestName",
+                                  entity_type_name = "Well",
+                                  alias = "TestAlias",
+                                  is_opportunity = NULL))
+})
+
+test_that("Entity can be deleted", {
+  result <- sp$repositoryService$DeleteItem("Entity", "TestName")
+
+  expect_equal(result$status_code, 200)
+  expect_error(sp$repositoryService$GetItemByName("Entity", "TestName"))
 })

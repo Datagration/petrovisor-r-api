@@ -8,7 +8,7 @@ Class representing a PetroVisor entityType object.
 }
 \examples{
 \dontrun{
-EntityType$new(name = "Section", rank = 13)
+EntityType$new(name = "Section")
 }
 }
 \section{Public fields}{
@@ -16,7 +16,7 @@ EntityType$new(name = "Section", rank = 13)
 \describe{
 \item{\code{name}}{The name of the entity type.}
 
-\item{\code{rank}}{The rank of the entity type.}
+\item{\code{image}}{The image of the entity type represented as string.}
 }
 \if{html}{\out{</div>}}
 }
@@ -34,7 +34,7 @@ EntityType$new(name = "Section", rank = 13)
 \subsection{Method \code{new()}}{
 Create a new EntityType instance.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{EntityType$new(name = NULL, rank = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{EntityType$new(name = NULL, image = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -42,7 +42,7 @@ Create a new EntityType instance.
 \describe{
 \item{\code{name}}{The name of entity type.}
 
-\item{\code{rank}}{The rank of the entity type.}
+\item{\code{image}}{The image of the entity type represented as string.}
 }
 \if{html}{\out{</div>}}
 }
