@@ -104,6 +104,18 @@ ServiceProvider <- R6Class("ServiceProvider",
       )
     },
 
+    #' @description Parse the mapped signal received from PetroVisor to a list
+    #'  containing the name and unit of the mapped signal.
+    #' @param mapped_signal The mapped signal (string) as received from
+    #'  PetroVisor.
+    parse_signal = function(mapped_signal) {
+      # Split the signal string into name and unit
+      parts <- strsplit(mapped_signal, " \\[")[[1]]
+      name <- parts[1]
+      unit <- substr(parts[2], 1, nchar(parts[2]) - 1) # Remove the trailing "]"
+      return(list(Signal = name, Unit = unit))
+    },
+
     #' @description Set the workspace-specific data URL.
     #' @param data_url The base URL for data services.
     #' @param workspace The name of the workspace.
