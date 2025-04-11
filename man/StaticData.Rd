@@ -8,22 +8,24 @@ Class representing static data.
 }
 \examples{
 \dontrun{
-StaticData$new(signalName = "surface x-coordinate",
-               entityName = "Well01",
-               unitName = "m",
+StaticData$new(signal_name = "surface x-coordinate",
+               entity_name = "Well01",
+               unit_name = "m",
                data = 10)
 }
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{signalName}}{The name of the signal.}
+\item{\code{signal_name}}{The name of the signal.}
 
-\item{\code{entityName}}{The name of the entity.}
+\item{\code{entity_name}}{The name of the entity.}
 
-\item{\code{unitName}}{The data's unit name.}
+\item{\code{unit_name}}{The data's unit name.}
 
 \item{\code{data}}{The data. In this case case a single numberic or string value.}
+
+\item{\code{scenario}}{The scenario the data is part of.}
 }
 \if{html}{\out{</div>}}
 }
@@ -31,7 +33,7 @@ StaticData$new(signalName = "surface x-coordinate",
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-StaticData-new}{\code{StaticData$new()}}
-\item \href{#method-StaticData-toList}{\code{StaticData$toList()}}
+\item \href{#method-StaticData-to_list}{\code{StaticData$to_list()}}
 \item \href{#method-StaticData-clone}{\code{StaticData$clone()}}
 }
 }
@@ -42,33 +44,36 @@ StaticData$new(signalName = "surface x-coordinate",
 Create a new StaticData instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{StaticData$new(
-  signalName = NULL,
-  entityName = NULL,
-  unitName = NULL,
-  data = NULL
+  signal_name = NULL,
+  entity_name = NULL,
+  unit_name = NULL,
+  data = NULL,
+  scenario = NULL
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{signalName}}{The name of the signal.}
+\item{\code{signal_name}}{The name of the signal.}
 
-\item{\code{entityName}}{The name of the entity.}
+\item{\code{entity_name}}{The name of the entity.}
 
-\item{\code{unitName}}{The data's unit name.}
+\item{\code{unit_name}}{The data's unit name.}
 
-\item{\code{data}}{The data. In this case case a single numberic or string value.}
+\item{\code{data}}{The data. In this case case a single number or string value.}
+
+\item{\code{scenario}}{The scenario the data is part of.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-StaticData-toList"></a>}}
-\if{latex}{\out{\hypertarget{method-StaticData-toList}{}}}
-\subsection{Method \code{toList()}}{
+\if{html}{\out{<a id="method-StaticData-to_list"></a>}}
+\if{latex}{\out{\hypertarget{method-StaticData-to_list}{}}}
+\subsection{Method \code{to_list()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{StaticData$toList()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{StaticData$to_list()}\if{html}{\out{</div>}}
 }
 
 \subsection{Details}{

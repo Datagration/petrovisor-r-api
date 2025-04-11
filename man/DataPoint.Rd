@@ -24,7 +24,7 @@ DataPoint$new(date = "2020-01-01T00:00:00.000Z", value = 20)
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataPoint-new}{\code{DataPoint$new()}}
-\item \href{#method-DataPoint-toList}{\code{DataPoint$toList()}}
+\item \href{#method-DataPoint-to_list}{\code{DataPoint$to_list()}}
 \item \href{#method-DataPoint-clone}{\code{DataPoint$clone()}}
 }
 }
@@ -48,14 +48,14 @@ Create a new DataPoint instance.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataPoint-toList"></a>}}
-\if{latex}{\out{\hypertarget{method-DataPoint-toList}{}}}
-\subsection{Method \code{toList()}}{
+\if{html}{\out{<a id="method-DataPoint-to_list"></a>}}
+\if{latex}{\out{\hypertarget{method-DataPoint-to_list}{}}}
+\subsection{Method \code{to_list()}}{
 Convert the object to a list. This function is mainly used
 by the DataServices to convert the objects to lists and then
 call the web API.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataPoint$toList()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataPoint$to_list()}\if{html}{\out{</div>}}
 }
 
 }

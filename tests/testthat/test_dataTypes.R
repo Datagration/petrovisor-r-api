@@ -1,96 +1,180 @@
 ##### STATIC DATA #####
 context("Static data instanciation and conversion to list")
 
-test_that("Static data instanciation and conversion works",{
-  ds <- StaticData$new(signalName = "x-coordinate",
-                       unitName = "m",
-                       entityName = "Well01",
-                       data = 10)
+test_that("Static data instanciation and conversion works", {
+  ds <- StaticData$new(signal_name = "x-coordinate",
+                       unit_name = "m",
+                       entity_name = "Well01",
+                       data = 10,
+                       scenario = NULL)
 
-  listed <- ds$toList()
+  listed <- ds$to_list()
 
   expect_equal(listed,
                list(Signal = "x-coordinate",
                     Entity = "Well01",
                     Unit = "m",
-                    Data = 10))
+                    Data = 10,
+                    Scenario = ""))
 })
 
-test_that("Static data instanciation and conversion works (empty constructor)",{
+test_that("Static data instanciation and conversion works (empty constructor)", {
   ds <- StaticData$new()
 
-  listed <- ds$toList()
+  listed <- ds$to_list()
 
   expect_equal(listed,
                list(Signal = "",
                     Entity = "",
                     Unit = "",
-                    Data = ""))
+                    Data = NULL,
+                    Scenario = ""))
 })
 
 ##### TIME DATA #####
 context("Time data instanciation and conversion to list")
 
-test_that("Time data instanciation and conversion works",{
-  dp1 <- DataPoint$new(date = "2020-01-01T00:00:00.000Z",
-                       value = 10)
-  dp2 <- DataPoint$new(date = "2020-02-01T00:00:00.000Z",
-                       value = 20)
+test_that("Time data instanciation and conversion works", {
+  dp1 <- list(Date = "2020-01-01T00:00:00.000Z",
+              Value = 10)
+  dp2 <- list(Date = "2020-02-01T00:00:00.000Z",
+              Value = 20)
 
-  dt <- TimeData$new(signalName = "oil rate",
-                     unitName = "m3/d",
-                     entityName = "Well01",
-                     data = list(dp1, dp2))
+  dt <- TimeData$new(signal_name = "oil rate",
+                     unit_name = "m3/d",
+                     entity_name = "Well01",
+                     data = list(dp1, dp2),
+                     scenario = NULL)
 
-  listed <- dt$toList()
+  listed <- dt$to_list()
 
   expect_equal(listed,
                list(Signal = "oil rate",
                     Entity = "Well01",
                     Unit = "m3/d",
-                    Data = list(dp1$toList(), dp2$toList())))
+                    Data = list(dp1, dp2),
+                    Scenario = ""))
 })
 
-test_that("Time data instanciation and conversion works (empty constructor)",{
+test_that("Time data instanciation and conversion works (empty constructor)", {
   dt <- TimeData$new()
 
-  listed <- dt$toList()
+  listed <- dt$to_list()
 
   expect_equal(listed,
                list(Signal = "",
                     Entity = "",
                     Unit = "",
-                    Data = ""))
+                    Data = list(),
+                    Scenario = ""))
+})
+
+##### DEPTH DATA #####
+context("Depth data instanciation and conversion to list")
+
+test_that("Depth data instanciation and conversion works", {
+  dp1 <- list(Depth = 100,
+              Value = 10)
+  dp2 <- list(Depth = 200,
+              Value = 20)
+
+  dt <- DepthData$new(signal_name = "oil rate",
+                      unit_name = "m3/d",
+                      entity_name = "Well01",
+                      data = list(dp1, dp2),
+                      scenario = NULL)
+
+  listed <- dt$to_list()
+
+  expect_equal(listed,
+               list(Signal = "oil rate",
+                    Entity = "Well01",
+                    Unit = "m3/d",
+                    Data = list(dp1, dp2),
+                    Scenario = ""))
+})
+
+test_that("Depth data instanciation and conversion works (empty constructor)", {
+  dt <- DepthData$new()
+
+  listed <- dt$to_list()
+
+  expect_equal(listed,
+               list(Signal = "",
+                    Entity = "",
+                    Unit = "",
+                    Data = list(),
+                    Scenario = ""))
+})
+
+##### PVT DATA #####
+context("PVT data instanciation and conversion to list")
+
+test_that("PVT data instanciation and conversion works", {
+  p1 <- list(Pressure = 150,
+             Temperature = 100,
+             Value = 10)
+  p2 <- list(Pressure = 200,
+             Temperature = 100,
+             Value = 20)
+
+  dpvt <- PVTData$new(signal_name = "oil density pvt",
+                      unit_name = "kg/m3",
+                      entity_name = "Well01",
+                      data = list(p1, p2),
+                      scenario = NULL)
+
+  listed <- dpvt$to_list()
+
+  expect_equal(listed,
+               list(Signal = "oil density pvt",
+                    Entity = "Well01",
+                    Unit = "kg/m3",
+                    Data = list(p1, p2),
+                    Scenario = ""))
+})
+
+test_that("PVT data instanciation and conversion works (empty constructor)", {
+  dpvt <- PVTData$new()
+
+  listed <- dpvt$to_list()
+
+  expect_equal(listed,
+               list(Signal = "",
+                    Entity = "",
+                    Unit = "",
+                    Data = list(),
+                    Scenario = ""))
 })
 
 ##### DATA POINT #####
 context("Data point instanciation and conversion to list")
 
-test_that("Data point instanciation and conversion works",{
+test_that("Data point instanciation and conversion works", {
   dp <- DataPoint$new(date = "2020-03-01T00:00:00.000Z",
                       value = 10)
 
-  listed <- dp$toList()
+  listed <- dp$to_list()
 
   expect_equal(listed,
                list(Date = "2020-03-01T00:00:00.000Z",
                     Value = 10))
 })
 
-test_that("Data point instanciation and conversion works (empty constructor)",{
+test_that("Data point instanciation and conversion works (empty constructor)", {
   dp <- DataPoint$new()
 
-  listed <- dp$toList()
+  listed <- dp$to_list()
 
   expect_equal(listed,
                list(Date = "",
-                    Value = ""))
+                    Value = NULL))
 })
 
 ##### POINT #####
 context("Point instanciation and conversion to list")
 
-test_that("Point instanciation and conversion works",{
+test_that("Point instanciation and conversion works", {
   p <- Point$new(x = 20,
                  y = 10)
 
@@ -101,7 +185,7 @@ test_that("Point instanciation and conversion works",{
                     Y = 10))
 })
 
-test_that("Point instanciation and conversion works (empty constructor)",{
+test_that("Point instanciation and conversion works (empty constructor)", {
   p <- Point$new()
 
   listed <- p$toList()
@@ -114,7 +198,7 @@ test_that("Point instanciation and conversion works (empty constructor)",{
 ##### NAMED POINT #####
 context("Named point instanciation and conversion to list")
 
-test_that("Named point instanciation and conversion works",{
+test_that("Named point instanciation and conversion works", {
   np <- NamedPoint$new(name = "MyPoint",
                        tagName = "MyTagName",
                        x = 20,
@@ -129,8 +213,7 @@ test_that("Named point instanciation and conversion works",{
                     Y = 10))
 })
 
-test_that("Named point instanciation and conversion works
-          (empty constructor)",{
+test_that("Named point instanciation and conversion works (empty constructor)", {
   np <- NamedPoint$new()
 
   listed <- np$toList()

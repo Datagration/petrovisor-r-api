@@ -13,6 +13,7 @@ Imports:
   httr,
   jsonlite,
   base64enc,
-  R6
+  R6,
+  tidyr
 Suggests:
   testthat
