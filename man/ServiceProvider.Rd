@@ -58,6 +58,7 @@ tag entries.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-ServiceProvider-new}{\code{ServiceProvider$new()}}
+\item \href{#method-ServiceProvider-parse_signal}{\code{ServiceProvider$parse_signal()}}
 \item \href{#method-ServiceProvider-set_workspace_data_url}{\code{ServiceProvider$set_workspace_data_url()}}
 \item \href{#method-ServiceProvider-getDataUrl}{\code{ServiceProvider$getDataUrl()}}
 \item \href{#method-ServiceProvider-clone}{\code{ServiceProvider$clone()}}
@@ -90,6 +91,25 @@ Create a new ServiceProvider instance.
 \item{\code{password}}{Password for the given user.}
 
 \item{\code{client_token}}{Access token for authentication (optional).}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ServiceProvider-parse_signal"></a>}}
+\if{latex}{\out{\hypertarget{method-ServiceProvider-parse_signal}{}}}
+\subsection{Method \code{parse_signal()}}{
+Parse the mapped signal received from PetroVisor to a list
+ containing the name and unit of the mapped signal.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ServiceProvider$parse_signal(mapped_signal)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mapped_signal}}{The mapped signal (string) as received from
+PetroVisor.}
 }
 \if{html}{\out{</div>}}
 }

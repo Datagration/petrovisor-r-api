@@ -6,50 +6,57 @@ library("R6")
 #'
 #' @export StaticData
 #'
-#' @field signalName The name of the signal.
-#' @field entityName The name of the entity.
-#' @field unitName The data's unit name.
+#' @field signal_name The name of the signal.
+#' @field entity_name The name of the entity.
+#' @field unit_name The data's unit name.
 #' @field data The data. In this case case a single numberic or string value.
+#' @field scenario The scenario the data is part of.
 #'
 #' @examples
 #' \dontrun{
-#' StaticData$new(signalName = "surface x-coordinate",
-#'                entityName = "Well01",
-#'                unitName = "m",
+#' StaticData$new(signal_name = "surface x-coordinate",
+#'                entity_name = "Well01",
+#'                unit_name = "m",
 #'                data = 10)
 #'}
 StaticData <- R6Class("StaticData",
   public = list(
-    signalName = NULL,
-    entityName = NULL,
-    unitName = NULL,
+    signal_name = NULL,
+    entity_name = NULL,
+    unit_name = NULL,
     data = NULL,
+    scenario = NULL,
 
     #' @description Create a new StaticData instance.
     #'
-    #' @param signalName The name of the signal.
-    #' @param entityName The name of the entity.
-    #' @param unitName The data's unit name.
-    #' @param data The data. In this case case a single numberic or string value.
-    initialize = function(signalName = NULL,
-                          entityName = NULL,
-                          unitName = NULL,
-                          data = NULL){
-      self$signalName <- signalName
-      self$entityName <- entityName
-      self$unitName <- unitName
+    #' @param signal_name The name of the signal.
+    #' @param entity_name The name of the entity.
+    #' @param unit_name The data's unit name.
+    #' @param data The data. In this case case a single number or string value.
+    #' @param scenario The scenario the data is part of.
+    initialize = function(signal_name = NULL,
+                          entity_name = NULL,
+                          unit_name = NULL,
+                          data = NULL,
+                          scenario = NULL) {
+      self$signal_name <- signal_name
+      self$entity_name <- entity_name
+      self$unit_name <- unit_name
       self$data <- data
+      self$scenario <- scenario
     },
 
     #' @details Convert the object to a list. This function is mainly used
     #' by the DataServices to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
+    to_list = function() {
       dl <- list(
-        Signal = if(is.null(self$signalName)) "" else self$signalName,
-        Entity = if(is.null(self$entityName)) "" else self$entityName,
-        Unit = if(is.null(self$unitName)) "" else self$unitName,
-        Data = if(is.null(self$data)) "" else self$data)
+        Signal = if (is.null(self$signal_name)) "" else self$signal_name,
+        Entity = if (is.null(self$entity_name)) "" else self$entity_name,
+        Unit = if (is.null(self$unit_name)) "" else self$unit_name,
+        Data = self$data,
+        Scenario = if (is.null(self$scenario)) "" else self$scenario
+      )
       return(dl)
     }
   )
@@ -61,61 +68,187 @@ StaticData <- R6Class("StaticData",
 #'
 #' @export TimeData
 #'
-#' @field signalName The name of the signal.
-#' @field entityName The name of the entity.
-#' @field unitName The data's unit name.
-#' @field data The data. A list of date-value-pairs (objects of type DataPoint)
+#' @field signal_name The name of the signal.
+#' @field entity_name The name of the entity.
+#' @field unit_name The data's unit name.
+#' @field data The data. A list of date-value-pairs (named list).
+#' @field scenario The scenario the data is part of.
 #'
 #' @examples
 #' \dontrun{
-#' TimeData$new(singalName = "produced oil per time increment",
-#'              entityName = "Well01",
-#'              unitName = "m3",
-#'              data = list(DataPoint$new(date = "2020-01-01T00:00:00.000Z",
-#'                                        value = 20)))
+#' TimeData$new(singal_name = "produced oil per time increment",
+#'              entity_name = "Well01",
+#'              unit_name = "m3",
+#'              data = list(list(Date = "2020-01-01T00:00:00.000Z",
+#'                               Value = 20)))
 #'}
 TimeData <- R6Class("TimeData",
   public = list(
-    signalName = NULL,
-    entityName = NULL,
-    unitName = NULL,
+    signal_name = NULL,
+    entity_name = NULL,
+    unit_name = NULL,
     data = NULL,
+    scenario = NULL,
 
-    #' @description Create a new StaticData instance.
+    #' @description Create a new TimeData instance.
     #'
-    #' @param signalName The name of the signal.
-    #' @param entityName The name of the entity.
-    #' @param unitName The data's unit name.
-    #' @param data The data. A list of date-value-pairs (objects of type
-    #' DataPoint)
-    initialize = function(signalName = NULL,
-                          entityName = NULL,
-                          unitName = NULL,
-                          data = NULL){
-      self$signalName <- signalName
-      self$entityName <- entityName
-      self$unitName <- unitName
+    #' @param signal_name The name of the signal.
+    #' @param entity_name The name of the entity.
+    #' @param unit_name The data's unit name.
+    #' @param data The data. A list of date-value-pairs (named list)
+    #' @param scenario The scenario the data is part of.
+    initialize = function(signal_name = NULL,
+                          entity_name = NULL,
+                          unit_name = NULL,
+                          data = list(),
+                          scenario = NULL) {
+      self$signal_name <- signal_name
+      self$entity_name <- entity_name
+      self$unit_name <- unit_name
       self$data <- data
+      self$scenario <- scenario
     },
 
     #' @description Convert the object to a list. This function is mainly used
     #' by the DataServices to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
-      dataList <- list()
-      if(!is.null(self$data)){
-        for (i in 1:length(self$data)){
-          dataList[[i]] <- self$data[[i]]$toList()
-        }
-      } else {
-        dataList[[1]] <- ""
-      }
-
+    to_list = function() {
       dl <- list(
-        Signal = if(is.null(self$signalName)) "" else self$signalName,
-        Entity = if(is.null(self$entityName)) "" else self$entityName,
-        Unit = if(is.null(self$unitName)) "" else self$unitName,
-        Data = if(is.null(self$data)) "" else dataList)
+        Signal = if (is.null(self$signal_name)) "" else self$signal_name,
+        Entity = if (is.null(self$entity_name)) "" else self$entity_name,
+        Unit = if (is.null(self$unit_name)) "" else self$unit_name,
+        Data = self$data,
+        Scenario = if (is.null(self$scenario)) "" else self$scenario
+      )
+      return(dl)
+    }
+  )
+)
+
+#' @title DepthData
+#'
+#' @description Class representing depth-dependent data.
+#'
+#' @export DepthData
+#'
+#' @field signal_name The name of the signal.
+#' @field entity_name The name of the entity.
+#' @field unit_name The data's unit name.
+#' @field data The data. A list of depth-value-pairs (named list).
+#' @field scenario The scenario the data is part of.
+#'
+#' @examples
+#' \dontrun{
+#' TimeData$new(singal_name = "produced oil per depth increment",
+#'              entity_name = "Well01",
+#'              unit_name = "m3",
+#'              data = list(list(Depth = 100,
+#'                               Value = 20)))
+#'}
+DepthData <- R6Class("DepthData",
+  public = list(
+    signal_name = NULL,
+    entity_name = NULL,
+    unit_name = NULL,
+    data = NULL,
+    scenario = NULL,
+
+    #' @description Create a new DepthData instance.
+    #'
+    #' @param signal_name The name of the signal.
+    #' @param entity_name The name of the entity.
+    #' @param unit_name The data's unit name.
+    #' @param data The data. A list of date-value-pairs (named list)
+    #' @param scenario The scenario the data is part of.
+    initialize = function(signal_name = NULL,
+                          entity_name = NULL,
+                          unit_name = NULL,
+                          data = list(),
+                          scenario = NULL) {
+      self$signal_name <- signal_name
+      self$entity_name <- entity_name
+      self$unit_name <- unit_name
+      self$data <- data
+      self$scenario <- scenario
+    },
+
+    #' @description Convert the object to a list. This function is mainly used
+    #' by the DataServices to convert the objects to lists and then
+    #' call the web API.
+    to_list = function() {
+      dl <- list(
+        Signal = if (is.null(self$signal_name)) "" else self$signal_name,
+        Entity = if (is.null(self$entity_name)) "" else self$entity_name,
+        Unit = if (is.null(self$unit_name)) "" else self$unit_name,
+        Data = self$data,
+        Scenario = if (is.null(self$scenario)) "" else self$scenario
+      )
+      return(dl)
+    }
+  )
+)
+
+#' @title PVTData
+#'
+#' @description Class representing pvt data.
+#'
+#' @export PVTData
+#'
+#' @field signal_name The name of the signal.
+#' @field entity_name The name of the entity.
+#' @field unit_name The data's unit name.
+#' @field data The data. A list of pressure-temperature-value
+#'   triplets (named list).
+#' @field scenario The scenario the data is part of.
+#'
+#' @examples
+#' \dontrun{
+#' PVTData$new(singal_name = "produced oil per time increment pvt",
+#'             entity_name = "Well01",
+#'             unit_name = "m3",
+#'             data = list(list(Pressure = 300,
+#'                              Temperature = 150,
+#'                              Value = 20)))
+#'}
+PVTData <- R6Class("PVTData",
+  public = list(
+    signal_name = NULL,
+    entity_name = NULL,
+    unit_name = NULL,
+    data = NULL,
+    scenario = NULL,
+
+    #' @description Create a new PVTData instance.
+    #'
+    #' @param signal_name The name of the signal.
+    #' @param entity_name The name of the entity.
+    #' @param unit_name The data's unit name.
+    #' @param data The data. The data. A list of pressure-temperature-value
+    #'   triplets (named list).
+    #' @param scenario The scenario the data is part of.
+    initialize = function(signal_name = NULL,
+                          entity_name = NULL,
+                          unit_name = NULL,
+                          data = list(),
+                          scenario = NULL) {
+      self$signal_name <- signal_name
+      self$entity_name <- entity_name
+      self$unit_name <- unit_name
+      self$data <- data
+      self$scenario <- scenario
+    },
+
+    #' @description Convert the object to a list. This function is mainly used
+    #' by the DataServices to convert the objects to lists and then
+    #' call the web API.
+    to_list = function() {
+      dl <- list(
+        Signal = if (is.null(self$signal_name)) "" else self$signal_name,
+        Entity = if (is.null(self$entity_name)) "" else self$entity_name,
+        Unit = if (is.null(self$unit_name)) "" else self$unit_name,
+        Data = self$data,
+        Scenario = if (is.null(self$scenario)) "" else self$scenario
+      )
       return(dl)
     }
   )
@@ -144,7 +277,7 @@ DataPoint <- R6Class("DataPoint",
     #' @param date The timestamp of the data point.
     #' @param value The value at the specified timestamp.
     initialize = function(date = NULL,
-                          value = NULL){
+                          value = NULL) {
       self$date <- date
       self$value <- value
     },
@@ -152,10 +285,11 @@ DataPoint <- R6Class("DataPoint",
     #' @description Convert the object to a list. This function is mainly used
     #' by the DataServices to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
+    to_list = function() {
       dl <- list(
-        Date = if(is.null(self$date)) "" else self$date,
-        Value = if(is.null(self$value)) "" else self$value)
+        Date = if (is.null(self$date)) "" else self$date,
+        Value = self$value
+      )
       return(dl)
     }
   )
@@ -184,7 +318,7 @@ Point <- R6Class("Point",
     #' @param x The x-value of the point.
     #' @param y The y-value of the point.
     initialize = function(x = NULL,
-                          y = NULL){
+                          y = NULL) {
       self$x <- x
       self$y <- y
     },
@@ -192,10 +326,11 @@ Point <- R6Class("Point",
     #' @description Convert the object to a list. This function is mainly used
     #' by the Services to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
+    toList = function() {
       dl <- list(
-        X = if(is.null(self$x)) "" else self$x,
-        Y = if(is.null(self$y)) "" else self$y)
+        X = if (is.null(self$x)) "" else self$x,
+        Y = if (is.null(self$y)) "" else self$y
+      )
       return(dl)
     }
   )
@@ -232,7 +367,7 @@ NamedPoint <- R6Class("NamedPoint",
     initialize = function(name = NULL,
                           tagName = NULL,
                           x = NULL,
-                          y = NULL){
+                          y = NULL) {
       self$name <- name
       self$tagName <- tagName
       self$x <- x
@@ -242,12 +377,13 @@ NamedPoint <- R6Class("NamedPoint",
     #' @description Convert the object to a list. This function is mainly used
     #' by the Services to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
+    toList = function() {
       dl <- list(
-        Name = if(is.null(self$name)) "" else self$name,
-        Tag = if(is.null(self$tagName)) "" else self$tagName,
-        X = if(is.null(self$x)) "" else self$x,
-        Y = if(is.null(self$y)) "" else self$y)
+        Name = if (is.null(self$name)) "" else self$name,
+        Tag = if (is.null(self$tagName)) "" else self$tagName,
+        X = if (is.null(self$x)) "" else self$x,
+        Y = if (is.null(self$y)) "" else self$y
+      )
       return(dl)
     }
   )
