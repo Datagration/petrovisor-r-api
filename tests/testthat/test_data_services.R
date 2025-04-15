@@ -7,7 +7,7 @@ entity <- Entity$new(name = "TestName",
                      alias = "TestAlias",
                      is_opportunity = FALSE)
 
-sp$repositoryService$AddOrEditItem("Entity", entity)
+sp$items$save("Entity", entity)
 
 # Create test signals
 # Static numeric signals
@@ -24,7 +24,7 @@ static_numeric_signal_1 <- Signal$new(name = "test static numeric signal one",
                                       labels = list(),
                                       description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", static_numeric_signal_1)
+result <- sp$items$save("Signal", static_numeric_signal_1)
 
 static_numeric_signal_2 <- Signal$new(name = "test static numeric signal two",
                                       short_name = "tsns2",
@@ -39,7 +39,7 @@ static_numeric_signal_2 <- Signal$new(name = "test static numeric signal two",
                                       labels = list(),
                                       description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", static_numeric_signal_2)
+result <- sp$items$save("Signal", static_numeric_signal_2)
 
 # Static string signals
 static_string_signal_1 <- Signal$new(name = "test static string signal one",
@@ -55,7 +55,7 @@ static_string_signal_1 <- Signal$new(name = "test static string signal one",
                                      labels = list(),
                                      description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", static_string_signal_1)
+result <- sp$items$save("Signal", static_string_signal_1)
 
 static_string_signal_2 <- Signal$new(name = "test static string signal two",
                                      short_name = "tsss2",
@@ -70,7 +70,7 @@ static_string_signal_2 <- Signal$new(name = "test static string signal two",
                                      labels = list(),
                                      description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", static_string_signal_2)
+result <- sp$items$save("Signal", static_string_signal_2)
 
 # Time numeric signals
 time_numeric_signal_1 <- Signal$new(name = "test time numeric signal one",
@@ -86,7 +86,7 @@ time_numeric_signal_1 <- Signal$new(name = "test time numeric signal one",
                                     labels = list(),
                                     description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", time_numeric_signal_1)
+result <- sp$items$save("Signal", time_numeric_signal_1)
 
 time_numeric_signal_2 <- Signal$new(name = "test time numeric signal two",
                                     short_name = "tts2",
@@ -101,7 +101,7 @@ time_numeric_signal_2 <- Signal$new(name = "test time numeric signal two",
                                     labels = list(),
                                     description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", time_numeric_signal_2)
+result <- sp$items$save("Signal", time_numeric_signal_2)
 
 # Time string signals
 time_string_signal_1 <- Signal$new(name = "test time string signal one",
@@ -117,7 +117,7 @@ time_string_signal_1 <- Signal$new(name = "test time string signal one",
                                    labels = list(),
                                    description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", time_string_signal_1)
+result <- sp$items$save("Signal", time_string_signal_1)
 
 time_string_signal_2 <- Signal$new(name = "test time string signal two",
                                    short_name = "ttss2",
@@ -132,7 +132,7 @@ time_string_signal_2 <- Signal$new(name = "test time string signal two",
                                    labels = list(),
                                    description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", time_string_signal_2)
+result <- sp$items$save("Signal", time_string_signal_2)
 
 # Depth numeric signals
 depth_numeric_signal_1 <- Signal$new(name = "test depth numeric signal one",
@@ -148,7 +148,7 @@ depth_numeric_signal_1 <- Signal$new(name = "test depth numeric signal one",
                                      labels = list(),
                                      description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", depth_numeric_signal_1)
+result <- sp$items$save("Signal", depth_numeric_signal_1)
 
 depth_numeric_signal_2 <- Signal$new(name = "test depth numeric signal two",
                                      short_name = "tdns2",
@@ -163,7 +163,7 @@ depth_numeric_signal_2 <- Signal$new(name = "test depth numeric signal two",
                                      labels = list(),
                                      description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", depth_numeric_signal_2)
+result <- sp$items$save("Signal", depth_numeric_signal_2)
 
 # Depth string signals
 depth_string_signal_1 <- Signal$new(name = "test depth string signal one",
@@ -179,7 +179,7 @@ depth_string_signal_1 <- Signal$new(name = "test depth string signal one",
                                     labels = list(),
                                     description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", depth_string_signal_1)
+result <- sp$items$save("Signal", depth_string_signal_1)
 
 depth_string_signal_2 <- Signal$new(name = "test depth string signal two",
                                     short_name = "tdss2",
@@ -194,7 +194,7 @@ depth_string_signal_2 <- Signal$new(name = "test depth string signal two",
                                     labels = list(),
                                     description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", depth_string_signal_2)
+result <- sp$items$save("Signal", depth_string_signal_2)
 
 # PVT numeric signals
 pvt_numeric_signal_1 <- Signal$new(name = "test pvt numeric signal one",
@@ -208,7 +208,7 @@ pvt_numeric_signal_1 <- Signal$new(name = "test pvt numeric signal one",
                                    labels = list(),
                                    description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", pvt_numeric_signal_1)
+result <- sp$items$save("Signal", pvt_numeric_signal_1)
 
 pvt_numeric_signal_2 <- Signal$new(name = "test pvt numeric signal two",
                                    short_name = "tpns2",
@@ -221,7 +221,7 @@ pvt_numeric_signal_2 <- Signal$new(name = "test pvt numeric signal two",
                                    labels = list(),
                                    description = "My description")
 
-result <- sp$repositoryService$AddOrEditItem("Signal", pvt_numeric_signal_2)
+result <- sp$items$save("Signal", pvt_numeric_signal_2)
 
 # Create test data
 # Static numeric data
@@ -332,7 +332,7 @@ colnames(pvt_numeric_data) <- c("scenario",
 # Perform tests
 # Static numeric data tests
 test_that("Static numeric data can be saved", {
-  result <- sp$dataServices$save_data(
+  result <- sp$data$save(
     "StaticNumeric",
     static_numeric_data,
     signals = lapply(
@@ -348,7 +348,7 @@ test_that("Static numeric data can be saved", {
 })
 
 test_that("Static numeric data can be retrieved", {
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test static numeric signal one [m]",
@@ -379,14 +379,14 @@ test_that("Static numeric data can be retrieved", {
 })
 
 test_that("Static numeric data can be deleted", {
-  result <- sp$dataServices$delete_data(
+  result <- sp$data$delete(
     c(entity),
     c("test static numeric signal one", "test static numeric signal two")
   )
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test static numeric signal one [m]",
@@ -418,7 +418,7 @@ test_that("Static numeric data can be deleted", {
 
 # Static string data tests
 test_that("Static string data can be saved", {
-  result <- sp$dataServices$save_data(
+  result <- sp$data$save(
     "StaticString",
     static_string_data,
     signals = lapply(
@@ -434,7 +434,7 @@ test_that("Static string data can be saved", {
 })
 
 test_that("Static string data can be retrieved", {
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test static string signal one [ ]",
@@ -465,14 +465,14 @@ test_that("Static string data can be retrieved", {
 })
 
 test_that("Static string data can be deleted", {
-  result <- sp$dataServices$delete_data(
+  result <- sp$data$delete(
     c(entity),
     c("test static string signal one", "test static string signal two")
   )
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test static string signal one [ ]",
@@ -504,7 +504,7 @@ test_that("Static string data can be deleted", {
 
 # Time numeric data tests
 test_that("Time numeric data can be saved", {
-  result <- sp$dataServices$save_data(
+  result <- sp$data$save(
     "TimeNumeric",
     time_numeric_data,
     signals = lapply(
@@ -520,7 +520,7 @@ test_that("Time numeric data can be saved", {
 })
 
 test_that("Time numeric data can be retrieved", {
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test time numeric signal one [m3]",
@@ -552,7 +552,7 @@ test_that("Time numeric data can be retrieved", {
 })
 
 test_that("Time numeric data can be deleted", {
-  result <- sp$dataServices$delete_data(
+  result <- sp$data$delete(
     c(entity),
     c("test time numeric signal one", "test time numeric signal two"),
     time_start = "2025-01-01T00:00:00",
@@ -561,7 +561,7 @@ test_that("Time numeric data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test time numeric signal one [m3]",
@@ -594,7 +594,7 @@ test_that("Time numeric data can be deleted", {
 
 # Time string data tests
 test_that("Time string data can be saved", {
-  result <- sp$dataServices$save_data(
+  result <- sp$data$save(
     "TimeString",
     time_string_data,
     signals = lapply(
@@ -610,7 +610,7 @@ test_that("Time string data can be saved", {
 })
 
 test_that("Time string data can be retrieved", {
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test time string signal one [ ]",
@@ -642,7 +642,7 @@ test_that("Time string data can be retrieved", {
 })
 
 test_that("Time string data can be deleted", {
-  result <- sp$dataServices$delete_data(
+  result <- sp$data$delete(
     c(entity),
     c("test time string signal one", "test time string signal two"),
     time_start = "2025-01-01T00:00:00",
@@ -651,7 +651,7 @@ test_that("Time string data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test time string signal one [ ]",
@@ -684,7 +684,7 @@ test_that("Time string data can be deleted", {
 
 # Depth numeric data tests
 test_that("Depth numeric data can be saved", {
-  result <- sp$dataServices$save_data(
+  result <- sp$data$save(
     "DepthNumeric",
     depth_numeric_data,
     signals = lapply(
@@ -700,7 +700,7 @@ test_that("Depth numeric data can be saved", {
 })
 
 test_that("Depth numeric data can be retrieved", {
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test depth numeric signal one [m3]",
@@ -738,7 +738,7 @@ test_that("Depth numeric data can be retrieved", {
 })
 
 test_that("Depth numeric data can be deleted", {
-  result <- sp$dataServices$delete_data(
+  result <- sp$data$delete(
     c(entity),
     c("test depth numeric signal one", "test depth numeric signal two"),
     depth_start = 0,
@@ -747,7 +747,7 @@ test_that("Depth numeric data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test depth numeric signal one [m3]",
@@ -783,7 +783,7 @@ test_that("Depth numeric data can be deleted", {
 
 # Depth string data tests
 test_that("Depth string data can be saved", {
-  result <- sp$dataServices$save_data(
+  result <- sp$data$save(
     "DepthString",
     depth_string_data,
     signals = lapply(
@@ -799,7 +799,7 @@ test_that("Depth string data can be saved", {
 })
 
 test_that("Depth string data can be retrieved", {
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test depth string signal one [ ]",
@@ -831,7 +831,7 @@ test_that("Depth string data can be retrieved", {
 })
 
 test_that("Depth string data can be deleted", {
-  result <- sp$dataServices$delete_data(
+  result <- sp$data$delete(
     c(entity),
     c("test depth string signal one", "test depth string signal two"),
     depth_start = 0,
@@ -840,7 +840,7 @@ test_that("Depth string data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test depth string signal one [ ]",
@@ -873,7 +873,7 @@ test_that("Depth string data can be deleted", {
 
 # PVT numeric data tests
 test_that("PVT numeric data can be saved", {
-  result <- sp$dataServices$save_data(
+  result <- sp$data$save(
     "PVTNumeric",
     pvt_numeric_data,
     signals = lapply(
@@ -891,7 +891,7 @@ test_that("PVT numeric data can be saved", {
 })
 
 test_that("PVT numeric data can be retrieved", {
-  retrieved_data <- sp$dataServices$load_data(
+  retrieved_data <- sp$data$load(
     c(entity),
     lapply(
       c("test pvt numeric signal one [kg/m3]",
@@ -929,14 +929,14 @@ test_that("PVT numeric data can be retrieved", {
 })
 
 test_that("PVT numeric data can be deleted", {
-  result <- sp$dataServices$delete_data(
+  result <- sp$data$delete(
     c(entity),
     c("test pvt numeric signal one", "test pvt numeric signal two")
   )
 
   expect_equal(result$status_code, 200)
 
-  # retrieved_data <- sp$dataServices$load_data(
+  # retrieved_data <- sp$data$load(
   #   c(entity),
   #   lapply(
   #     c("test pvt numeric signal one [kg/m3]",
@@ -973,19 +973,19 @@ test_that("PVT numeric data can be deleted", {
 
 # Clean up
 # Remove test entity
-sp$repositoryService$DeleteItem("Entity", entity$name)
+sp$items$delete("Entity", entity$name)
 # Remove test signals
-sp$repositoryService$DeleteItem("Signal", static_numeric_signal_1$name)
-sp$repositoryService$DeleteItem("Signal", static_numeric_signal_2$name)
-sp$repositoryService$DeleteItem("Signal", static_string_signal_1$name)
-sp$repositoryService$DeleteItem("Signal", static_string_signal_2$name)
-sp$repositoryService$DeleteItem("Signal", time_numeric_signal_1$name)
-sp$repositoryService$DeleteItem("Signal", time_numeric_signal_2$name)
-sp$repositoryService$DeleteItem("Signal", time_string_signal_1$name)
-sp$repositoryService$DeleteItem("Signal", time_string_signal_2$name)
-sp$repositoryService$DeleteItem("Signal", depth_numeric_signal_1$name)
-sp$repositoryService$DeleteItem("Signal", depth_numeric_signal_2$name)
-sp$repositoryService$DeleteItem("Signal", depth_string_signal_1$name)
-sp$repositoryService$DeleteItem("Signal", depth_string_signal_2$name)
-sp$repositoryService$DeleteItem("Signal", pvt_numeric_signal_1$name)
-sp$repositoryService$DeleteItem("Signal", pvt_numeric_signal_2$name)
+sp$items$delete("Signal", static_numeric_signal_1$name)
+sp$items$delete("Signal", static_numeric_signal_2$name)
+sp$items$delete("Signal", static_string_signal_1$name)
+sp$items$delete("Signal", static_string_signal_2$name)
+sp$items$delete("Signal", time_numeric_signal_1$name)
+sp$items$delete("Signal", time_numeric_signal_2$name)
+sp$items$delete("Signal", time_string_signal_1$name)
+sp$items$delete("Signal", time_string_signal_2$name)
+sp$items$delete("Signal", depth_numeric_signal_1$name)
+sp$items$delete("Signal", depth_numeric_signal_2$name)
+sp$items$delete("Signal", depth_string_signal_1$name)
+sp$items$delete("Signal", depth_string_signal_2$name)
+sp$items$delete("Signal", pvt_numeric_signal_1$name)
+sp$items$delete("Signal", pvt_numeric_signal_2$name)

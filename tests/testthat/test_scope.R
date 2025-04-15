@@ -55,13 +55,13 @@ test_that("Scope can be created", {
                      end_depth = 1500,
                      description = "Test R Scope")
 
-  result <- sp$repositoryService$AddOrEditItem("Scope", scope)
+  result <- sp$items$save("Scope", scope)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("Scope can be retrieved", {
-  scope <- sp$repositoryService$GetItemByName("Scope", "Test R Scope")
+  scope <- sp$items$load("Scope", "Test R Scope")
 
   expect_equal(scope, Scope$new(name = "Test R Scope",
                                 start = "2020-03-01T00:00:00",
@@ -75,8 +75,8 @@ test_that("Scope can be retrieved", {
 })
 
 test_that("Scope can be deleted", {
-  result <- sp$repositoryService$DeleteItem("Scope", "Test R Scope")
+  result <- sp$items$delete("Scope", "Test R Scope")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("Scope", "Test R Scope"))
+  expect_error(sp$items$load("Scope", "Test R Scope"))
 })
