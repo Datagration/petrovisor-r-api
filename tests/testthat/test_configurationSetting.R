@@ -64,13 +64,13 @@ test_that("ConfigurationSetting (Numeric) can be created", {
                                  is_system = FALSE,
                                  description = "wsv (numeric) test description")
 
-  result <- sp$repositoryService$AddOrEditItem("ConfigurationSetting", cs)
+  result <- sp$items$save("ConfigurationSetting", cs)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("ConfigurationSetting (Numeric) can be retrieved", {
-  cs <- sp$repositoryService$GetItemByName("ConfigurationSetting", "TestRCs")
+  cs <- sp$items$load("ConfigurationSetting", "TestRCs")
 
   expect_equal(cs, ConfigurationSetting$new(name = "TestRCs",
                                             numeric_value = 1,
@@ -86,9 +86,8 @@ test_that("ConfigurationSetting (Numeric) can be retrieved", {
 })
 
 test_that("ConfigurationSetting (Numeric) can be deleted", {
-  result <- sp$repositoryService$DeleteItem("ConfigurationSetting", "TestRCs")
+  result <- sp$items$delete("ConfigurationSetting", "TestRCs")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("ConfigurationSetting",
-                                                  "TestRCs"))
+  expect_error(sp$items$load("ConfigurationSetting", "TestRCs"))
 })

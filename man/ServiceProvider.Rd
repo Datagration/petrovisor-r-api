@@ -8,7 +8,8 @@ Provides access to all services provided through the web API.
 }
 \details{
 This class allows interaction with the PetroVisor API by providing
-access to various services such as logging, repository, data, and tag entries.
+  access to various services such as logging, repository, data, and tag
+  entries.
 }
 \examples{
 \dontrun{
@@ -38,19 +39,22 @@ sp <- ServiceProvider$new(
 
 \item{\code{user}}{The current user.}
 
-\item{\code{client_token}}{Access token for the API (optional, used if URL is provided).}
+\item{\code{client_token}}{Access token for the API (optional, used if URL is
+provided).}
 
 \item{\code{workspace_data_url}}{The URL for the workspace-specific data services.}
 
-\item{\code{loggingService}}{Class instance wrapping all logging-related functionalities.}
+\item{\code{logs}}{Instance of class \code{LoggingService} wrapping all
+logging-related functionalities.}
 
-\item{\code{repositoryService}}{Class instance wrapping all functionality related to
-PetroVisor items (entities, signals, units, etc.).}
+\item{\code{items}}{Instance of class \code{RepositoryService} wrapping all
+functionality related to PetroVisor items (entities, signals, units, etc.).}
 
-\item{\code{dataServices}}{Class instance wrapping all functionality related to data.}
+\item{\code{data}}{Instance of class \code{DataServices} wrapping all functionality
+related to data.}
 
-\item{\code{tagEntriesService}}{Class instance wrapping all functionality related to
-tag entries.}
+\item{\code{tag_entries}}{Instance of class \code{TagEntriesService} wrapping all
+functionality related to tag entries.}
 }
 \if{html}{\out{</div>}}
 }

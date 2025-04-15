@@ -17,12 +17,12 @@ automatically.
 sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 
 # get tag entries of group "Info"
-tagEntries <- sp$tagEntriesService$GetTagEntries(
+tagEntries <- sp$tag_entries$GetTagEntries(
   TagEntriesFilter$new(TagGroup = "Info")
 )
 
 # delete tag entries
-sp$tagEntriesService$DeleteTagEntry(
+sp$tag_entries$DeleteTagEntry(
   entityName = "Well01",
   tagName = "Active",
   start = "2020-01-01T00:00:00.000Z"
@@ -39,7 +39,7 @@ sp <- ServiceProvider$new("192.168.0.123",
                           "workspace",
                           "user",
                           "password")
-tagEntries <- sp$tagEntriesService$GetTagEntries(
+tagEntries <- sp$tag_entries$GetTagEntries(
   TagEntriesFilter$new(TagGroup = "Info"))
 }
 }
@@ -196,7 +196,7 @@ sp <- ServiceProvider$new("192.168.0.123",
                           "workspace",
                           "user",
                           "password")
-tagEntries <- sp$tagEntriesService$GetTagEntries(
+tagEntries <- sp$tag_entries$GetTagEntries(
   TagEntriesFilter$new(TagGroup = "Info"))
 }
 }

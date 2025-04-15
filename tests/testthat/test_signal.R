@@ -65,13 +65,13 @@ test_that("Signal can be created", {
                        labels = list(),
                        description = "My description")
 
-  result <- sp$repositoryService$AddOrEditItem("Signal", signal)
+  result <- sp$items$save("Signal", signal)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("Signal can be retrieved", {
-  signal <- sp$repositoryService$GetItemByName("Signal", "test r signal")
+  signal <- sp$items$load("Signal", "test r signal")
 
   expect_equal(signal, Signal$new(name = "test r signal",
                                   short_name = "trs",
@@ -88,8 +88,8 @@ test_that("Signal can be retrieved", {
 })
 
 test_that("Signal can be deleted", {
-  result <- sp$repositoryService$DeleteItem("Signal", "test r signal")
+  result <- sp$items$delete("Signal", "test r signal")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("Signal", "test r signal"))
+  expect_error(sp$items$load("Signal", "test r signal"))
 })
