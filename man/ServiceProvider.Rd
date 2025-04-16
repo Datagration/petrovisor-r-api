@@ -55,6 +55,9 @@ related to data.}
 
 \item{\code{tag_entries}}{Instance of class \code{TagEntriesService} wrapping all
 functionality related to tag entries.}
+
+\item{\code{files}}{Instance of class \code{FileService} wrapping all functionality
+related to files.}
 }
 \if{html}{\out{</div>}}
 }
