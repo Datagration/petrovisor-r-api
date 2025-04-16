@@ -27,6 +27,8 @@ library("jsonlite")
 #'   related to data.
 #' @field tag_entries Instance of class \code{TagEntriesService} wrapping all
 #'   functionality related to tag entries.
+#' @field files Instance of class \code{FileService} wrapping all functionality
+#'   related to files.
 #'
 #' @examples
 #' \dontrun{
@@ -55,6 +57,7 @@ ServiceProvider <- R6Class("ServiceProvider",
     items = NULL,
     data = NULL,
     tag_entries = NULL,
+    files = NULL,
     workspace_data_url = NULL, # Define as a public field
 
     #' @description Create a new ServiceProvider instance.
@@ -102,6 +105,11 @@ ServiceProvider <- R6Class("ServiceProvider",
         private$token
       )
       self$logs <- LoggingService$new(
+        self$workspace_data_url,
+        private$tokenType,
+        private$token
+      )
+      self$files <- FileService$new(
         self$workspace_data_url,
         private$tokenType,
         private$token
