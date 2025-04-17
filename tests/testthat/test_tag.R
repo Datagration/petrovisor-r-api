@@ -18,21 +18,21 @@ test_that("Tag can be created", {
   tag <- Tag$new(name = "Test Tag",
                  tag_group = "Testing")
 
-  result <- sp$repositoryService$AddOrEditItem("Tag", tag)
+  result <- sp$items$save("Tag", tag)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("Tag can be retrieved", {
-  tag <- sp$repositoryService$GetItemByName("Tag", "Test Tag")
+  tag <- sp$items$load("Tag", "Test Tag")
 
   expect_equal(tag, Tag$new(name = "Test Tag",
                             tag_group = "Testing"))
 })
 
 test_that("Tag can be deleted", {
-  result <- sp$repositoryService$DeleteItem("Tag", "Test Tag")
+  result <- sp$items$delete("Tag", "Test Tag")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("Tag", "Test Tag"))
+  expect_error(sp$items$load("Tag", "Test Tag"))
 })

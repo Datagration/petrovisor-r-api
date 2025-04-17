@@ -85,7 +85,7 @@ sp <- ServiceProvider$new(
 )
 
 # Retrieve log entries
-log_entries <- sp$loggingService$GetLogEntries()
+log_entries <- sp$logs$GetLogEntries()
 print(log_entries)
 ```
 

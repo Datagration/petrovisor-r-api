@@ -41,19 +41,19 @@ test_that("Hierarchy can be created", {
                           entity_type_name = "Well",
                           alias = "Test Child One",
                           is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", child_one)
+  sp$items$save("Entity", child_one)
 
   child_two <- Entity$new(name = "Test Child Two",
                           entity_type_name = "Well",
                           alias = "Test Child Two",
                           is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", child_two)
+  sp$items$save("Entity", child_two)
 
   parent <- Entity$new(name = "Test Parent",
                        entity_type_name = "Field",
                        alias = "Test Parent",
                        is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", parent)
+  sp$items$save("Entity", parent)
 
   # build relationship
   relationship <- list()
@@ -67,14 +67,13 @@ test_that("Hierarchy can be created", {
                              time_stamp = NULL,
                              description = "Test R Description")
 
-  result <- sp$repositoryService$AddOrEditItem("Hierarchy", hierarchy)
+  result <- sp$items$save("Hierarchy", hierarchy)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("Hierarchy can be retrieved", {
-  hierarchy <- sp$repositoryService$GetItemByName("Hierarchy",
-                                                  "Hierarchy R Test")
+  hierarchy <- sp$items$load("Hierarchy", "Hierarchy R Test")
 
   expected_relationship <- list("Test Parent", "Test Parent", NULL)
   names(expected_relationship) <- c("Test Child One",
@@ -89,14 +88,13 @@ test_that("Hierarchy can be retrieved", {
 })
 
 test_that("Hierarchy can be deleted", {
-  result <- sp$repositoryService$DeleteItem("Hierarchy", "Hierarchy R Test")
+  result <- sp$items$delete("Hierarchy", "Hierarchy R Test")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("Hierarchy",
-                                                  "Hierarchy R Test"))
+  expect_error(sp$items$load("Hierarchy", "Hierarchy R Test"))
 
   # clean up - remove entities created during tests
-  sp$repositoryService$DeleteItem("Entity", "Test Child One")
-  sp$repositoryService$DeleteItem("Entity", "Test Child Two")
-  sp$repositoryService$DeleteItem("Entity", "Test Parent")
+  sp$items$delete("Entity", "Test Child One")
+  sp$items$delete("Entity", "Test Child Two")
+  sp$items$delete("Entity", "Test Parent")
 })

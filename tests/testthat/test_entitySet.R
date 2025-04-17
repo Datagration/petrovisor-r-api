@@ -44,24 +44,24 @@ test_that("EntitySet can be created", {
                            entity_type_name = "Well",
                            alias = "TestAlias 1",
                            is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", entity_one)
+  sp$items$save("Entity", entity_one)
 
   entity_two <- Entity$new(name = "TestName 2",
                            entity_type_name = "Well",
                            alias = "TestAlias 2",
                            is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", entity_two)
+  sp$items$save("Entity", entity_two)
 
   entity_set <- EntitySet$new(name = "Eset R Test",
                               entities = list(entity_one, entity_two))
 
-  result <- sp$repositoryService$AddOrEditItem("EntitySet", entity_set)
+  result <- sp$items$save("EntitySet", entity_set)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("EntitySet can be retrieved", {
-  entity_set <- sp$repositoryService$GetItemByName("EntitySet", "Eset R Test")
+  entity_set <- sp$items$load("EntitySet", "Eset R Test")
 
   expect_equal(entity_set$name, "Eset R Test")
   expect_equal(entity_set$labels, list())
@@ -76,12 +76,12 @@ test_that("EntitySet can be retrieved", {
 })
 
 test_that("EntitySet can be deleted", {
-  result <- sp$repositoryService$DeleteItem("EntitySet", "Eset R Test")
+  result <- sp$items$delete("EntitySet", "Eset R Test")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("EntitySet", "Eset R Test"))
+  expect_error(sp$items$load("EntitySet", "Eset R Test"))
 
   # clean up - remove entities created during tests
-  sp$repositoryService$DeleteItem("Entity", "TestName 1")
-  sp$repositoryService$DeleteItem("Entity", "TestName 2")
+  sp$items$delete("Entity", "TestName 1")
+  sp$items$delete("Entity", "TestName 2")
 })

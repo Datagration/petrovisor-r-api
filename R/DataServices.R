@@ -20,7 +20,7 @@ library("httr")
 #' )
 #'
 #' # load data
-#' data <- sp$dataServices$load_data(
+#' data <- sp$data$load(
 #'   c("entity_one", "entity_two"),
 #'   lapply(
 #'     c("test time string signal one [ ]",
@@ -50,7 +50,7 @@ library("httr")
 #'                                  time_numeric_signal_1_name,
 #'                                  time_numeric_signal_2_name)
 #'
-#' result <- sp$dataServices$save_data(
+#' result <- sp$data$save(
 #'   "TimeNumeric",
 #'   time_numeric_data,
 #'   signals = lapply(
@@ -69,11 +69,11 @@ DataServices <- R6Class("DataServices",
     #' ServiceProvider automatically.
     #'
     #' @param url the URL for the API calls.
-    #' @param tokenType the type of the issued token.
+    #' @param token_type the type of the issued token.
     #' @param token the issued token.
-    initialize = function(url, tokenType, token) {
+    initialize = function(url, token_type, token) {
       private$url <- url
-      private$tokenType <- tokenType
+      private$token_type <- token_type
       private$token <- token
     },
 
@@ -104,26 +104,26 @@ DataServices <- R6Class("DataServices",
     #' @param reshape Whether to return the raw output of the api call or
     #'   reshape the data into a more user-friendly format. Defaults to
     #'   \code{TRUE}.
-    load_data = function(entities,
-                         signals,
-                         scenario_names = NULL,
-                         hierarchy_name = NULL,
-                         top_records = NULL,
-                         include_workspace_data = TRUE,
-                         time_increment = NULL,
-                         time_start = NULL,
-                         time_end = NULL,
-                         depth_increment = NULL,
-                         depth_start = NULL,
-                         depth_end = NULL,
-                         with_gaps = TRUE,
-                         gap_numeric_value = NULL,
-                         gap_string_value = NULL,
-                         depth_unit = NULL,
-                         pressure_unit = NULL,
-                         temperature_unit = NULL,
-                         aggregation = NULL,
-                         reshape = TRUE) {
+    load = function(entities,
+                    signals,
+                    scenario_names = NULL,
+                    hierarchy_name = NULL,
+                    top_records = NULL,
+                    include_workspace_data = TRUE,
+                    time_increment = NULL,
+                    time_start = NULL,
+                    time_end = NULL,
+                    depth_increment = NULL,
+                    depth_start = NULL,
+                    depth_end = NULL,
+                    with_gaps = TRUE,
+                    gap_numeric_value = NULL,
+                    gap_string_value = NULL,
+                    depth_unit = NULL,
+                    pressure_unit = NULL,
+                    temperature_unit = NULL,
+                    aggregation = NULL,
+                    reshape = TRUE) {
 
       # Get entity names from input
       entity_names <- lapply(
@@ -299,21 +299,21 @@ DataServices <- R6Class("DataServices",
     #'  values.
     #' @param pressure_unit The pressure unit of the PVT values.
     #' @param temperature_unit The temperature unit of the PVT values.
-    save_data = function(data_type = c("StaticNumeric",
-                                       "StaticString",
-                                       "TimeNumeric",
-                                       "TimeString",
-                                       "DepthNumeric",
-                                       "DepthString",
-                                       "PVTNumeric"),
-                         data,
-                         signals,
-                         generate_logs = TRUE,
-                         no_range_delete = TRUE,
-                         values_time_increment = NULL,
-                         values_depth_increment = NULL,
-                         pressure_unit = NULL,
-                         temperature_unit = NULL) {
+    save = function(data_type = c("StaticNumeric",
+                                  "StaticString",
+                                  "TimeNumeric",
+                                  "TimeString",
+                                  "DepthNumeric",
+                                  "DepthString",
+                                  "PVTNumeric"),
+                    data,
+                    signals,
+                    generate_logs = TRUE,
+                    no_range_delete = TRUE,
+                    values_time_increment = NULL,
+                    values_depth_increment = NULL,
+                    pressure_unit = NULL,
+                    temperature_unit = NULL) {
       # Input checks
       data_type <- match.arg(data_type)
 
@@ -761,14 +761,14 @@ DataServices <- R6Class("DataServices",
     #' @param time_end The last time stamp data is deleted for.
     #' @param depth_start The first depth data is deleted for.
     #' @param depth_end The last depth data is deleted for.
-    delete_data = function(entities,
-                           signal_names,
-                           scenario_names = NULL,
-                           include_workspace_data = TRUE,
-                           time_start = NULL,
-                           time_end = NULL,
-                           depth_start = NULL,
-                           depth_end = NULL) {
+    delete = function(entities,
+                      signal_names,
+                      scenario_names = NULL,
+                      include_workspace_data = TRUE,
+                      time_start = NULL,
+                      time_end = NULL,
+                      depth_start = NULL,
+                      depth_end = NULL) {
 
       # Get entity names from input
       entity_names <- lapply(
@@ -811,7 +811,7 @@ DataServices <- R6Class("DataServices",
   ),
   private = list(
     url = NULL,
-    tokenType = NULL,
+    token_type = NULL,
     token = NULL,
 
     retrieve_data = function(request, url_extension) {
@@ -823,7 +823,7 @@ DataServices <- R6Class("DataServices",
         body = jsonlite::toJSON(request, auto_unbox = TRUE),
         httr::content_type_json(),
         httr::add_headers(
-          Authorization = paste(private$tokenType, private$token)
+          Authorization = paste(private$token_type, private$token)
         )
       )
 
@@ -840,7 +840,7 @@ DataServices <- R6Class("DataServices",
         body = jsonlite::toJSON(request, auto_unbox = TRUE),
         httr::content_type_json(),
         httr::add_headers(
-          Authorization = paste(private$tokenType, private$token)
+          Authorization = paste(private$token_type, private$token)
         )
       )
 

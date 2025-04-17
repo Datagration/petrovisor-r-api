@@ -22,7 +22,7 @@ test_that("Unit measurement instanciation and conversion works (empty constructo
 })
 
 test_that("UnitMeasurement can be retrieved", {
-  um <- sp$repositoryService$GetItemByName("UnitMeasurement", "Volume")
+  um <- sp$items$load("UnitMeasurement", "Volume")
 
   expect_equal(um, UnitMeasurement$new(name = "Volume",
                                        canonical_unit_name = "m3"))
