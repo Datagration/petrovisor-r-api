@@ -96,13 +96,15 @@ returned.}
 Download the file with the specified name from the
  workspace's blob storage.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FileService$load(name)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{FileService$load(name, target_path = "")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{The name of the file to download.}
+
+\item{\code{target_path}}{The path to download the file to.}
 }
 \if{html}{\out{</div>}}
 }

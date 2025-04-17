@@ -62,6 +62,19 @@ ApiRequests <- R6Class("ApiRequests",
       httr::stop_for_status(ret)
     },
 
+    download_file = function(name, url, route, token_type, token) {
+      ret <- httr::GET(
+        url = gsub(" ", "%20", paste0(url, route, name)),
+        httr::add_headers(
+          Authorization = paste(token_type, token)
+        )
+      )
+
+      httr::stop_for_status(ret)
+
+      return(ret)
+    },
+
     #' description Issue a GET request to the api
     #'
     #' param url The base url of the API.

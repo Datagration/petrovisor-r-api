@@ -67,15 +67,43 @@ FileService <- R6Class(
     #'  workspace's blob storage.
     #'
     #' @param name The name of the file to download.
+    #' @param target_path The path to download the file to.
     #'
     #' @returns The content of the file as string.
-    load = function(name) {
-      file <- private$get(private$url,
-                          paste0("Files/", name),
+    load = function(name, target_path = "") {
+      response <- private$download_file(name,
+                                    private$url,
+                          "Files/",
                           private$token_type,
-                          private$token,
-                          parse_json = FALSE)
-      return(file)
+                          private$token)
+
+      # If a path is given, detect the operating system and convert path as
+      # needed. Also make sure that the path ends with "/" or "\\".
+      if (target_path != "") {
+        os <- get_os()
+        print(os)
+
+        if (os == "windows"){
+          target_path <- gsub("/", "\\", target_path)
+          if (!endsWith("\\", target_path)) {
+            target_path <- paste0(target_path, "\\")
+          }
+        } else {
+          target_path <- gsub("\\", "/", target_path)
+          if (!endsWith("/", target_path)) {
+            target_path <- paste0(target_path, "/")
+          }
+        }
+        print(target_path)
+      }
+
+      # Save response content (binary data) to specified path
+      con <- file(paste0(target_path, name), "wb")
+      writeBin(response$content, con)
+      close(con)
+
+      # Return full path to the file
+      return(paste0(target_path, name))
     },
 
     #' @description Upload a file to the workspace's blob storage.
@@ -104,6 +132,22 @@ FileService <- R6Class(
   private = list(
     url = NULL,
     token_type = NULL,
-    token = NULL
+    token = NULL,
+
+    get_os = function(){
+      sysinf <- Sys.info()
+      if (!is.null(sysinf)){
+        os <- sysinf['sysname']
+        if (os == 'Darwin')
+          os <- "osx"
+      } else { ## mystery machine
+        os <- .Platform$OS.type
+        if (grepl("^darwin", R.version$os))
+          os <- "osx"
+        if (grepl("linux-gnu", R.version$os))
+          os <- "linux"
+      }
+      tolower(os)
+    }
   )
 )
