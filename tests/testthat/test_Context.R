@@ -93,17 +93,17 @@ test_that("Context can be created", {
                            entity_type_name = "Well",
                            alias = "TestAliasOne",
                            is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", entity_one)
+  sp$items$save("Entity", entity_one)
 
   entity_two <- Entity$new(name = "TestNameTwo",
                            entity_type_name = "Well",
                            alias = "TestAliasTwo",
                            is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", entity_two)
+  sp$items$save("Entity", entity_two)
 
   entity_set <- EntitySet$new(name = "Eset R Test",
                               entities = list(entity_one, entity_two))
-  sp$repositoryService$AddOrEditItem("EntitySet", entity_set)
+  sp$items$save("EntitySet", entity_set)
 
   # create scope
   scope <- Scope$new(name = "Test R Scope",
@@ -114,14 +114,14 @@ test_that("Context can be created", {
                      start_depth = 10,
                      end_depth = 1500,
                      description = "Test R Scope")
-  sp$repositoryService$AddOrEditItem("Scope", scope)
+  sp$items$save("Scope", scope)
 
   # create hierarchy
   parent <- Entity$new(name = "Test Parent",
                        entity_type_name = "Field",
                        alias = "Test Parent",
                        is_opportunity = FALSE)
-  sp$repositoryService$AddOrEditItem("Entity", parent)
+  sp$items$save("Entity", parent)
 
   # build relationship
   relationship <- list()
@@ -135,11 +135,11 @@ test_that("Context can be created", {
                              time_stamp = NULL,
                              description = "Test R Description")
 
-  sp$repositoryService$AddOrEditItem("Hierarchy", hierarchy)
+  sp$items$save("Hierarchy", hierarchy)
 
   # create scenario
   scenario <- Scenario$new(name = "Test R Scenario")
-  sp$repositoryService$AddOrEditItem("Scenario", scenario)
+  sp$items$save("Scenario", scenario)
 
   # create context
   context <- Context$new(name = "Test R Context",
@@ -151,13 +151,13 @@ test_that("Context can be created", {
                          scenario_data_only = FALSE,
                          description = "Test R Context Description")
 
-  result <- sp$repositoryService$AddOrEditItem("Context", context)
+  result <- sp$items$save("Context", context)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("Context can be retrieved", {
-  context <- sp$repositoryService$GetItemByName("Context", "Test R Context")
+  context <- sp$items$load("Context", "Test R Context")
 
   # create items for checking equality
   # create entities for the entity set
@@ -217,17 +217,17 @@ test_that("Context can be retrieved", {
 })
 
 test_that("Context can be deleted", {
-  result <- sp$repositoryService$DeleteItem("Context", "Test R Context")
+  result <- sp$items$delete("Context", "Test R Context")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("Context", "Test R Context"))
+  expect_error(sp$items$load("Context", "Test R Context"))
 
   # clean up - remove items created during tests
-  sp$repositoryService$DeleteItem("Hierarchy", "Hierarchy R Test")
-  sp$repositoryService$DeleteItem("EntitySet", "Eset R Test")
-  sp$repositoryService$DeleteItem("Scope", "Test R Scope")
-  sp$repositoryService$DeleteItem("Scenario", "Test R Scenario")
-  sp$repositoryService$DeleteItem("Entity", "TestNameOne")
-  sp$repositoryService$DeleteItem("Entity", "TestNameTwo")
-  sp$repositoryService$DeleteItem("Entity", "Test Parent")
+  sp$items$delete("Hierarchy", "Hierarchy R Test")
+  sp$items$delete("EntitySet", "Eset R Test")
+  sp$items$delete("Scope", "Test R Scope")
+  sp$items$delete("Scenario", "Test R Scenario")
+  sp$items$delete("Entity", "TestNameOne")
+  sp$items$delete("Entity", "TestNameTwo")
+  sp$items$delete("Entity", "Test Parent")
 })

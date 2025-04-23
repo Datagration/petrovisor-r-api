@@ -16,13 +16,13 @@ automatically.
 sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 
 # get the names of all available entities
-entityNames <- sp$repositoryService$GetNamesOfItems("Entity")
+entityNames <- sp$items$load_names("Entity")
 
 # delete an item (delete the hierarchy with the name "test")
-sp$repositoryService$DeleteItem("Hierarchy", "test")
+sp$items$delete("Hierarchy", "test")
 
 # get an item by name
-well01 <- sp$repositoryService$GetItemByName("Well", "Well01")
+well01 <- sp$items$load("Well", "Well01")
 
 # add or edit an item
 entity <- Entity$new(
@@ -30,17 +30,17 @@ entity <- Entity$new(
   entityTypeName = "Well",
   alias = "TestAlias01"
 )
-sp$repositoryService$AddOrEditItem("Entity", entity)
+sp$items$save("Entity", entity)
 }
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-RepositoryService-new}{\code{RepositoryService$new()}}
-\item \href{#method-RepositoryService-GetNamesOfItems}{\code{RepositoryService$GetNamesOfItems()}}
-\item \href{#method-RepositoryService-DeleteItem}{\code{RepositoryService$DeleteItem()}}
-\item \href{#method-RepositoryService-GetItemByName}{\code{RepositoryService$GetItemByName()}}
-\item \href{#method-RepositoryService-AddOrEditItem}{\code{RepositoryService$AddOrEditItem()}}
+\item \href{#method-RepositoryService-load_names}{\code{RepositoryService$load_names()}}
+\item \href{#method-RepositoryService-delete}{\code{RepositoryService$delete()}}
+\item \href{#method-RepositoryService-load}{\code{RepositoryService$load()}}
+\item \href{#method-RepositoryService-save}{\code{RepositoryService$save()}}
 \item \href{#method-RepositoryService-clone}{\code{RepositoryService$clone()}}
 }
 }
@@ -51,7 +51,7 @@ sp$repositoryService$AddOrEditItem("Entity", entity)
 Create a new RepositoryService instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$new(url, tokenType, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$new(url, token_type, token)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -59,7 +59,7 @@ ServiceProvider automatically.
 \describe{
 \item{\code{url}}{the URL for the API calls.}
 
-\item{\code{tokenType}}{the type of the issued token.}
+\item{\code{token_type}}{the type of the issued token.}
 
 \item{\code{token}}{the issued token.}
 }
@@ -67,13 +67,13 @@ ServiceProvider automatically.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RepositoryService-GetNamesOfItems"></a>}}
-\if{latex}{\out{\hypertarget{method-RepositoryService-GetNamesOfItems}{}}}
-\subsection{Method \code{GetNamesOfItems()}}{
+\if{html}{\out{<a id="method-RepositoryService-load_names"></a>}}
+\if{latex}{\out{\hypertarget{method-RepositoryService-load_names}{}}}
+\subsection{Method \code{load_names()}}{
 Get the names of all items of the given type available in
 PetroVisor.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$GetNamesOfItems(type)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$load_names(type)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -88,12 +88,12 @@ A character array containing the names of the items.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RepositoryService-DeleteItem"></a>}}
-\if{latex}{\out{\hypertarget{method-RepositoryService-DeleteItem}{}}}
-\subsection{Method \code{DeleteItem()}}{
+\if{html}{\out{<a id="method-RepositoryService-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-RepositoryService-delete}{}}}
+\subsection{Method \code{delete()}}{
 Delete an item by name.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$DeleteItem(type, name)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$delete(type, name)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -107,12 +107,12 @@ Delete an item by name.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RepositoryService-GetItemByName"></a>}}
-\if{latex}{\out{\hypertarget{method-RepositoryService-GetItemByName}{}}}
-\subsection{Method \code{GetItemByName()}}{
+\if{html}{\out{<a id="method-RepositoryService-load"></a>}}
+\if{latex}{\out{\hypertarget{method-RepositoryService-load}{}}}
+\subsection{Method \code{load()}}{
 Get an item by name.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$GetItemByName(type, name)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$load(type, name)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -129,11 +129,11 @@ An object of the specified type class.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-RepositoryService-AddOrEditItem"></a>}}
-\if{latex}{\out{\hypertarget{method-RepositoryService-AddOrEditItem}{}}}
-\subsection{Method \code{AddOrEditItem()}}{
+\if{html}{\out{<a id="method-RepositoryService-save"></a>}}
+\if{latex}{\out{\hypertarget{method-RepositoryService-save}{}}}
+\subsection{Method \code{save()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$AddOrEditItem(type, item)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$save(type, item)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

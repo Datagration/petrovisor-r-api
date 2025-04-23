@@ -29,13 +29,13 @@ test_that("Entity can be created", {
                        alias = "TestAlias",
                        is_opportunity = FALSE)
 
-  result <- sp$repositoryService$AddOrEditItem("Entity", entity)
+  result <- sp$items$save("Entity", entity)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("Entity can be retrieved", {
-  entity <- sp$repositoryService$GetItemByName("Entity", "TestName")
+  entity <- sp$items$load("Entity", "TestName")
 
   expect_equal(entity, Entity$new(name = "TestName",
                                   entity_type_name = "Well",
@@ -44,8 +44,8 @@ test_that("Entity can be retrieved", {
 })
 
 test_that("Entity can be deleted", {
-  result <- sp$repositoryService$DeleteItem("Entity", "TestName")
+  result <- sp$items$delete("Entity", "TestName")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$repositoryService$GetItemByName("Entity", "TestName"))
+  expect_error(sp$items$load("Entity", "TestName"))
 })

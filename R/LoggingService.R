@@ -15,24 +15,24 @@ library("R6")
 #' sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 #'
 #' # get available categories
-#' availableCategories <- sp$loggingService$GetAvailableCategories()
+#' availableCategories <- sp$logs$GetAvailableCategories()
 #'
 #' # get log entries
-#' allLogEntries <- sp$loggingService$GetLogEntries()
-#' warnings <- sp$loggingService$GetLogEntries(severity = "WARNING")
-#' signIns <- sp$loggingService$GetLogEntries(category = "SignIn")
+#' allLogEntries <- sp$logs$GetLogEntries()
+#' warnings <- sp$logs$GetLogEntries(severity = "WARNING")
+#' signIns <- sp$logs$GetLogEntries(category = "SignIn")
 #'
 #' # add log entry
 #' entry <- LogEntry$new(message = "Test", category = "Tag")
-#' sp$loggingService$AddLogEntry(entry)
+#' sp$logs$AddLogEntry(entry)
 #'
 #' # add several log entries at once
 #' entry1 <- LogEntry$new(message = "Test1", category = "Tag")
 #' entry2 <- LogEntry$new(message = "Test2", category = "Tag")
-#' sp$loggingService$AddLogEntries(list(entry1, entry2))
+#' sp$logs$AddLogEntries(list(entry1, entry2))
 #'
 #' # remove all log entries
-#' sp$loggingService$CleanUpLogEntries()
+#' sp$logs$CleanUpLogEntries()
 #' }
 LoggingService <- R6Class("LoggingService",
     public = list(

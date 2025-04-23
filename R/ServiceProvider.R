@@ -7,22 +7,26 @@ library("jsonlite")
 #' @description Provides access to all services provided through the web API.
 #'
 #' @details This class allows interaction with the PetroVisor API by providing
-#' access to various services such as logging, repository, data, and tag entries.
+#'   access to various services such as logging, repository, data, and tag
+#'   entries.
 #'
-#' @export
+#' @export ServiceProvider
 #'
 #' @field url Full URL to the PetroVisor API (either with or without token).
 #' @field data_url The base URL for data services.
 #' @field workspace The currently used workspace.
 #' @field user The current user.
-#' @field client_token Access token for the API (optional, used if URL is provided).
+#' @field client_token Access token for the API (optional, used if URL is
+#'   provided).
 #' @field workspace_data_url The URL for the workspace-specific data services.
-#' @field loggingService Class instance wrapping all logging-related functionalities.
-#' @field repositoryService Class instance wrapping all functionality related to
-#'   PetroVisor items (entities, signals, units, etc.).
-#' @field dataServices Class instance wrapping all functionality related to data.
-#' @field tagEntriesService Class instance wrapping all functionality related to
-#'   tag entries.
+#' @field logs Instance of class \code{LoggingService} wrapping all
+#'   logging-related functionalities.
+#' @field items Instance of class \code{RepositoryService} wrapping all
+#'   functionality related to PetroVisor items (entities, signals, units, etc.).
+#' @field data Instance of class \code{DataServices} wrapping all functionality
+#'   related to data.
+#' @field tag_entries Instance of class \code{TagEntriesService} wrapping all
+#'   functionality related to tag entries.
 #'
 #' @examples
 #' \dontrun{
@@ -47,10 +51,10 @@ ServiceProvider <- R6Class("ServiceProvider",
     user = NULL,
     workspace = NULL,
     client_token = NULL,
-    loggingService = NULL,
-    repositoryService = NULL,
-    dataServices = NULL,
-    tagEntriesService = NULL,
+    logs = NULL,
+    items = NULL,
+    data = NULL,
+    tag_entries = NULL,
     workspace_data_url = NULL, # Define as a public field
 
     #' @description Create a new ServiceProvider instance.
@@ -82,22 +86,22 @@ ServiceProvider <- R6Class("ServiceProvider",
         private$getToken()
       }
       # Initialize services
-      self$repositoryService <- RepositoryService$new(
+      self$items <- RepositoryService$new(
         self$workspace_data_url,
         private$tokenType,
         private$token
       )
-      self$dataServices <- DataServices$new(
+      self$data <- DataServices$new(
         self$workspace_data_url,
         private$tokenType,
         private$token
       )
-      self$tagEntriesService <- TagEntriesService$new(
+      self$tag_entries <- TagEntriesService$new(
         self$workspace_data_url,
         private$tokenType,
         private$token
       )
-      self$loggingService <- LoggingService$new(
+      self$logs <- LoggingService$new(
         self$workspace_data_url,
         private$tokenType,
         private$token
@@ -128,7 +132,8 @@ ServiceProvider <- R6Class("ServiceProvider",
     getDataUrl = function() {
       tryCatch(
         {
-          self$data_url <- AuthenticationService$new()$get_web_api_endpoint(self$url)
+          self$data_url <-
+            AuthenticationService$new()$get_web_api_endpoint(self$url)
         },
         error = function(e) {
           stop("Failed to retrieve data URL. Error: ", e$message)

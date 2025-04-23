@@ -1,9 +1,3 @@
-# ToDo: add input checks
-# ToDo: style according to style guide
-# ToDo: add classes for signal, hierarchy, tag, unit etc. or find a way to
-#  implement this using lists or dfs
-# ToDo: add documentation
-
 library("R6")
 library("httr")
 
@@ -21,13 +15,13 @@ library("httr")
 #' sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 #'
 #' # get the names of all available entities
-#' entityNames <- sp$repositoryService$GetNamesOfItems("Entity")
+#' entityNames <- sp$items$load_names("Entity")
 #'
 #' # delete an item (delete the hierarchy with the name "test")
-#' sp$repositoryService$DeleteItem("Hierarchy", "test")
+#' sp$items$delete("Hierarchy", "test")
 #'
 #' # get an item by name
-#' well01 <- sp$repositoryService$GetItemByName("Well", "Well01")
+#' well01 <- sp$items$load("Well", "Well01")
 #'
 #' # add or edit an item
 #' entity <- Entity$new(
@@ -35,7 +29,7 @@ library("httr")
 #'   entityTypeName = "Well",
 #'   alias = "TestAlias01"
 #' )
-#' sp$repositoryService$AddOrEditItem("Entity", entity)
+#' sp$items$save("Entity", entity)
 #' }
 RepositoryService <- R6Class("RepositoryService",
   public = list(
@@ -44,11 +38,11 @@ RepositoryService <- R6Class("RepositoryService",
     #' ServiceProvider automatically.
     #'
     #' @param url the URL for the API calls.
-    #' @param tokenType the type of the issued token.
+    #' @param token_type the type of the issued token.
     #' @param token the issued token.
-    initialize = function(url, tokenType, token) {
+    initialize = function(url, token_type, token) {
       private$url <- url
-      private$tokenType <- tokenType
+      private$token_type <- token_type
       private$token <- token
     },
 
@@ -58,18 +52,17 @@ RepositoryService <- R6Class("RepositoryService",
     #' @param type The type of the item.
     #'
     #' @return A character array containing the names of the items.
-    GetNamesOfItems = function(type) {
-      # get the urlType
-      urlType <- private$GetUrlType(type)
-      print(urlType)
+    load_names = function(type) {
+      # get the url_type
+      url_type <- private$get_url_type(type)
       # get item names
       ret <- httr::GET(
         paste0(
           private$url,
-          urlType
+          url_type
         ),
         httr::add_headers(
-          Authorization = paste(private$tokenType, private$token)
+          Authorization = paste(private$token_type, private$token)
         )
       )
       httr::stop_for_status(ret)
@@ -81,15 +74,15 @@ RepositoryService <- R6Class("RepositoryService",
     #'
     #' @param type The type of the item.
     #' @param name Name of the item to delete.
-    DeleteItem = function(type, name) {
-      # get the urlType
-      urlType <- private$GetUrlType(type)
+    delete = function(type, name) {
+      # get the url_type
+      url_type <- private$get_url_type(type)
 
       # delete item
       ret <- httr::DELETE(
-        gsub(" ", "%20", paste0(private$url, urlType, "/", name)),
+        gsub(" ", "%20", paste0(private$url, url_type, "/", name)),
         httr::add_headers(
-          Authorization = paste(private$tokenType, private$token)
+          Authorization = paste(private$token_type, private$token)
         )
       )
       httr::stop_for_status(ret)
@@ -101,15 +94,15 @@ RepositoryService <- R6Class("RepositoryService",
     #' @param name Name of the item to retrieve.
     #'
     #' @return An object of the specified type class.
-    GetItemByName = function(type, name) {
-      # get the urlType
-      urlType <- private$GetUrlType(type)
+    load = function(type, name) {
+      # get the url_type
+      url_type <- private$get_url_type(type)
 
       # retrieve the item
       ret <- httr::GET(
-        gsub(" ", "%20", paste0(private$url, urlType, "/", name)),
+        gsub(" ", "%20", paste0(private$url, url_type, "/", name)),
         httr::add_headers(
-          Authorization = paste(private$tokenType, private$token)
+          Authorization = paste(private$token_type, private$token)
         )
       )
       httr::stop_for_status(ret)
@@ -144,9 +137,9 @@ RepositoryService <- R6Class("RepositoryService",
         Context = return(
           Context$new(
             name = cont$Name,
-            entity_set = private$GetEntitySetFromContent(cont$EntitySet),
-            scope = private$GetScopeFromContent(cont$Scope),
-            hierarchy = private$GetHierarchyFromContent(cont$Hierarchy),
+            entity_set = private$get_entity_set_from_content(cont$EntitySet),
+            scope = private$get_scope_from_content(cont$Scope),
+            hierarchy = private$get_hierarchy_from_content(cont$Hierarchy),
             loading_scenario_name = cont$LoadScenarioName,
             saving_scenario_name = cont$SavingScenarioName,
             scenario_data_only = cont$ScenarioDataOnly,
@@ -163,14 +156,14 @@ RepositoryService <- R6Class("RepositoryService",
             is_opportunity = cont$IsOpportunity
           )
         ),
-        EntitySet = return(private$GetEntitySetFromContent(cont)),
+        EntitySet = return(private$get_entity_set_from_content(cont)),
         EntityType = return(
           EntityType$new(
             name = cont$Name,
             image = cont$Image
           )
         ),
-        Hierarchy = return(private$GetHierarchyFromContent(cont)),
+        Hierarchy = return(private$get_hierarchy_from_content(cont)),
         Unit = return(
           Unit$new(
             name = cont$Name,
@@ -240,7 +233,7 @@ RepositoryService <- R6Class("RepositoryService",
             )
           )
         },
-        Scope = return(private$GetScopeFromContent(cont)),
+        Scope = return(private$get_scope_from_content(cont)),
         Signal = return(
           Signal$new(
             name = cont$Name,
@@ -266,19 +259,19 @@ RepositoryService <- R6Class("RepositoryService",
     #' @param type The type of the item.
     #' @param item Item to add or edit. Has to be an object of the respective
     #' class.
-    AddOrEditItem = function(type, item) {
-      # get the urlType
-      urlType <- private$GetUrlType(type)
+    save = function(type, item) {
+      # get the url_type
+      url_type <- private$get_url_type(type)
 
       # add or edit item
       ret <- httr::PUT(
-        gsub(" ", "%20", paste0(private$url, urlType, "/", item$name)),
+        gsub(" ", "%20", paste0(private$url, url_type, "/", item$name)),
         body =
           jsonlite::toJSON(item$toList(), auto_unbox = TRUE)
         ,
         httr::content_type_json(),
         httr::add_headers(
-          Authorization = paste(private$tokenType, private$token)
+          Authorization = paste(private$token_type, private$token)
         )
       )
       httr::stop_for_status(ret)
@@ -286,22 +279,23 @@ RepositoryService <- R6Class("RepositoryService",
   ),
   private = list(
     url = NULL,
-    tokenType = NULL,
+    token_type = NULL,
     token = NULL,
-    GetUrlType = function(type = c("Chart", "CleansingCalculation",
-                                   "CleansingScript", "ConfigurationSetting",
-                                   "Context", "CrossPlot",
-                                   "CustomWorkflowActivity", "DataConnection",
-                                   "DataIntegrationSet", "DataSource", "DCAFit",
-                                   "Entity", "EntitySet", "EntityType",
-                                   "EventCalculation", "Filter", "GeoDataGrid",
-                                   "Hierarchy", "MLModel", "PivotTable", "Plot",
-                                   "Polygon", "ProcessTemplate", "PSharpScript",
-                                   "RScript", "RWorkflowActivity", "Scenario",
-                                   "Scope", "Signal", "TableCalculation", "Tag",
-                                   "UnitMeasurement", "Unit", "UserSetting",
-                                   "VoronoiGrid", "Workflow",
-                                   "WorkflowSchedule")) {
+    get_url_type = function(type = c("Chart", "CleansingCalculation",
+                                     "CleansingScript", "ConfigurationSetting",
+                                     "Context", "CrossPlot",
+                                     "CustomWorkflowActivity", "DataConnection",
+                                     "DataIntegrationSet", "DataSource",
+                                     "DCAFit", "Entity", "EntitySet",
+                                     "EntityType", "EventCalculation", "Filter",
+                                     "GeoDataGrid", "Hierarchy", "MLModel",
+                                     "PivotTable", "Plot", "Polygon",
+                                     "ProcessTemplate", "PSharpScript",
+                                     "RScript", "RWorkflowActivity", "Scenario",
+                                     "Scope", "Signal", "TableCalculation",
+                                     "Tag", "UnitMeasurement", "Unit",
+                                     "UserSetting", "VoronoiGrid", "Workflow",
+                                     "WorkflowSchedule")) {
       # check input
       type <- match.arg(type)
 
@@ -347,7 +341,7 @@ RepositoryService <- R6Class("RepositoryService",
       )
     },
 
-    GetEntitySetFromContent = function(content) {
+    get_entity_set_from_content = function(content) {
       # create entity list
       entity_list <- list()
 
@@ -373,7 +367,7 @@ RepositoryService <- R6Class("RepositoryService",
       )
     },
 
-    GetScopeFromContent = function(content) {
+    get_scope_from_content = function(content) {
       return(
         Scope$new(
           name = content$Name,
@@ -390,7 +384,7 @@ RepositoryService <- R6Class("RepositoryService",
       )
     },
 
-    GetHierarchyFromContent = function(content) {
+    get_hierarchy_from_content = function(content) {
       return(
         Hierarchy$new(
           name = content$Name,

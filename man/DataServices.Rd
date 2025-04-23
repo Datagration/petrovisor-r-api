@@ -22,7 +22,7 @@ sp <- ServiceProvider$new(
 )
 
 # load data
-data <- sp$dataServices$load_data(
+data <- sp$data$load(
   c("entity_one", "entity_two"),
   lapply(
     c("test time string signal one [ ]",
@@ -52,7 +52,7 @@ colnames(time_numeric_data) <- c("scenario",
                                  time_numeric_signal_1_name,
                                  time_numeric_signal_2_name)
 
-result <- sp$dataServices$save_data(
+result <- sp$data$save(
   "TimeNumeric",
   time_numeric_data,
   signals = lapply(
@@ -69,9 +69,9 @@ result <- sp$dataServices$save_data(
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataServices-new}{\code{DataServices$new()}}
-\item \href{#method-DataServices-load_data}{\code{DataServices$load_data()}}
-\item \href{#method-DataServices-save_data}{\code{DataServices$save_data()}}
-\item \href{#method-DataServices-delete_data}{\code{DataServices$delete_data()}}
+\item \href{#method-DataServices-load}{\code{DataServices$load()}}
+\item \href{#method-DataServices-save}{\code{DataServices$save()}}
+\item \href{#method-DataServices-delete}{\code{DataServices$delete()}}
 \item \href{#method-DataServices-clone}{\code{DataServices$clone()}}
 }
 }
@@ -82,7 +82,7 @@ result <- sp$dataServices$save_data(
 Create a new DataServices instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$new(url, tokenType, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$new(url, token_type, token)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -90,7 +90,7 @@ ServiceProvider automatically.
 \describe{
 \item{\code{url}}{the URL for the API calls.}
 
-\item{\code{tokenType}}{the type of the issued token.}
+\item{\code{token_type}}{the type of the issued token.}
 
 \item{\code{token}}{the issued token.}
 }
@@ -98,12 +98,12 @@ ServiceProvider automatically.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataServices-load_data"></a>}}
-\if{latex}{\out{\hypertarget{method-DataServices-load_data}{}}}
-\subsection{Method \code{load_data()}}{
+\if{html}{\out{<a id="method-DataServices-load"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-load}{}}}
+\subsection{Method \code{load()}}{
 Load data from PetroVisor.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$load_data(
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$load(
   entities,
   signals,
   scenario_names = NULL,
@@ -180,12 +180,12 @@ reshape the data into a more user-friendly format. Defaults to
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataServices-save_data"></a>}}
-\if{latex}{\out{\hypertarget{method-DataServices-save_data}{}}}
-\subsection{Method \code{save_data()}}{
+\if{html}{\out{<a id="method-DataServices-save"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-save}{}}}
+\subsection{Method \code{save()}}{
 Save data to PetroVisor.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$save_data(
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$save(
   data_type = c("StaticNumeric", "StaticString", "TimeNumeric", "TimeString",
     "DepthNumeric", "DepthString", "PVTNumeric"),
   data,
@@ -231,12 +231,12 @@ values.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataServices-delete_data"></a>}}
-\if{latex}{\out{\hypertarget{method-DataServices-delete_data}{}}}
-\subsection{Method \code{delete_data()}}{
+\if{html}{\out{<a id="method-DataServices-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-delete}{}}}
+\subsection{Method \code{delete()}}{
 Remove data from PetroVisor.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$delete_data(
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$delete(
   entities,
   signal_names,
   scenario_names = NULL,

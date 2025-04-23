@@ -64,13 +64,13 @@ test_that("Scenario instanciation and conversion works (empty constructor)", {
 test_that("Scenario can be created", {
   scenario <- Scenario$new(name = "Test R Scenario")
 
-  result <- sp$repositoryService$AddOrEditItem("Scenario", scenario)
+  result <- sp$items$save("Scenario", scenario)
 
   expect_equal(result$status_code, 201)
 })
 
 test_that("Scenario can be retrieved", {
-  scenario <- sp$repositoryService$GetItemByName("Scenario", "Test R Scenario")
+  scenario <- sp$items$load("Scenario", "Test R Scenario")
 
   expect_equal(scenario$name, "Test R Scenario")
   expect_equal(scenario$labels, list())
@@ -78,10 +78,10 @@ test_that("Scenario can be retrieved", {
 })
 
 test_that("Scenario can be deleted", {
-  result <- sp$repositoryService$DeleteItem("Scenario", "Test R Scenario")
+  result <- sp$items$delete("Scenario", "Test R Scenario")
 
   expect_equal(result$status_code, 200)
   expect_error(
-    sp$repositoryService$GetItemByName("Scenario", "Test R Scenario")
+    sp$items$load("Scenario", "Test R Scenario")
   )
 })
