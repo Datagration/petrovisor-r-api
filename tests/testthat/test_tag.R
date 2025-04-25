@@ -15,7 +15,7 @@ test_that("Tag instanciation and conversion works (empty constructor)", {
 })
 
 test_that("Tag can be created", {
-  tag <- Tag$new(name = "Test Tag",
+  tag <- Tag$new(name = "Test R Tag",
                  tag_group = "Testing")
 
   result <- sp$items$save("Tag", tag)
@@ -24,15 +24,15 @@ test_that("Tag can be created", {
 })
 
 test_that("Tag can be retrieved", {
-  tag <- sp$items$load("Tag", "Test Tag")
+  tag <- sp$items$load("Tag", "Test R Tag")
 
-  expect_equal(tag, Tag$new(name = "Test Tag",
+  expect_equal(tag, Tag$new(name = "Test R Tag",
                             tag_group = "Testing"))
 })
 
 test_that("Tag can be deleted", {
-  result <- sp$items$delete("Tag", "Test Tag")
+  result <- sp$items$delete("Tag", "Test R Tag")
 
   expect_equal(result$status_code, 200)
-  expect_error(sp$items$load("Tag", "Test Tag"))
+  expect_error(sp$items$load("Tag", "Test R Tag"))
 })

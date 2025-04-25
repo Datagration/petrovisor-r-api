@@ -11,22 +11,18 @@ Class representing a PetroVisor tag entry.
 # create a new instance of the service provider
 sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 
-# retrieve an entity from the database
-well <- sp$repositoryService$GetItemByName(type = "Entity", name = "Well01")
-# retrieve a tag from the datbase
-active <- sp$repositoryService$GetItemByName(type = "Tag", name = "Active")
-
 # create a new tag entry
-TagEntry$new(entity = well, tag = active, start = "2020-02-01T00:00:00.000Z")
+TagEntry$new(entity_name = "Well 01" ,
+             tag_name = "Active",
+             start = "2020-02-01T00:00:00.000Z")
 }
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{tag}}{The tag of the tag entry. Has to be an instance of the class
-'Tag'.}
+\item{\code{tag_name}}{The name of the tag.}
 
-\item{\code{entity}}{The tagged entity. Has to be an instance of the class 'Entity'.}
+\item{\code{entity_name}}{The name of the tagged entity.}
 
 \item{\code{start}}{The start date of the tag entry.}
 
@@ -37,28 +33,26 @@ TagEntry$new(entity = well, tag = active, start = "2020-02-01T00:00:00.000Z")
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-TagEntryFilter-new}{\code{TagEntry$new()}}
-\item \href{#method-TagEntryFilter-toList}{\code{TagEntry$toList()}}
-\item \href{#method-TagEntryFilter-clone}{\code{TagEntry$clone()}}
+\item \href{#method-TagEntry-new}{\code{TagEntry$new()}}
+\item \href{#method-TagEntry-to_list}{\code{TagEntry$to_list()}}
+\item \href{#method-TagEntry-clone}{\code{TagEntry$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntryFilter-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntryFilter-new}{}}}
+\if{html}{\out{<a id="method-TagEntry-new"></a>}}
+\if{latex}{\out{\hypertarget{method-TagEntry-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new TagEntry instance.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntry$new(tag = NULL, entity = NULL, start = NULL, end = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntry$new(tag_name = NULL, entity_name = NULL, start = NULL, end = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tag}}{The tag of the tag entry. Has to be an instance of the class
-'Tag'.}
+\item{\code{tag_name}}{The name of the tag.}
 
-\item{\code{entity}}{The tagged entity. Has to be an instance of the class
-'Entity'.}
+\item{\code{entity_name}}{The name of the tagged entity.}
 
 \item{\code{start}}{The start date of the tag entry.}
 
@@ -68,20 +62,20 @@ Create a new TagEntry instance.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntryFilter-toList"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntryFilter-toList}{}}}
-\subsection{Method \code{toList()}}{
+\if{html}{\out{<a id="method-TagEntry-to_list"></a>}}
+\if{latex}{\out{\hypertarget{method-TagEntry-to_list}{}}}
+\subsection{Method \code{to_list()}}{
 Convert the object to a list. This function is mainly used
 by the TagEntriesService to convert the objects to lists and then
 call the web API.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntry$toList()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntry$to_list()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntryFilter-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntryFilter-clone}{}}}
+\if{html}{\out{<a id="method-TagEntry-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-TagEntry-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

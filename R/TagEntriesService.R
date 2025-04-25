@@ -37,178 +37,219 @@ TagEntriesService <- R6Class("TagEntriesService",
     #' ServiceProvider automatically.
     #'
     #' @param url the URL for the API calls.
-    #' @param tokenType the type of the issued token.
+    #' @param token_type the type of the issued token.
     #' @param token the issued token.
-    initialize = function(url, tokenType, token) {
+    initialize = function(url, token_type, token) {
       private$url <- url
-      private$tokenType <- tokenType
+      private$token_type <- token_type
       private$token <- token
     },
 
-    #' @description Add a new tag entry or update the end date of an existing
-    #' one.
+    #' @description Add new or update single or multiple tag entries at once.
     #'
-    #' @param tagEntry The tag entry to add or update. Has to be an instance of
-    #' the class 'TagEntry'.
-    #'
-    #' @return An instance of the class 'TagEntry' representing the added or
-    #' updated tag entry.
-    AddOrEditTagEntry = function(tagEntry) {
-      ret <- httr::POST(
-        paste0(
-          private$url,
-          "TagEntries"
-        ),
-        body = jsonlite::toJSON(tagEntry$toList(), auto_unbox = TRUE),
-        content_type_json(),
-        add_headers(Authorization = paste(private$tokenType, private$token))
+    #' @param tag_entries A dataframe specifying the tag entries to save or
+    #'  update. The dataframe has to have for columns with the names
+    #'  \code{tag_name}, \code{entity_name}, \code{start}, \code{end}.
+    save = function(tag_entries) {
+
+      # Create objects from data frame entries
+      tag_entries$objects <- apply(
+        tag_entries,
+        1,
+        function(x) {
+          TagEntry$new(tag_name = x[["tag_name"]],
+                       entity_name = x[["entity_name"]],
+                       start = x[["start"]],
+                       end = x[["end"]])
+        }
       )
 
-      # if there is a conflict, try to update the tag entry
-      if (httr::http_status(ret)$reason == "Conflict") {
-        ret <- httr::POST(
-          paste0(
-            private$url,
-            "TagEntries/UpdateEnd"
-          ),
-          body = jsonlite::toJSON(tagEntry$toList(), auto_unbox = TRUE),
-          content_type_json(),
-          add_headers(Authorization = paste(private$tokenType, private$token))
-        )
-      }
-
-      httr::stop_for_status(ret)
-      cont <- jsonlite::fromJSON(httr::content(ret, as = "text"))
-
-      # return the created tag entry
-      return(TagEntry$new(
-        tag = Tag$new(
-          name = cont$Tag$Name,
-          tagGroup = cont$Tag$TagGroup
-        ),
-        entity = Entity$new(
-          name = cont$Entity$Name,
-          entityTypeName =
-            cont$Entity$EntityTypeName,
-          alias = cont$Entity$Alias
-        ),
-        start = cont$Start,
-        end = if ("End" %in% names(cont)) cont$Start
-      ))
-    },
-
-    #' @description Add multiple new tag entries at once.
-    #'
-    #' @param entries A list of tag entries to add. The items of the list must
-    #' be instances of the class 'TagEntry'.
-    #' @param deleteExisting If this flag is set to \code{TRUE}, existing tag
-    #' entries in the specified new tag entries range are deleted prior to
-    #' inserting the new tag entries.
-    AddTagEntries = function(entries, deleteExisting = c(TRUE, FALSE)) {
-      urlExtension <- if (deleteExisting) "ReplaceMultiple" else "AddMultiple"
-
-      # create list from list of tag entries
-      dl <- list()
-      for (i in 1:length(entries)) {
-        dl[[i]] <- entries[[i]]$toList()
-      }
+      # Build body for request
+      body <- lapply(
+        tag_entries$objects,
+        function(x) {
+          x$to_list()
+        }
+      )
+      names(body) <- NULL
 
       ret <- httr::POST(
         paste0(
           private$url,
-          "TagEntries/",
-          urlExtension
+          "TagEntries/Add"
         ),
-        body = jsonlite::toJSON(dl, auto_unbox = TRUE),
+        body = jsonlite::toJSON(body, auto_unbox = TRUE),
         content_type_json(),
-        add_headers(Authorization = paste(private$tokenType, private$token))
+        add_headers(Authorization = paste(private$token_type, private$token))
       )
 
       httr::stop_for_status(ret)
     },
 
     #' @description Delete all tag entries with a start date in the specified
-    #' time range.
+    #'  time range.
     #'
-    #' @param entityName The name of the entity for which to delete the tag
-    #' entries.
-    #' @param tagName The name of the tag for which to delete the tag entries.
+    #' @param entity_name The name of the entity for which to delete the tag
+    #'  entries.
+    #' @param tag_name The name of the tag for which to delete the tag entries.
     #' @param start The start date of the range.
     #' @param end (Optional) The end date of the range.
-    DeleteTagEntries = function(entityName, tagName, start, end = NULL) {
+    delete_range = function(entity_name,
+                            tag_name,
+                            start,
+                            end = NULL) {
+      # Build query
+      query <- list(Start = start)
+      if (!is.null(entity_name)) query$Entity <- entity_name
+      if (!is.null(tag_name)) query$Tag <- tag_name
+      if (!is.null(end)) query$End <- end
+
       ret <- httr::DELETE(
         paste0(
           private$url,
           "TagEntries/Range"
         ),
-        query = list(
-          Tag = tagName,
-          Entity = entityName,
-          Start = start,
-          End = if (is.null(end)) "" else end
-        ),
-        add_headers(Authorization = paste(private$tokenType, private$token))
+        query = query,
+        add_headers(Authorization = paste(private$token_type, private$token))
       )
+
       httr::stop_for_status(ret)
     },
 
-    #' @description Delete the specified tag entry.
+    #' @description Delete the specified tag entries.
     #'
-    #' @param entityName The name of the tag entry's entity.
-    #' @param tagName The name of the tag entry's tag.
-    #' @param start The start date of the tag entry.
-    DeleteTagEntry = function(entityName, tagName, start) {
-      ret <- httr::DELETE(
+    #' @param tag_entries A dataframe specifying the tag entries to delete. The
+    #'  dataframe has to have for columns with the names \code{tag_name},
+    #'  \code{entity_name}, \code{start}, \code{end}.
+    delete = function(tag_entries) {
+      # Create objects from data frame entries
+      tag_entries$objects <- apply(
+        tag_entries,
+        1,
+        function(x) {
+          TagEntry$new(tag_name = x[["tag_name"]],
+                       entity_name = x[["entity_name"]],
+                       start = x[["start"]],
+                       end = x[["end"]])
+        }
+      )
+
+      # Build body for request
+      body <- lapply(
+        tag_entries$objects,
+        function(x) {
+          x$to_list()
+        }
+      )
+      names(body) <- NULL
+
+      ret <- httr::POST(
         paste0(
           private$url,
-          "TagEntries"
+          "TagEntries/Delete"
         ),
-        query = list(
-          Tag = tagName,
-          Entity = entityName,
-          Start = start
-        ),
-        add_headers(Authorization = paste(private$tokenType, private$token))
+        body = jsonlite::toJSON(body, auto_unbox = TRUE),
+        content_type_json(),
+        add_headers(Authorization = paste(private$token_type, private$token))
       )
       httr::stop_for_status(ret)
     },
 
     #' @description Get tag entries according to the given filter.
     #'
-    #' @param tagEntriesFilter The filter specifying which tag entries to
-    #' retrieve from the database.
+    #' @param entity_names Names of the entities for which tag entries shall be
+    #'  retrieved. Has to be specified if \code{entity_set_name} is not used.
+    #' @param entity_set_name Name of the entity set defining the entities for
+    #'  which tag entries shall be retrieved. Has to be specified if
+    #'  \code{entity_names} is not used.
+    #' @param tag_names Tags for which tag entries shall be retrieved. Has to be
+    #'  specified if \code{tag_group_names} is not used.
+    #' @param tag_group_names Tag groups for which tag entries shall be
+    #'  retrieved. Has to be specified if \code{tag_names} is not used.
+    #' @param start Together with \code{end} defines a date range that is used
+    #'  to filter tag entries. All tag entries overlapping with this date range
+    #'  will be returned.
+    #' @param end Together with \code{start} defines a date range that is used
+    #'  to filter tag entries. All tag entries overlapping with this date range
+    #'  will be returned.
+    #' @param start_date_begins Together with \code{start_date_ends} defines a
+    #'  date range for the start dates of the tag entries. Tag entries with a
+    #'  start date within this date range will be returned.
+    #' @param start_date_ends Together with \code{start_date_begins} defines a
+    #'  date range for the start dates of the tag entries. Tag entries with a
+    #'  start date within this date range will be returned.
+    #' @param end_date_begins Together with \code{end_date_ends} defines a
+    #'  date range for the end dates of the tag entries. Tag entries with an
+    #'  end date within this date range will be returned.
+    #' @param end_date_ends Together with \code{end_date_begins} defines a
+    #'  date range for the end dates of the tag entries. Tag entries with an
+    #'  end date within this date range will be returned.
+    #' @param is_end_date_set Whether to return open or closed tag entries only.
+    #'  If not specified or set to NULL all tag entries (closed and ongoing)
+    #'  will be returned.
     #'
-    #' @return A dataframe containing the tag entries.
+    #' @return A dataframe containing the tag entries or a list of length zero
+    #'  if no tag entries for the specified filter are available.
     #'
     #' @examples \dontrun{
-    #' sp <- ServiceProvider$new("192.168.0.123",
-    #'                           8095,
-    #'                           "workspace",
-    #'                           "user",
-    #'                           "password")
-    #' tagEntries <- sp$tag_entries$GetTagEntries(
-    #'   TagEntriesFilter$new(TagGroup = "Info"))
+    #' tagEntries <- sp$tag_entries$load(tag_group_names = c("Info"))
     #' }
-    GetTagEnties = function(tagEntriesFilter) {
+    load = function(entity_names = list(),
+                    entity_set_name = "",
+                    tag_names = list(),
+                    tag_group_names = list(),
+                    start = NULL,
+                    end = NULL,
+                    start_date_begins = NULL,
+                    start_date_ends = NULL,
+                    end_date_begins = NULL,
+                    end_date_ends = NULL,
+                    is_end_date_set = NULL) {
+      filter <- list(
+        Entities = as.list(entity_names),
+        EntitySet = entity_set_name,
+        Tags = as.list(tag_names),
+        TagGroups = as.list(tag_group_names)
+      )
+      if (!is.null(start)) filter$Start <- start
+      if (!is.null(end)) filter$End <- end
+      if (!is.null(start_date_begins)) {
+        filter$StartDateBegins <- start_date_begins
+      }
+      if (!is.null(start_date_ends)) filter$StartDateEnds <- start_date_ends
+      if (!is.null(end_date_begins)) filter$EndDateBegins <- end_date_begins
+      if (!is.null(end_date_ends)) filter$EndDateEnds <- end_date_ends
+      if (!is.null(is_end_date_set)) filter$EndDateSet <- is_end_date_set
+
       ret <- httr::POST(
         paste0(
           private$url,
           "TagEntries/Filtered"
         ),
-        body = jsonlite::toJSON(tagEntriesFilter$toList(), auto_unbox = TRUE),
+        body = jsonlite::toJSON(filter, auto_unbox = TRUE),
         content_type_json(),
-        add_headers(Authorization = paste(private$tokenType, private$token))
+        add_headers(Authorization = paste(private$token_type, private$token))
       )
 
       httr::stop_for_status(ret)
       cont <- httr::content(ret, as = "text")
-      return(jsonlite::fromJSON(cont))
+      tag_entries <- jsonlite::fromJSON(cont)
+
+      # If no tag entries available, return empty list
+      if (length(tag_entries) == 0) return(tag_entries)
+
+      if (ncol(tag_entries) == 3) {
+        colnames(tag_entries) <- c("tag_name", "entity_name", "start")
+      } else {
+        colnames(tag_entries) <- c("tag_name", "entity_name", "start", "end")
+      }
+
+      return(tag_entries)
     }
   ),
   private = list(
     url = NULL,
-    tokenType = NULL,
-    token = NULL,
-    severity = NULL
+    token_type = NULL,
+    token = NULL
   )
 )

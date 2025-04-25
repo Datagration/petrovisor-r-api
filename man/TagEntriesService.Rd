@@ -30,28 +30,21 @@ sp$tag_entries$DeleteTagEntry(
 }
 
 ## ------------------------------------------------
-## Method `TagEntriesService$GetTagEnties`
+## Method `TagEntriesService$load`
 ## ------------------------------------------------
 
 \dontrun{
-sp <- ServiceProvider$new("192.168.0.123",
-                          8095,
-                          "workspace",
-                          "user",
-                          "password")
-tagEntries <- sp$tag_entries$GetTagEntries(
-  TagEntriesFilter$new(TagGroup = "Info"))
+tagEntries <- sp$tag_entries$load(tag_group_names = c("Info"))
 }
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TagEntriesService-new}{\code{TagEntriesService$new()}}
-\item \href{#method-TagEntriesService-AddOrEditTagEntry}{\code{TagEntriesService$AddOrEditTagEntry()}}
-\item \href{#method-TagEntriesService-AddTagEntries}{\code{TagEntriesService$AddTagEntries()}}
-\item \href{#method-TagEntriesService-DeleteTagEntries}{\code{TagEntriesService$DeleteTagEntries()}}
-\item \href{#method-TagEntriesService-DeleteTagEntry}{\code{TagEntriesService$DeleteTagEntry()}}
-\item \href{#method-TagEntriesService-GetTagEnties}{\code{TagEntriesService$GetTagEnties()}}
+\item \href{#method-TagEntriesService-save}{\code{TagEntriesService$save()}}
+\item \href{#method-TagEntriesService-delete_range}{\code{TagEntriesService$delete_range()}}
+\item \href{#method-TagEntriesService-delete}{\code{TagEntriesService$delete()}}
+\item \href{#method-TagEntriesService-load}{\code{TagEntriesService$load()}}
 \item \href{#method-TagEntriesService-clone}{\code{TagEntriesService$clone()}}
 }
 }
@@ -62,7 +55,7 @@ tagEntries <- sp$tag_entries$GetTagEntries(
 Create a new TagEntriesService instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$new(url, tokenType, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$new(url, token_type, token)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -70,7 +63,7 @@ ServiceProvider automatically.
 \describe{
 \item{\code{url}}{the URL for the API calls.}
 
-\item{\code{tokenType}}{the type of the issued token.}
+\item{\code{token_type}}{the type of the issued token.}
 
 \item{\code{token}}{the issued token.}
 }
@@ -78,67 +71,41 @@ ServiceProvider automatically.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntriesService-AddOrEditTagEntry"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntriesService-AddOrEditTagEntry}{}}}
-\subsection{Method \code{AddOrEditTagEntry()}}{
-Add a new tag entry or update the end date of an existing
-one.
+\if{html}{\out{<a id="method-TagEntriesService-save"></a>}}
+\if{latex}{\out{\hypertarget{method-TagEntriesService-save}{}}}
+\subsection{Method \code{save()}}{
+Add new or update single or multiple tag entries at once.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$AddOrEditTagEntry(tagEntry)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$save(tag_entries)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tagEntry}}{The tag entry to add or update. Has to be an instance of
-the class 'TagEntry'.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-An instance of the class 'TagEntry' representing the added or
-updated tag entry.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntriesService-AddTagEntries"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntriesService-AddTagEntries}{}}}
-\subsection{Method \code{AddTagEntries()}}{
-Add multiple new tag entries at once.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$AddTagEntries(entries, deleteExisting = c(TRUE, FALSE))}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{entries}}{A list of tag entries to add. The items of the list must
-be instances of the class 'TagEntry'.}
-
-\item{\code{deleteExisting}}{If this flag is set to \code{TRUE}, existing tag
-entries in the specified new tag entries range are deleted prior to
-inserting the new tag entries.}
+\item{\code{tag_entries}}{A dataframe specifying the tag entries to save or
+update. The dataframe has to have for columns with the names
+\code{tag_name}, \code{entity_name}, \code{start}, \code{end}.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntriesService-DeleteTagEntries"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntriesService-DeleteTagEntries}{}}}
-\subsection{Method \code{DeleteTagEntries()}}{
+\if{html}{\out{<a id="method-TagEntriesService-delete_range"></a>}}
+\if{latex}{\out{\hypertarget{method-TagEntriesService-delete_range}{}}}
+\subsection{Method \code{delete_range()}}{
 Delete all tag entries with a start date in the specified
-time range.
+ time range.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$DeleteTagEntries(entityName, tagName, start, end = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$delete_range(entity_name, tag_name, start, end = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{entityName}}{The name of the entity for which to delete the tag
+\item{\code{entity_name}}{The name of the entity for which to delete the tag
 entries.}
 
-\item{\code{tagName}}{The name of the tag for which to delete the tag entries.}
+\item{\code{tag_name}}{The name of the tag for which to delete the tag entries.}
 
 \item{\code{start}}{The start date of the range.}
 
@@ -148,56 +115,99 @@ entries.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntriesService-DeleteTagEntry"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntriesService-DeleteTagEntry}{}}}
-\subsection{Method \code{DeleteTagEntry()}}{
-Delete the specified tag entry.
+\if{html}{\out{<a id="method-TagEntriesService-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-TagEntriesService-delete}{}}}
+\subsection{Method \code{delete()}}{
+Delete the specified tag entries.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$DeleteTagEntry(entityName, tagName, start)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$delete(tag_entries)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{entityName}}{The name of the tag entry's entity.}
-
-\item{\code{tagName}}{The name of the tag entry's tag.}
-
-\item{\code{start}}{The start date of the tag entry.}
+\item{\code{tag_entries}}{A dataframe specifying the tag entries to delete. The
+dataframe has to have for columns with the names \code{tag_name},
+\code{entity_name}, \code{start}, \code{end}.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TagEntriesService-GetTagEnties"></a>}}
-\if{latex}{\out{\hypertarget{method-TagEntriesService-GetTagEnties}{}}}
-\subsection{Method \code{GetTagEnties()}}{
+\if{html}{\out{<a id="method-TagEntriesService-load"></a>}}
+\if{latex}{\out{\hypertarget{method-TagEntriesService-load}{}}}
+\subsection{Method \code{load()}}{
 Get tag entries according to the given filter.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$GetTagEnties(tagEntriesFilter)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$load(
+  entity_names = list(),
+  entity_set_name = "",
+  tag_names = list(),
+  tag_group_names = list(),
+  start = NULL,
+  end = NULL,
+  start_date_begins = NULL,
+  start_date_ends = NULL,
+  end_date_begins = NULL,
+  end_date_ends = NULL,
+  is_end_date_set = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tagEntriesFilter}}{The filter specifying which tag entries to
-retrieve from the database.}
+\item{\code{entity_names}}{Names of the entities for which tag entries shall be
+retrieved. Has to be specified if \code{entity_set_name} is not used.}
+
+\item{\code{entity_set_name}}{Name of the entity set defining the entities for
+which tag entries shall be retrieved. Has to be specified if
+\code{entity_names} is not used.}
+
+\item{\code{tag_names}}{Tags for which tag entries shall be retrieved. Has to be
+specified if \code{tag_group_names} is not used.}
+
+\item{\code{tag_group_names}}{Tag groups for which tag entries shall be
+retrieved. Has to be specified if \code{tag_names} is not used.}
+
+\item{\code{start}}{Together with \code{end} defines a date range that is used
+to filter tag entries. All tag entries overlapping with this date range
+will be returned.}
+
+\item{\code{end}}{Together with \code{start} defines a date range that is used
+to filter tag entries. All tag entries overlapping with this date range
+will be returned.}
+
+\item{\code{start_date_begins}}{Together with \code{start_date_ends} defines a
+date range for the start dates of the tag entries. Tag entries with a
+start date within this date range will be returned.}
+
+\item{\code{start_date_ends}}{Together with \code{start_date_begins} defines a
+date range for the start dates of the tag entries. Tag entries with a
+start date within this date range will be returned.}
+
+\item{\code{end_date_begins}}{Together with \code{end_date_ends} defines a
+date range for the end dates of the tag entries. Tag entries with an
+end date within this date range will be returned.}
+
+\item{\code{end_date_ends}}{Together with \code{end_date_begins} defines a
+date range for the end dates of the tag entries. Tag entries with an
+end date within this date range will be returned.}
+
+\item{\code{is_end_date_set}}{Whether to return open or closed tag entries only.
+If not specified or set to NULL all tag entries (closed and ongoing)
+will be returned.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A dataframe containing the tag entries.
+A dataframe containing the tag entries or a list of length zero
+ if no tag entries for the specified filter are available.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{\dontrun{
-sp <- ServiceProvider$new("192.168.0.123",
-                          8095,
-                          "workspace",
-                          "user",
-                          "password")
-tagEntries <- sp$tag_entries$GetTagEntries(
-  TagEntriesFilter$new(TagGroup = "Info"))
+tagEntries <- sp$tag_entries$load(tag_group_names = c("Info"))
 }
 }
 \if{html}{\out{</div>}}
