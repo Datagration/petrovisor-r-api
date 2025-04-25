@@ -10,54 +10,50 @@ Class to define and create new log entries.
 \dontrun{
 LogEntry$new(category = "MyCategory",
              message = "This is the message",
-             messageDetails = "and here are some details")
+             message_details = "and here are some details",
+             severity = "Debug")
 }
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{category}}{The category of the log entry. May be any string.}
-
-\item{\code{elapsedTime}}{The time an operation needed to execute.}
-
-\item{\code{endTime}}{The end time of an operation.}
-
-\item{\code{entityName}}{Thename of the entity affected by the operation.}
-
-\item{\code{message}}{The message of the log entry.}
-
-\item{\code{messageDetails}}{Details of the log entry message.}
-
-\item{\code{numberOfItems}}{The number of items changed by the operation.}
-
-\item{\code{scheduleName}}{The name of the schedule affected by the operation.}
-
-\item{\code{scriptName}}{The name of the script affected by the operation}
-
-\item{\code{severity}}{The severity of the tag entry.}
-
-\item{\code{signalName}}{The name of the signal affected by the operation.}
-
-\item{\code{startTime}}{The start time of an operation.}
-
-\item{\code{tagName}}{The name of the tag affected by the operation.}
-
 \item{\code{timestamp}}{The timestamp of the tag entry. If none is specified, the
 current date and time will be inserted automatically.}
 
-\item{\code{unitName}}{The name of the unit affected by the operation.}
+\item{\code{message}}{The message of the log entry.}
 
-\item{\code{userName}}{If not specified, the current user will be inserted
+\item{\code{category}}{The category of the log entry. May be any string.}
+
+\item{\code{user_name}}{If not specified, the current user will be inserted
 automatically.}
 
-\item{\code{valueAfter}}{The value after a value change.}
-
-\item{\code{valueBefore}}{The value before a value change.}
-
-\item{\code{workflowName}}{The name of the executed workflow. May be any string.}
+\item{\code{severity}}{The severity of the tag entry. One of: \code{Information},
+\code{Warning}, \code{Error}, \code{Debug}, \code{Alarm}.}
 
 \item{\code{workspace}}{The workspace of the log entry. If none is specified,
 the current workspace will be inserted automatically.}
+
+\item{\code{item_name}}{The name of the item the log entry is related to.}
+
+\item{\code{item_type}}{The name of the item type the log entry is related to.}
+
+\item{\code{item_change}}{The type of change the log entry is related to. One of:
+\code{Created}, \code{Modified}, \code{Deleted}, \code{Renamed},
+\code{Other}.}
+
+\item{\code{schedule_name}}{The name of the schedule affected by the operation.}
+
+\item{\code{workflow_name}}{The name of the workflow affected by the operation.}
+
+\item{\code{start_time}}{The start time of an operation.}
+
+\item{\code{end_time}}{The end time of an operation.}
+
+\item{\code{elapsed_time}}{The time an operation needed to execute.}
+
+\item{\code{message_details}}{Optional details of the message.}
+
+\item{\code{directory}}{User directory (tenant).}
 }
 \if{html}{\out{</div>}}
 }
@@ -65,7 +61,7 @@ the current workspace will be inserted automatically.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-LogEntry-new}{\code{LogEntry$new()}}
-\item \href{#method-LogEntry-toList}{\code{LogEntry$toList()}}
+\item \href{#method-LogEntry-to_list}{\code{LogEntry$to_list()}}
 \item \href{#method-LogEntry-clone}{\code{LogEntry$clone()}}
 }
 }
@@ -76,87 +72,90 @@ the current workspace will be inserted automatically.}
 Create a new LogEntry instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LogEntry$new(
-  category = NULL,
-  elapsedTime = NULL,
-  endTime = NULL,
-  entityName = NULL,
-  message = NULL,
-  messageDetails = NULL,
-  numberOfItems = NULL,
-  scheduleName = NULL,
-  scriptName = NULL,
-  severity = NULL,
-  signalName = NULL,
-  startTime = NULL,
-  tagName = NULL,
   timestamp = NULL,
-  unitName = NULL,
-  userName = NULL,
-  valueAfter = NULL,
-  valueBefore = NULL,
-  workflowName = NULL,
-  workspace = NULL
+  message = NULL,
+  category = NULL,
+  user_name = NULL,
+  severity = c("Information", "Warning", "Error", "Debug", "Alarm"),
+  workspace = NULL,
+  item_name = NULL,
+  item_type = c("Unknown", "Signal", "Unit", "EntityType", "BlobFile", "Entity",
+    "EntitySet", "Hierarchy", "Calculation", "Workspace", "Tag", "Scope",
+    "EventSubscription", "Context", "EventCalculation", "CleansingCalculation",
+    "PSharpScript", "TicketTimeInterval", "Label", "UserGroup", "WorkflowSchedule",
+    "Message", "FilterDefinition", "TagEntry", "Ticket", "DataConnection", "DataSource",
+    "DataIntegrationSet", "Dashboard", "Plot", "Scenario", "Snapshot", "User",
+    "ChartDefinition", "PivotTable", "DCA", "MLModel", 
+     "CustomWorkflowActivity",
+    "RWorkflowActivity", "CleansingScript", "ProcessTemplate", "Workflow",
+    "WorkspaceValue", "ReferenceTable", "WorkspacePackage", "PythonWorkflowActivity",
+    "DataGrid", "WebWorkflowActivity", "PowerBIItem", "DataIntegrationSession",
+    "UserSetting"),
+  item_change = c("Other", "Created", "Modified", "Deleted", "Renamed"),
+  schedule_name = NULL,
+  workflow_name = NULL,
+  start_time = NULL,
+  end_time = NULL,
+  elapsed_time = NULL,
+  message_details = NULL,
+  directory = NULL
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{category}}{The category of the log entry. May be any string.}
-
-\item{\code{elapsedTime}}{The time an operation needed to execute.}
-
-\item{\code{endTime}}{The end time of an operation.}
-
-\item{\code{entityName}}{Thename of the entity affected by the operation.}
-
-\item{\code{message}}{The message of the log entry.}
-
-\item{\code{messageDetails}}{Details of the log entry message.}
-
-\item{\code{numberOfItems}}{The number of items changed by the operation.}
-
-\item{\code{scheduleName}}{The name of the schedule affected by the operation.}
-
-\item{\code{scriptName}}{The name of the script affected by the operation}
-
-\item{\code{severity}}{The severity of the tag entry.}
-
-\item{\code{signalName}}{The name of the signal affected by the operation.}
-
-\item{\code{startTime}}{The start time of an operation.}
-
-\item{\code{tagName}}{The name of the tag affected by the operation.}
-
 \item{\code{timestamp}}{The timestamp of the tag entry. If none is specified,
 the current date and time will be inserted automatically.}
 
-\item{\code{unitName}}{The name of the unit affected by the operation.}
+\item{\code{message}}{The message of the log entry.}
 
-\item{\code{userName}}{If not specified, the current user will be inserted
+\item{\code{category}}{The category of the log entry. May be any string.}
+
+\item{\code{user_name}}{If not specified, the current user will be inserted
 automatically.}
 
-\item{\code{valueAfter}}{The value after a value change.}
-
-\item{\code{valueBefore}}{The value before a value change.}
-
-\item{\code{workflowName}}{The name of the executed workflow. May be any string.}
+\item{\code{severity}}{The severity of the tag entry. One of:
+\code{Information}, \code{Warning}, \code{Error}, \code{Debug},
+\code{Alarm}.}
 
 \item{\code{workspace}}{The workspace of the log entry. If none is specified,
 the current workspace will be inserted automatically.}
+
+\item{\code{item_name}}{The name of the item the log entry is related to.}
+
+\item{\code{item_type}}{The name of the item type the log entry is related to.}
+
+\item{\code{item_change}}{The type of change the log entry is related to.
+One of: \code{Created}, \code{Modified}, \code{Deleted}, \code{Renamed},
+\code{Other}.}
+
+\item{\code{schedule_name}}{The name of the schedule affected by the operation.}
+
+\item{\code{workflow_name}}{The name of the workflow affected by the operation.}
+
+\item{\code{start_time}}{The start time of an operation.}
+
+\item{\code{end_time}}{The end time of an operation.}
+
+\item{\code{elapsed_time}}{The time an operation needed to execute.}
+
+\item{\code{message_details}}{Optional details of the message.}
+
+\item{\code{directory}}{User directory (tenant).}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LogEntry-toList"></a>}}
-\if{latex}{\out{\hypertarget{method-LogEntry-toList}{}}}
-\subsection{Method \code{toList()}}{
+\if{html}{\out{<a id="method-LogEntry-to_list"></a>}}
+\if{latex}{\out{\hypertarget{method-LogEntry-to_list}{}}}
+\subsection{Method \code{to_list()}}{
 Convert the object to a list. This function is mainly used
 by the LoggingService to convert the objects to lists and then call
 the web API.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LogEntry$toList()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LogEntry$to_list()}\if{html}{\out{</div>}}
 }
 
 }

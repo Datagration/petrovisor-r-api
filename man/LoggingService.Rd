@@ -21,16 +21,22 @@ availableCategories <- sp$logs$GetAvailableCategories()
 
 # get log entries
 allLogEntries <- sp$logs$GetLogEntries()
-warnings <- sp$logs$GetLogEntries(severity = "WARNING")
+warnings <- sp$logs$GetLogEntries(severity = "Warning")
 signIns <- sp$logs$GetLogEntries(category = "SignIn")
 
 # add log entry
-entry <- LogEntry$new(message = "Test", category = "Tag")
+entry <- LogEntry$new(message = "Test",
+                      category = "Tag",
+                      severity = "Information")
 sp$logs$AddLogEntry(entry)
 
 # add several log entries at once
-entry1 <- LogEntry$new(message = "Test1", category = "Tag")
-entry2 <- LogEntry$new(message = "Test2", category = "Tag")
+entry1 <- LogEntry$new(message = "Test1",
+                       category = "Tag",
+                       severity = "Information")
+entry2 <- LogEntry$new(message = "Test2",
+                       category = "Tag",
+                       severity = "Information")
 sp$logs$AddLogEntries(list(entry1, entry2))
 
 # remove all log entries
@@ -41,11 +47,10 @@ sp$logs$CleanUpLogEntries()
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-LoggingService-new}{\code{LoggingService$new()}}
-\item \href{#method-LoggingService-GetAvailableCategories}{\code{LoggingService$GetAvailableCategories()}}
-\item \href{#method-LoggingService-GetLogEntries}{\code{LoggingService$GetLogEntries()}}
-\item \href{#method-LoggingService-AddLogEntry}{\code{LoggingService$AddLogEntry()}}
-\item \href{#method-LoggingService-AddLogEntries}{\code{LoggingService$AddLogEntries()}}
-\item \href{#method-LoggingService-CleanUpLogEntries}{\code{LoggingService$CleanUpLogEntries()}}
+\item \href{#method-LoggingService-load_categories}{\code{LoggingService$load_categories()}}
+\item \href{#method-LoggingService-load}{\code{LoggingService$load()}}
+\item \href{#method-LoggingService-save}{\code{LoggingService$save()}}
+\item \href{#method-LoggingService-delete}{\code{LoggingService$delete()}}
 \item \href{#method-LoggingService-clone}{\code{LoggingService$clone()}}
 }
 }
@@ -53,10 +58,10 @@ sp$logs$CleanUpLogEntries()
 \if{html}{\out{<a id="method-LoggingService-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LoggingService-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new LoggingService instance. This is done by the
-ServiceProvider automatically.
+Create a new LoggingService instance. This is done by
+ the ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$new(url, tokenType, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LoggingService$new(url, token_type, token)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -64,7 +69,7 @@ ServiceProvider automatically.
 \describe{
 \item{\code{url}}{the URL for the API calls.}
 
-\item{\code{tokenType}}{the type of the issued token.}
+\item{\code{token_type}}{the type of the issued token.}
 
 \item{\code{token}}{the issued token.}
 }
@@ -72,12 +77,13 @@ ServiceProvider automatically.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LoggingService-GetAvailableCategories"></a>}}
-\if{latex}{\out{\hypertarget{method-LoggingService-GetAvailableCategories}{}}}
-\subsection{Method \code{GetAvailableCategories()}}{
-Get all available categories from the existing log entries.
+\if{html}{\out{<a id="method-LoggingService-load_categories"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggingService-load_categories}{}}}
+\subsection{Method \code{load_categories()}}{
+Get all available categories from the existing log
+ entries.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$GetAvailableCategories()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LoggingService$load_categories()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -85,116 +91,86 @@ A character vector containing all available categories.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LoggingService-GetLogEntries"></a>}}
-\if{latex}{\out{\hypertarget{method-LoggingService-GetLogEntries}{}}}
-\subsection{Method \code{GetLogEntries()}}{
-Retrieve all log entrties matching the given filter from the
-database.
+\if{html}{\out{<a id="method-LoggingService-load"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggingService-load}{}}}
+\subsection{Method \code{load()}}{
+Retrieve all log entries matching the given filter from
+ the database.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$GetLogEntries(
-  lastEntries = NULL,
+\if{html}{\out{<div class="r">}}\preformatted{LoggingService$load(
+  last_entries = NULL,
   start = NULL,
   end = NULL,
-  category = NULL,
   categories = NULL,
-  userName = NULL,
-  severity = NULL,
-  logEntryContentContains = NULL,
-  entityName = NULL,
-  signalName = NULL,
-  tagName = NULL,
-  unitName = NULL,
-  scriptName = NULL
+  user_name = NULL,
+  severities = NULL,
+  message_text_filter = NULL,
+  workflow = NULL,
+  schedule = NULL
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{lastEntries}}{Return only the latest n tag entries.}
+\item{\code{last_entries}}{Return only the latest n tag entries.}
 
 \item{\code{start}}{Return log entries after the specified date (inclusive).}
 
 \item{\code{end}}{Return log entries before the specified date (inclusive).}
 
-\item{\code{category}}{Return log entries of the specified category.}
-
 \item{\code{categories}}{Return log entries of the specified categaories.}
 
-\item{\code{userName}}{Return log entries of the specified user.}
+\item{\code{user_name}}{Return log entries of the specified user.}
 
-\item{\code{severity}}{Return log entries of the given severity.}
+\item{\code{severities}}{Return log entries of the given severities.}
 
-\item{\code{logEntryContentContains}}{Return log entries whose massage
+\item{\code{message_text_filter}}{Return log entries whose massage
 contains the specified text.}
 
-\item{\code{entityName}}{Return log entries of the given entity.}
+\item{\code{workflow}}{Return log entries for the specified workflow.}
 
-\item{\code{signalName}}{Return log entries of the specified signal.}
-
-\item{\code{tagName}}{Return log entries of the specified tag.}
-
-\item{\code{unitName}}{Return log entries of the given unit.}
-
-\item{\code{scriptName}}{Return log entries of the specified script.}
+\item{\code{schedule}}{Return log entries for the specified schedule.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A dataframe containing the requested log entries. The number of
-returned columns depends on the available information. Columns that
-contain no information are not shown in the output.
+A dataframe containing the requested log entries. The number
+ of returned columns depends on the available information.
+ Columns that contain no information are not shown in the output.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LoggingService-AddLogEntry"></a>}}
-\if{latex}{\out{\hypertarget{method-LoggingService-AddLogEntry}{}}}
-\subsection{Method \code{AddLogEntry()}}{
-Add a logentry to the database.
+\if{html}{\out{<a id="method-LoggingService-save"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggingService-save}{}}}
+\subsection{Method \code{save()}}{
+Add one or several log entries to the database at once.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$AddLogEntry(logEntry)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LoggingService$save(log_entries)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{logEntry}}{A logEntry-object created by instantiating the class
-'LogEntry'.}
+\item{\code{log_entries}}{a list of LogEntry-objects.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LoggingService-AddLogEntries"></a>}}
-\if{latex}{\out{\hypertarget{method-LoggingService-AddLogEntries}{}}}
-\subsection{Method \code{AddLogEntries()}}{
-Add several log entries to the database at once.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$AddLogEntries(logEntries)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{logEntries}}{a list of logEntry-objects.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LoggingService-CleanUpLogEntries"></a>}}
-\if{latex}{\out{\hypertarget{method-LoggingService-CleanUpLogEntries}{}}}
-\subsection{Method \code{CleanUpLogEntries()}}{
+\if{html}{\out{<a id="method-LoggingService-delete"></a>}}
+\if{latex}{\out{\hypertarget{method-LoggingService-delete}{}}}
+\subsection{Method \code{delete()}}{
 Remove log entries from the database.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$CleanUpLogEntries(daysToKeep = 0, category)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LoggingService$delete(days_to_keep = 0, category)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{daysToKeep}}{Keep the log entries of the last n days in the log.
-Defaults to 0.}
+\item{\code{days_to_keep}}{Keep the log entries of the last n days in the
+log. Defaults to 0.}
 
 \item{\code{category}}{Remove log entries of the specified category only.}
 }
