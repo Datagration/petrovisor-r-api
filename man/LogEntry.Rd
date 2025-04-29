@@ -17,7 +17,7 @@ LogEntry$new(category = "MyCategory",
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{timestamp}}{The timestamp of the tag entry. If none is specified, the
+\item{\code{timestamp}}{The timestamp of the log entry. If none is specified, the
 current date and time will be inserted automatically.}
 
 \item{\code{message}}{The message of the log entry.}
@@ -27,7 +27,7 @@ current date and time will be inserted automatically.}
 \item{\code{user_name}}{If not specified, the current user will be inserted
 automatically.}
 
-\item{\code{severity}}{The severity of the tag entry. One of: \code{Information},
+\item{\code{severity}}{The severity of the log entry. One of: \code{Information},
 \code{Warning}, \code{Error}, \code{Debug}, \code{Alarm}.}
 
 \item{\code{workspace}}{The workspace of the log entry. If none is specified,
@@ -105,7 +105,7 @@ Create a new LogEntry instance.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{timestamp}}{The timestamp of the tag entry. If none is specified,
+\item{\code{timestamp}}{The timestamp of the log entry. If none is specified,
 the current date and time will be inserted automatically.}
 
 \item{\code{message}}{The message of the log entry.}
@@ -115,7 +115,7 @@ the current date and time will be inserted automatically.}
 \item{\code{user_name}}{If not specified, the current user will be inserted
 automatically.}
 
-\item{\code{severity}}{The severity of the tag entry. One of:
+\item{\code{severity}}{The severity of the log entry. One of:
 \code{Information}, \code{Warning}, \code{Error}, \code{Debug},
 \code{Alarm}.}
 

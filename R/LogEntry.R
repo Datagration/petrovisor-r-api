@@ -6,13 +6,13 @@ library("R6")
 #'
 #' @export LogEntry
 #'
-#' @field timestamp The timestamp of the tag entry. If none is specified, the
+#' @field timestamp The timestamp of the log entry. If none is specified, the
 #'  current date and time will be inserted automatically.
 #' @field message The message of the log entry.
 #' @field category The category of the log entry. May be any string.
 #' @field user_name If not specified, the current user will be inserted
 #'  automatically.
-#' @field severity The severity of the tag entry. One of: \code{Information},
+#' @field severity The severity of the log entry. One of: \code{Information},
 #'  \code{Warning}, \code{Error}, \code{Debug}, \code{Alarm}.
 #' @field workspace The workspace of the log entry. If none is specified,
 #'  the current workspace will be inserted automatically.
@@ -57,13 +57,13 @@ LogEntry <- R6Class("LogEntry",
 
     #' @description Create a new LogEntry instance.
     #'
-    #' @param timestamp The timestamp of the tag entry. If none is specified,
+    #' @param timestamp The timestamp of the log entry. If none is specified,
     #'  the current date and time will be inserted automatically.
     #' @param message The message of the log entry.
     #' @param category The category of the log entry. May be any string.
     #' @param user_name If not specified, the current user will be inserted
     #'  automatically.
-    #' @param severity The severity of the tag entry. One of:
+    #' @param severity The severity of the log entry. One of:
     #'  \code{Information}, \code{Warning}, \code{Error}, \code{Debug},
     #'  \code{Alarm}.
     #' @param workspace The workspace of the log entry. If none is specified,
