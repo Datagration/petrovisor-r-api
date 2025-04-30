@@ -19,235 +19,179 @@ library("R6")
 #'
 #' # get log entries
 #' allLogEntries <- sp$logs$GetLogEntries()
-#' warnings <- sp$logs$GetLogEntries(severity = "WARNING")
+#' warnings <- sp$logs$GetLogEntries(severity = "Warning")
 #' signIns <- sp$logs$GetLogEntries(category = "SignIn")
 #'
 #' # add log entry
-#' entry <- LogEntry$new(message = "Test", category = "Tag")
+#' entry <- LogEntry$new(message = "Test",
+#'                       category = "Tag",
+#'                       severity = "Information")
 #' sp$logs$AddLogEntry(entry)
 #'
 #' # add several log entries at once
-#' entry1 <- LogEntry$new(message = "Test1", category = "Tag")
-#' entry2 <- LogEntry$new(message = "Test2", category = "Tag")
+#' entry1 <- LogEntry$new(message = "Test1",
+#'                        category = "Tag",
+#'                        severity = "Information")
+#' entry2 <- LogEntry$new(message = "Test2",
+#'                        category = "Tag",
+#'                        severity = "Information")
 #' sp$logs$AddLogEntries(list(entry1, entry2))
 #'
 #' # remove all log entries
 #' sp$logs$CleanUpLogEntries()
 #' }
 LoggingService <- R6Class("LoggingService",
-    public = list(
+  public = list(
 
-        #' @description Create a new LoggingService instance. This is done by the
-        #' ServiceProvider automatically.
-        #'
-        #' @param url the URL for the API calls.
-        #' @param tokenType the type of the issued token.
-        #' @param token the issued token.
-        initialize = function(url, tokenType, token) {
-            private$url <- url
-            private$tokenType <- tokenType
-            private$token <- token
-            private$severity <- append(list(NULL), list(
-                "INFORMATION",
-                "WARNING",
-                "ERROR",
-                "DEBUG",
-                "ALARM"
-            ))
-        },
+    #' @description Create a new LoggingService instance. This is done by
+    #'  the ServiceProvider automatically.
+    #'
+    #' @param url the URL for the API calls.
+    #' @param token_type the type of the issued token.
+    #' @param token the issued token.
+    initialize = function(url, token_type, token) {
+      private$url <- url
+      private$token_type <- token_type
+      private$token <- token
+    },
 
-        #' @description Get all available categories from the existing log entries.
-        #'
-        #' @return A character vector containing all available categories.
-        GetAvailableCategories = function() {
-            ret <- httr::GET(
-                paste0(
-                    private$url,
-                    "LogEntries/Categories"
-                ),
-                add_headers(Authorization = paste(private$tokenType, private$token))
-            )
-            httr::stop_for_status(ret)
-            cont <- httr::content(ret, as = "text")
-            return(jsonlite::fromJSON(cont))
-        },
+    #' @description Get all available categories from the existing log
+    #'  entries.
+    #'
+    #' @return A character vector containing all available categories.
+    load_categories = function() {
+      ret <- httr::GET(
+        paste0(
+          private$url,
+          "LogEntries/Categories"
+        ),
+        add_headers(Authorization = paste(private$token_type,
+                                          private$token))
+      )
+      httr::stop_for_status(ret)
+      cont <- httr::content(ret, as = "text")
+      return(jsonlite::fromJSON(cont))
+    },
 
-        #' @description Retrieve all log entrties matching the given filter from the
-        #' database.
-        #'
-        #' @param lastEntries Return only the latest n tag entries.
-        #' @param start Return log entries after the specified date (inclusive).
-        #' @param end Return log entries before the specified date (inclusive).
-        #' @param category Return log entries of the specified category.
-        #' @param categories Return log entries of the specified categaories.
-        #' @param userName Return log entries of the specified user.
-        #' @param severity Return log entries of the given severity.
-        #' @param logEntryContentContains Return log entries whose massage
-        #' contains the specified text.
-        #' @param entityName Return log entries of the given entity.
-        #' @param signalName Return log entries of the specified signal.
-        #' @param tagName Return log entries of the specified tag.
-        #' @param unitName Return log entries of the given unit.
-        #' @param scriptName Return log entries of the specified script.
-        #'
-        #' @return A dataframe containing the requested log entries. The number of
-        #' returned columns depends on the available information. Columns that
-        #' contain no information are not shown in the output.
-        GetLogEntries = function(lastEntries = NULL,
-                                 start = NULL,
-                                 end = NULL,
-                                 category = NULL,
-                                 categories = NULL,
-                                 userName = NULL,
-                                 severity = NULL,
-                                 logEntryContentContains = NULL,
-                                 entityName = NULL,
-                                 signalName = NULL,
-                                 tagName = NULL,
-                                 unitName = NULL,
-                                 scriptName = NULL) {
-            # check input arguments
-            severity <- match.arg(severity, private$severity, FALSE)[[1]][1]
+    #' @description Retrieve all log entries matching the given filter from
+    #'  the database.
+    #'
+    #' @param last_entries Return only the latest n tag entries.
+    #' @param start Return log entries after the specified date (inclusive).
+    #' @param end Return log entries before the specified date (inclusive).
+    #' @param categories Return log entries of the specified categaories.
+    #' @param user_name Return log entries of the specified user.
+    #' @param severities Return log entries of the given severities.
+    #' @param message_text_filter Return log entries whose massage
+    #' contains the specified text.
+    #' @param workflow Return log entries for the specified workflow.
+    #' @param schedule Return log entries for the specified schedule.
+    #'
+    #' @return A dataframe containing the requested log entries. The number
+    #'  of returned columns depends on the available information.
+    #'  Columns that contain no information are not shown in the output.
+    load = function(last_entries = NULL,
+                    start = NULL,
+                    end = NULL,
+                    categories = NULL,
+                    user_name = NULL,
+                    severities = NULL,
+                    message_text_filter = NULL,
+                    workflow = NULL,
+                    schedule = NULL) {
 
-            # construct request body
-            body <- list()
-            if (!is.null(lastEntries)) {
-                body <- append(body, list(LastEntries = lastEntries))
-            }
-            if (!is.null(start)) {
-                body <- append(body, list(Start = start))
-            }
-            if (!is.null(end)) {
-                body <- append(body, list(End = end))
-            }
-            if (!is.null(category)) {
-                body <- append(body, list(Category = category))
-            }
-            if (!is.null(categories)) {
-                body <- append(body, list(Categories = categories))
-            }
-            if (!is.null(userName)) {
-                body <- append(body, list(User = userName))
-            }
-            if (!is.null(severity)) {
-                body <- append(body, list(Severity = severity))
-            }
-            if (!is.null(logEntryContentContains)) {
-                body <- append(
-                    body,
-                    list(logEntryContentContains = logEntryContentContains)
-                )
-            }
-            if (!is.null(entityName)) {
-                body <- append(body, list(Entity = entityName))
-            }
-            if (!is.null(signalName)) {
-                body <- append(body, list(Signal = signalName))
-            }
-            if (!is.null(tagName)) {
-                body <- append(body, list(Tag = tagName))
-            }
-            if (!is.null(unitName)) {
-                body <- append(body, list(Unit = unitName))
-            }
-            if (!is.null(scriptName)) {
-                body <- append(body, list(Script = scriptName))
-            }
+      # Construct request body
+      body <- list()
+      if (!is.null(last_entries)) body$LastEntries <- last_entries
+      if (!is.null(start)) body$Start <- start
+      if (!is.null(end)) body$End <- end
+      if (!is.null(categories)) body$Categories <- as.list(categories)
+      if (!is.null(user_name)) body$User <- user_name
+      if (!is.null(severities)) body$Severities <- as.list(severities)
+      if (!is.null(message_text_filter)) {
+        body$LogEntryContentContains <- message_text_filter
+      }
+      if (!is.null(workflow)) body$Workflow <- workflow
+      if (!is.null(schedule)) body$schedule <- schedule
 
-            if (length(body) == 0) {
-                body <- {}
-            }
+      # get return data
+      ret <- httr::POST(
+        paste0(
+          private$url, "LogEntries/Filtered"
+        ),
+        body = jsonlite::toJSON(body, auto_unbox = TRUE),
+        content_type_json(),
+        add_headers(Authorization = paste(private$token_type,
+                                          private$token))
+      )
 
-            # get return data
-            ret <- httr::POST(
-                paste0(
-                    private$url, "LogEntries/Filtered"
-                ),
-                body = jsonlite::toJSON(body, auto_unbox = TRUE),
-                content_type_json(),
-                add_headers(Authorization = paste(private$tokenType, private$token))
-            )
+      httr::stop_for_status(ret)
+      cont <- httr::content(ret, as = "text")
+      return(jsonlite::fromJSON(cont))
+    },
 
-            httr::stop_for_status(ret)
-            cont <- httr::content(ret, as = "text")
-            return(jsonlite::fromJSON(cont))
-        },
+    #' @description Add one or several log entries to the database at once.
+    #'
+    #' @param log_entries a list of LogEntry-objects.
+    save = function(log_entries) {
+      # Create dataframe from list of log entries
+      dl <- list()
+      for (i in seq_along(log_entries)) {
+        dl[[i]] <- log_entries[[i]]$to_list()
+      }
 
-        #' @description Add a logentry to the database.
-        #'
-        #' @param logEntry A logEntry-object created by instantiating the class
-        #' 'LogEntry'.
-        AddLogEntry = function(logEntry) {
-            ret <- httr::POST(
-                paste0(
-                    private$url,
-                    "LogEntries/AddMultiple"
-                ),
-                body = jsonlite::toJSON(logEntry$toList()),
-                content_type_json(),
-                add_headers(Authorization = paste(private$tokenType, private$token))
-            )
-            httr::stop_for_status(ret)
-        },
+      # add entries to database
+      ret <- httr::POST(
+        paste0(
+          private$url,
+          "LogEntries/AddMultiple"
+        ),
+        body = jsonlite::toJSON(dl, auto_unbox = TRUE),
+        content_type_json(),
+        add_headers(Authorization = paste(private$token_type,
+                                          private$token))
+      )
+      httr::stop_for_status(ret)
+    },
 
-        #' @description Add several log entries to the database at once.
-        #'
-        #' @param logEntries a list of logEntry-objects.
-        AddLogEntries = function(logEntries) {
-            # create dataframe from list of log entries
-            dl <- list()
-            for (i in 1:length(logEntries)) {
-                dl[[i]] <- logEntries[[i]]$toList()
-            }
+    #' @description Remove log entries from the database.
+    #'
+    #' @param days_to_keep Keep the log entries of the last n days in the
+    #'  log. Defaults to 0.
+    #' @param category Remove log entries of the specified category only.
+    delete = function(days_to_keep = 0, category) {
+      # if no category is given, use the normal /Clean call
+      # else use /CleanCategory
+      if (missing(category)) {
+        ret <- httr::POST(
+          paste0(
+            private$url,
+            "LogEntries/Clean"
+          ),
+          query = list(KeepTimeSpan = days_to_keep),
+          add_headers(Authorization = paste(private$token_type,
+                                            private$token))
+        )
+        httr::stop_for_status(ret)
+      } else {
+        ret <- httr::POST(
+          paste0(
+            private$url,
+            "LogEntries/CleanCategory"
+          ),
+          query = list(KeepTimeSpan = days_to_keep,
+                       Category = category),
+          add_headers(Authorization = paste(private$token_type,
+                                            private$token))
+        )
 
-            # add entries to database
-            ret <- httr::POST(
-                paste0(
-                    private$url,
-                    "LogEntries/AddMultiple"
-                ),
-                body = jsonlite::toJSON(df),
-                content_type_json(),
-                add_headers(Authorization = paste(private$tokenType, private$token))
-            )
-            httr::stop_for_status(ret)
-        },
-
-        #' @description Remove log entries from the database.
-        #'
-        #' @param daysToKeep Keep the log entries of the last n days in the log.
-        #' Defaults to 0.
-        #' @param category Remove log entries of the specified category only.
-        CleanUpLogEntries = function(daysToKeep = 0, category) {
-            # if no category is given, use the normal /Clean call
-            # else use /CleanCategory
-            if (missing(category)) {
-                ret <- httr::POST(
-                    paste0(
-                        private$url,
-                        "LogEntries/Clean"
-                    ),
-                    query = list(KeepTimeSpan = daysToKeep),
-                    add_headers(Authorization = paste(private$tokenType, private$token))
-                )
-                httr::stop_for_status(ret)
-            } else {
-                ret <- httr::POST(
-                    paste0(
-                        private$url,
-                        "LogEntries/CleanCategory"
-                    ),
-                    query = list(KeepTimeSpan = daysToKeep, Category = category),
-                    add_headers(Authorization = paste(private$tokenType, private$token))
-                )
-                httr::stop_for_status(ret)
-            }
-        }
-    ),
-    private = list(
-        url = NULL,
-        tokenType = NULL,
-        token = NULL,
-        severity = NULL
-    )
+        httr::stop_for_status(ret)
+      }
+    }
+  ),
+  private = list(
+    url = NULL,
+    token_type = NULL,
+    token = NULL
+  )
 )
