@@ -40,7 +40,9 @@ library("R6")
 #' # remove all log entries
 #' sp$logs$CleanUpLogEntries()
 #' }
-LoggingService <- R6Class("LoggingService",
+LoggingService <- R6Class(
+  "LoggingService",
+  inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
 
     #' @description Create a new LoggingService instance. This is done by
@@ -60,17 +62,12 @@ LoggingService <- R6Class("LoggingService",
     #'
     #' @return A character vector containing all available categories.
     load_categories = function() {
-      ret <- httr::GET(
-        paste0(
-          private$url,
-          "LogEntries/Categories"
-        ),
-        add_headers(Authorization = paste(private$token_type,
-                                          private$token))
-      )
-      httr::stop_for_status(ret)
-      cont <- httr::content(ret, as = "text")
-      return(jsonlite::fromJSON(cont))
+      categories <- private$get(private$url,
+                                "LogEntries/Categories",
+                                private$token_type,
+                                private$token)
+
+      return(categories)
     },
 
     #' @description Retrieve all log entries matching the given filter from
@@ -115,19 +112,13 @@ LoggingService <- R6Class("LoggingService",
       if (!is.null(schedule)) body$schedule <- schedule
 
       # get return data
-      ret <- httr::POST(
-        paste0(
-          private$url, "LogEntries/Filtered"
-        ),
-        body = jsonlite::toJSON(body, auto_unbox = TRUE),
-        content_type_json(),
-        add_headers(Authorization = paste(private$token_type,
-                                          private$token))
-      )
-
-      httr::stop_for_status(ret)
-      cont <- httr::content(ret, as = "text")
-      return(jsonlite::fromJSON(cont))
+      log_entries <- private$post(body,
+                                  private$url,
+                                  "LogEntries/Filtered",
+                                  private$token_type,
+                                  private$token,
+                                  expect_data = TRUE)
+      return(log_entries)
     },
 
     #' @description Add one or several log entries to the database at once.
@@ -141,17 +132,11 @@ LoggingService <- R6Class("LoggingService",
       }
 
       # add entries to database
-      ret <- httr::POST(
-        paste0(
-          private$url,
-          "LogEntries/AddMultiple"
-        ),
-        body = jsonlite::toJSON(dl, auto_unbox = TRUE),
-        content_type_json(),
-        add_headers(Authorization = paste(private$token_type,
-                                          private$token))
-      )
-      httr::stop_for_status(ret)
+      private$post(dl,
+                   private$url,
+                   "LogEntries/AddMultiple",
+                   private$token_type,
+                   private$token)
     },
 
     #' @description Remove log entries from the database.
@@ -163,30 +148,21 @@ LoggingService <- R6Class("LoggingService",
       # if no category is given, use the normal /Clean call
       # else use /CleanCategory
       if (missing(category)) {
-        ret <- httr::POST(
-          paste0(
-            private$url,
-            "LogEntries/Clean"
-          ),
-          query = list(KeepTimeSpan = days_to_keep),
-          add_headers(Authorization = paste(private$token_type,
-                                            private$token))
-        )
-        httr::stop_for_status(ret)
+        query <- list(KeepTimeSpan = days_to_keep)
+        route <- "LogEntries/Clean"
       } else {
-        ret <- httr::POST(
-          paste0(
-            private$url,
-            "LogEntries/CleanCategory"
-          ),
-          query = list(KeepTimeSpan = days_to_keep,
-                       Category = category),
-          add_headers(Authorization = paste(private$token_type,
-                                            private$token))
-        )
-
-        httr::stop_for_status(ret)
+        query <- list(KeepTimeSpan = days_to_keep,
+                      Category = category)
+        route <- "LogEntries/CleanCategory"
       }
+
+      private$post(NULL,
+                   private$url,
+                   route,
+                   private$token_type,
+                   private$token,
+                   expect_data = FALSE,
+                   query = query)
     }
   ),
   private = list(

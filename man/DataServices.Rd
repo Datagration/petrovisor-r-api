@@ -65,6 +65,9 @@ result <- sp$data$save(
 )
 }
 }
+\section{Super class}{
+\code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{DataServices}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

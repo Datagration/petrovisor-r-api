@@ -1,5 +1,5 @@
 library("R6")
-library("httr")
+
 #' @title DataServices
 #'
 #' @description Provides access to data related functionality provided through
@@ -62,7 +62,9 @@ library("httr")
 #'   )
 #' )
 #' }
-DataServices <- R6Class("DataServices",
+DataServices <- R6Class(
+  "DataServices",
+  inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
 
     #' @description Create a new DataServices instance. This is done by the
@@ -196,7 +198,12 @@ DataServices <- R6Class("DataServices",
 
 
       # Retrieve data (returns named list)
-      data <- private$retrieve_data(request, "Data/Retrieve")
+      data <- private$post(request,
+                           private$url,
+                           "Data/Retrieve",
+                           private$token_type,
+                           private$token,
+                           expect_data = TRUE)
 
       # Return as is, if reshape is FALSE
       if (!reshape)
@@ -747,7 +754,11 @@ DataServices <- R6Class("DataServices",
       }
 
       # Save data
-      return(private$post(requests, "Data/Save"))
+      return(private$post(requests,
+                          private$url,
+                          "Data/Save",
+                          private$token_type,
+                          private$token))
     },
 
     #' @description Remove data from PetroVisor.
@@ -806,46 +817,17 @@ DataServices <- R6Class("DataServices",
       if (!is.null(depth_end))
         request$DepthEnd <- depth_end
 
-      return(private$post(request, "Data/Delete"))
+      return(private$post(request,
+                          private$url,
+                          "Data/Delete",
+                          private$token_type,
+                          private$token))
     }
   ),
   private = list(
     url = NULL,
     token_type = NULL,
     token = NULL,
-
-    retrieve_data = function(request, url_extension) {
-      # get return data
-      ret <- httr::POST(
-        paste0(
-          private$url, url_extension
-        ),
-        body = jsonlite::toJSON(request, auto_unbox = TRUE),
-        httr::content_type_json(),
-        httr::add_headers(
-          Authorization = paste(private$token_type, private$token)
-        )
-      )
-
-      httr::stop_for_status(ret)
-      cont <- httr::content(ret, as = "text")
-      return(jsonlite::fromJSON(cont))
-    },
-
-    post = function(request, url_extension) {
-      ret <- httr::POST(
-        paste0(
-          private$url, url_extension
-        ),
-        body = jsonlite::toJSON(request, auto_unbox = TRUE),
-        httr::content_type_json(),
-        httr::add_headers(
-          Authorization = paste(private$token_type, private$token)
-        )
-      )
-
-      httr::stop_for_status(ret)
-    },
 
     unnest_and_reshape = function(data) {
       unnested <- tidyr::unnest(data, cols = names(data), keep_empty = TRUE)
