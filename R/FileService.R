@@ -1,5 +1,4 @@
 library("R6")
-library("httr")
 
 #' @title FileService
 #'

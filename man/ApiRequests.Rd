@@ -25,6 +25,8 @@ param url The base url of the API.
 param route The route to use. E.g. Signal, Files, etc.
 param token_type The type of the used token.
 param token The token used for authenticating the request.
+param expect_data Whether to expect data being returned from the request.
+param query Named list of additional query parameters.
 description Upload a file using a POST request to the api
 
 param file The file to upload (path incl. file name).
@@ -47,6 +49,13 @@ returns The result of the GET request. Either as received, or parsed to
 description Issue a DELETE request to the api
 
 param name Name of the item to delete.
+param url The base url of the API.
+param route The route to use. E.g. Signal, Files, etc.
+param token_type The type of the used token.
+param token The token used for authenticating the request.
+description Issue a PUT request to the api
+
+param body The body of the request.
 param url The base url of the API.
 param route The route to use. E.g. Signal, Files, etc.
 param token_type The type of the used token.

@@ -21,15 +21,30 @@ ApiRequests <- R6Class("ApiRequests",
     #' param route The route to use. E.g. Signal, Files, etc.
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
-    post = function(body, url, route, token_type, token) {
+    #' param expect_data Whether to expect data being returned from the request.
+    #' param query Named list of additional query parameters.
+    post = function(body,
+                    url,
+                    route,
+                    token_type,
+                    token,
+                    expect_data = FALSE,
+                    query = NULL) {
       ret <- httr::POST(
         url = gsub(" ", "%20", paste0(url, route)),
-        body = jsonlite::toJSON(request, auto_unbox = TRUE),
+        body = jsonlite::toJSON(body, auto_unbox = TRUE),
+        query = query,
         httr::content_type_json(),
         httr::add_headers(
           Authorization = paste(token_type, token)
         )
       )
+
+      if(expect_data) {
+        httr::stop_for_status(ret)
+        cont <- httr::content(ret, as = "text")
+        return(jsonlite::fromJSON(cont))
+      }
 
       httr::stop_for_status(ret)
     },
@@ -119,14 +134,37 @@ ApiRequests <- R6Class("ApiRequests",
     #' param route The route to use. E.g. Signal, Files, etc.
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
-    delete = function(name, url, route, token_type, token) {
+    delete = function(name, url, route, token_type, token, query = NULL) {
       ret <- httr::DELETE(
         url = gsub(" ", "%20", paste0(url, route, name)),
+        query = query,
         httr::add_headers(
           Authorization = paste(token_type, token)
         )
       )
 
+      httr::stop_for_status(ret)
+    },
+
+
+    #' description Issue a PUT request to the api
+    #'
+    #' param body The body of the request.
+    #' param url The base url of the API.
+    #' param route The route to use. E.g. Signal, Files, etc.
+    #' param token_type The type of the used token.
+    #' param token The token used for authenticating the request.
+    put = function(body, url, route, token_type, token) {
+      ret <- httr::PUT(
+        gsub(" ", "%20", paste0(url, route)),
+        body =
+          jsonlite::toJSON(body, auto_unbox = TRUE)
+        ,
+        httr::content_type_json(),
+        httr::add_headers(
+          Authorization = paste(token_type, token)
+        )
+      )
       httr::stop_for_status(ret)
     }
   )

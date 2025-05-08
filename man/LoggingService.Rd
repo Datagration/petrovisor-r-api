@@ -43,6 +43,9 @@ sp$logs$AddLogEntries(list(entry1, entry2))
 sp$logs$CleanUpLogEntries()
 }
 }
+\section{Super class}{
+\code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{LoggingService}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

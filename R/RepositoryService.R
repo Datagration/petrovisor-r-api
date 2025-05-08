@@ -1,5 +1,4 @@
 library("R6")
-library("httr")
 
 #' @title RepositoryService
 #'
@@ -31,7 +30,9 @@ library("httr")
 #' )
 #' sp$items$save("Entity", entity)
 #' }
-RepositoryService <- R6Class("RepositoryService",
+RepositoryService <- R6Class(
+  "RepositoryService",
+  inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
 
     #' @description Create a new RepositoryService instance. This is done by the
@@ -53,21 +54,15 @@ RepositoryService <- R6Class("RepositoryService",
     #'
     #' @return A character array containing the names of the items.
     load_names = function(type) {
-      # get the url_type
-      url_type <- private$get_url_type(type)
-      # get item names
-      ret <- httr::GET(
-        paste0(
-          private$url,
-          url_type
-        ),
-        httr::add_headers(
-          Authorization = paste(private$token_type, private$token)
-        )
-      )
-      httr::stop_for_status(ret)
-      cont <- httr::content(ret, as = "text")
-      return(jsonlite::fromJSON(cont))
+      # Get route
+      route <- private$get_url_type(type)
+
+      # Get item names
+      item_names <- private$get(private$url,
+                                route,
+                                private$token_type,
+                                private$token)
+      return(item_names)
     },
 
     #' @description Delete an item by name.
@@ -75,17 +70,15 @@ RepositoryService <- R6Class("RepositoryService",
     #' @param type The type of the item.
     #' @param name Name of the item to delete.
     delete = function(type, name) {
-      # get the url_type
-      url_type <- private$get_url_type(type)
+      # Get route
+      route <- paste0(private$get_url_type(type), "/")
 
-      # delete item
-      ret <- httr::DELETE(
-        gsub(" ", "%20", paste0(private$url, url_type, "/", name)),
-        httr::add_headers(
-          Authorization = paste(private$token_type, private$token)
-        )
-      )
-      httr::stop_for_status(ret)
+      # Delete item
+      private$delete(name,
+                     private$url,
+                     route,
+                     private$token_type,
+                     private$token)
     },
 
     #' @description  Get an item by name.
@@ -96,17 +89,14 @@ RepositoryService <- R6Class("RepositoryService",
     #' @return An object of the specified type class.
     load = function(type, name) {
       # get the url_type
-      url_type <- private$get_url_type(type)
+      route <- paste0(private$get_url_type(type), "/")
 
-      # retrieve the item
-      ret <- httr::GET(
-        gsub(" ", "%20", paste0(private$url, url_type, "/", name)),
-        httr::add_headers(
-          Authorization = paste(private$token_type, private$token)
-        )
-      )
-      httr::stop_for_status(ret)
-      cont <- jsonlite::fromJSON(httr::content(ret, as = "text"))
+      # Retrieve the item
+      cont <- private$get(private$url,
+                          route,
+                          private$token_type,
+                          private$token,
+                          query = name)
 
       # parse to object
       switch(type,
@@ -260,21 +250,15 @@ RepositoryService <- R6Class("RepositoryService",
     #' @param item Item to add or edit. Has to be an object of the respective
     #' class.
     save = function(type, item) {
-      # get the url_type
-      url_type <- private$get_url_type(type)
+      # Get route
+      route <- paste0(private$get_url_type(type), "/", item$name)
 
-      # add or edit item
-      ret <- httr::PUT(
-        gsub(" ", "%20", paste0(private$url, url_type, "/", item$name)),
-        body =
-          jsonlite::toJSON(item$toList(), auto_unbox = TRUE)
-        ,
-        httr::content_type_json(),
-        httr::add_headers(
-          Authorization = paste(private$token_type, private$token)
-        )
-      )
-      httr::stop_for_status(ret)
+      # Add or edit item
+      private$put(item$toList(),
+                  private$url,
+                  route,
+                  private$token_type,
+                  private$token)
     }
   ),
   private = list(

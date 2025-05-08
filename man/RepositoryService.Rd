@@ -33,6 +33,9 @@ entity <- Entity$new(
 sp$items$save("Entity", entity)
 }
 }
+\section{Super class}{
+\code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{RepositoryService}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

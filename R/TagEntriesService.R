@@ -1,8 +1,4 @@
-# ToDo: add documentation
-# ToDo: apply google R-style guide
-
 library("R6")
-library("httr")
 
 #' @title TagEntriesService
 #'
@@ -30,7 +26,9 @@ library("httr")
 #'   start = "2020-01-01T00:00:00.000Z"
 #' )
 #' }
-TagEntriesService <- R6Class("TagEntriesService",
+TagEntriesService <- R6Class(
+  "TagEntriesService",
+  inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
 
     #' @description Create a new TagEntriesService instance. This is done by the
@@ -73,17 +71,11 @@ TagEntriesService <- R6Class("TagEntriesService",
       )
       names(body) <- NULL
 
-      ret <- httr::POST(
-        paste0(
-          private$url,
-          "TagEntries/Add"
-        ),
-        body = jsonlite::toJSON(body, auto_unbox = TRUE),
-        content_type_json(),
-        add_headers(Authorization = paste(private$token_type, private$token))
-      )
-
-      httr::stop_for_status(ret)
+      private$post(body,
+                   private$url,
+                   "TagEntries/Add",
+                   private$token_type,
+                   private$token)
     },
 
     #' @description Delete all tag entries with a start date in the specified
@@ -104,16 +96,12 @@ TagEntriesService <- R6Class("TagEntriesService",
       if (!is.null(tag_name)) query$Tag <- tag_name
       if (!is.null(end)) query$End <- end
 
-      ret <- httr::DELETE(
-        paste0(
-          private$url,
-          "TagEntries/Range"
-        ),
-        query = query,
-        add_headers(Authorization = paste(private$token_type, private$token))
-      )
-
-      httr::stop_for_status(ret)
+      private$delete(NULL,
+                     private$url,
+                     "TagEntries/Range",
+                     private$token_type,
+                     private$token,
+                     query = query)
     },
 
     #' @description Delete the specified tag entries.
@@ -143,16 +131,11 @@ TagEntriesService <- R6Class("TagEntriesService",
       )
       names(body) <- NULL
 
-      ret <- httr::POST(
-        paste0(
-          private$url,
-          "TagEntries/Delete"
-        ),
-        body = jsonlite::toJSON(body, auto_unbox = TRUE),
-        content_type_json(),
-        add_headers(Authorization = paste(private$token_type, private$token))
-      )
-      httr::stop_for_status(ret)
+      private$post(body,
+                   private$url,
+                   "TagEntries/Delete",
+                   private$token_type,
+                   private$token)
     },
 
     #' @description Get tag entries according to the given filter.
@@ -221,19 +204,12 @@ TagEntriesService <- R6Class("TagEntriesService",
       if (!is.null(end_date_ends)) filter$EndDateEnds <- end_date_ends
       if (!is.null(is_end_date_set)) filter$EndDateSet <- is_end_date_set
 
-      ret <- httr::POST(
-        paste0(
-          private$url,
-          "TagEntries/Filtered"
-        ),
-        body = jsonlite::toJSON(filter, auto_unbox = TRUE),
-        content_type_json(),
-        add_headers(Authorization = paste(private$token_type, private$token))
-      )
-
-      httr::stop_for_status(ret)
-      cont <- httr::content(ret, as = "text")
-      tag_entries <- jsonlite::fromJSON(cont)
+      tag_entries <- private$post(filter,
+                                  private$url,
+                                  "TagEntries/Filtered",
+                                  private$token_type,
+                                  private$token,
+                                  expect_data = TRUE)
 
       # If no tag entries available, return empty list
       if (length(tag_entries) == 0) return(tag_entries)

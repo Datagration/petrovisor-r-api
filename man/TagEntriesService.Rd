@@ -37,6 +37,9 @@ sp$tag_entries$DeleteTagEntry(
 tagEntries <- sp$tag_entries$load(tag_group_names = c("Info"))
 }
 }
+\section{Super class}{
+\code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{TagEntriesService}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
