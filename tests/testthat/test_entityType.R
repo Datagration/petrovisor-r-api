@@ -1,6 +1,6 @@
 context("EntityType Tests")
 
-test_that("Entity type instanciation and conversion works", {
+test_that("Entity type instantiation and conversion works", {
   etype <- EntityType$new(name = "MyEntityType",
                           image = "11x87ztrd")
 
@@ -11,7 +11,7 @@ test_that("Entity type instanciation and conversion works", {
                     Image = "11x87ztrd"))
 })
 
-test_that("Entity type instanciation and conversion works (empty constructor)", {
+test_that("Entity type instantiation and conversion works (empty constructor)", {
   etype <- EntityType$new()
 
   listed <- etype$toList()

@@ -40,13 +40,13 @@ ApiRequests <- R6Class("ApiRequests",
         )
       )
 
-      if(expect_data) {
-        httr::stop_for_status(ret)
+      if (expect_data) {
+        httr::stop_for_status(ret, task = paste("POST with result:", ret))
         cont <- httr::content(ret, as = "text")
         return(jsonlite::fromJSON(cont))
       }
 
-      httr::stop_for_status(ret)
+      httr::stop_for_status(ret, task = paste("POST with result:", ret))
     },
 
     #' description Upload a file using a POST request to the api
@@ -74,7 +74,7 @@ ApiRequests <- R6Class("ApiRequests",
         encode = "multipart"
       )
 
-      httr::stop_for_status(ret)
+      httr::stop_for_status(ret, task = paste("POST with result:", ret))
     },
 
     download_file = function(name, url, route, token_type, token) {
@@ -85,7 +85,7 @@ ApiRequests <- R6Class("ApiRequests",
         )
       )
 
-      httr::stop_for_status(ret)
+      httr::stop_for_status(ret, task = paste("GET with result:", ret))
 
       return(ret)
     },
@@ -116,7 +116,7 @@ ApiRequests <- R6Class("ApiRequests",
         )
       )
 
-      httr::stop_for_status(ret)
+      httr::stop_for_status(ret, task = paste("GET with result:", ret))
 
       cont <- httr::content(ret, as = "text")
 
@@ -143,7 +143,7 @@ ApiRequests <- R6Class("ApiRequests",
         )
       )
 
-      httr::stop_for_status(ret)
+      httr::stop_for_status(ret, task = paste("DELETE with result:", ret))
     },
 
 
@@ -165,7 +165,7 @@ ApiRequests <- R6Class("ApiRequests",
           Authorization = paste(token_type, token)
         )
       )
-      httr::stop_for_status(ret)
+      httr::stop_for_status(ret, task = paste("PUT with result:", ret))
     }
   )
 )

@@ -1,7 +1,7 @@
 ##### POLYGON #####
-context("Polygon instanciation and conversion to list")
+context("Polygon instantiation and conversion to list")
 
-test_that("Polygon instanciation and conversion works",{
+test_that("Polygon instantiation and conversion works",{
   point1 <- Point$new(x = 5,
                       y = 5)
 
@@ -33,7 +33,7 @@ test_that("Polygon instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Entity set instanciation and conversion works (empty constructor)",{
+test_that("Entity set instantiation and conversion works (empty constructor)",{
   polygon <- Polygon$new()
 
   listed <- polygon$toList()

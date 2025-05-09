@@ -1,7 +1,7 @@
 ##### PIVOT TABLE #####
-context("Pivot table instanciation and conversion to list")
+context("Pivot table instantiation and conversion to list")
 
-test_that("Pivot table instanciation and conversion works",{
+test_that("Pivot table instantiation and conversion works",{
   pt <- PivotTable$new(name = "MyPivotTable",
                        addEntityAliasColumn = TRUE,
                        addEntityParentColumn = TRUE,
@@ -50,7 +50,7 @@ test_that("Pivot table instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Pivot table instanciation and conversion works (empty constructor)",{
+test_that("Pivot table instantiation and conversion works (empty constructor)",{
   pt <- PivotTable$new()
 
   listed <- pt$toList()

@@ -1,6 +1,6 @@
 context("Signal Tests")
 
-test_that("Signal instanciation and conversion works", {
+test_that("Signal instantiation and conversion works", {
   signal <- Signal$new(name = "MySignal",
                        short_name = "MyShorName",
                        measurement_name = "Length",
@@ -31,7 +31,7 @@ test_that("Signal instanciation and conversion works", {
                     Labels = list("label1", "label2")))
 })
 
-test_that("Signal instanciation and conversion works (empty constructor)", {
+test_that("Signal instantiation and conversion works (empty constructor)", {
   signal <- Signal$new()
 
   listed <- signal$toList()

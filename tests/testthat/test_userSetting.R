@@ -1,7 +1,7 @@
 ##### USER SETTING #####
-context("User setting instanciation and conversion to list")
+context("User setting instantiation and conversion to list")
 
-test_that("User setting instanciation and conversion works",{
+test_that("User setting instantiation and conversion works",{
   us <- UserSetting$new(name = "MySetting",
                         value = "MyValue")
 
@@ -12,7 +12,7 @@ test_that("User setting instanciation and conversion works",{
                     Value = "MyValue"))
 })
 
-test_that("User setting instanciation and conversion works
+test_that("User setting instantiation and conversion works
           (empty constructor)",{
   us <- UserSetting$new()
 

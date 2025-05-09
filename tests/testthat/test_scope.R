@@ -1,6 +1,6 @@
 context("Scope Tests")
 
-test_that("Scope instanciation and conversion works", {
+test_that("Scope instantiation and conversion works", {
   scp <- Scope$new(name = "Test R Scope",
                    start = "2020-03-01T00:00:00.000Z",
                    end = "2020-03-01T00:00:00.000Z",
@@ -27,7 +27,7 @@ test_that("Scope instanciation and conversion works", {
                     Labels = list("label1", "label2")))
 })
 
-test_that("Scope instanciation and conversion works (empty constructor)", {
+test_that("Scope instantiation and conversion works (empty constructor)", {
   scp <- Scope$new()
 
   listed <- scp$toList()

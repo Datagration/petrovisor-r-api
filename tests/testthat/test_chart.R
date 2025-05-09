@@ -1,7 +1,7 @@
-context("Chart instanciation and conversion to list")
+context("Chart instantiation and conversion to list")
 
 ##### CHART #####
-test_that("Chart instanciation and conversion works",{
+test_that("Chart instantiation and conversion works",{
   axis1 <- Axis$new(title = "Fruits eaten",
                    isOpposed = FALSE,
                    isLog = FALSE,
@@ -76,7 +76,7 @@ test_that("Chart instanciation and conversion works",{
                           Labels = list("label1", "label2")))
 })
 
-test_that("Chart instanciation and conversion works (empty constructor)",{
+test_that("Chart instantiation and conversion works (empty constructor)",{
   myChart <- Chart$new()
   listed <- myChart$toList()
 
@@ -104,7 +104,7 @@ test_that("Chart instanciation and conversion works (empty constructor)",{
 })
 
 ##### AXIS #####
-test_that("Axis instanciation and conversion works",{
+test_that("Axis instantiation and conversion works",{
   axis <- Axis$new(title = "Fruits eaten",
                    isOpposed = FALSE,
                    isLog = FALSE,
@@ -125,7 +125,7 @@ test_that("Axis instanciation and conversion works",{
                               TicksPerInterval = 10))
 })
 
-test_that("Axis instanciation and conversion works (empty constructor)",{
+test_that("Axis instantiation and conversion works (empty constructor)",{
   axis <- Axis$new()
   axisList <- axis$toList()
 
@@ -140,7 +140,7 @@ test_that("Axis instanciation and conversion works (empty constructor)",{
 })
 
 ##### SERIES SETTING #####
-test_that("SeriesSetting instanciation and conversion works",{
+test_that("SeriesSetting instantiation and conversion works",{
   setting <- SeriesSetting$new(scatterSize = 2,
                            lineThickness = 3,
                            color = "#123456")
@@ -151,7 +151,7 @@ test_that("SeriesSetting instanciation and conversion works",{
                                  Color = "#123456"))
 })
 
-test_that("SeriesSetting instanciation and conversion works
+test_that("SeriesSetting instantiation and conversion works
           (empty constructor)",{
   setting <- SeriesSetting$new()
   settingList <- setting$toList()

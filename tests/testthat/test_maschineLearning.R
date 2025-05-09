@@ -1,7 +1,7 @@
 ##### ML MODEL #####
-context("ML model instanciation and conversion to list")
+context("ML model instantiation and conversion to list")
 
-test_that("ML model instanciation and conversion works",{
+test_that("ML model instantiation and conversion works",{
   mlModel <- MLModel$new(name = "MyModel",
                          modelType = "Regression",
                          trainedModel = "MyTrainedModel",
@@ -28,7 +28,7 @@ test_that("ML model instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("ML model instanciation and conversion works (empty constructor)",{
+test_that("ML model instantiation and conversion works (empty constructor)",{
   mlModel <- MLModel$new()
 
   listed <- mlModel$toList()

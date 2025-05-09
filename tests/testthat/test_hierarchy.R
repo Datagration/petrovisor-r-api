@@ -1,6 +1,6 @@
 context("Hierarchy Tests")
 
-test_that("Hierarchy instanciation and conversion works", {
+test_that("Hierarchy instantiation and conversion works", {
   hierarchy <- Hierarchy$new(name = "Test R Hierarchy",
                              relationship = list(Child1 = "Parent1",
                                                  Child2 = "Parent2",
@@ -22,7 +22,7 @@ test_that("Hierarchy instanciation and conversion works", {
                     Labels = list("label1", "label2")))
 })
 
-test_that("Hierarchy instanciation and conversion works (empty constructor)", {
+test_that("Hierarchy instantiation and conversion works (empty constructor)", {
   hierarchy <- Hierarchy$new()
 
   listed <- hierarchy$toList()

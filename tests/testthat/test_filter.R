@@ -1,7 +1,7 @@
 ##### FILTER #####
-context("Filter instanciation and conversion to list")
+context("Filter instantiation and conversion to list")
 
-test_that("Filter instanciation and conversion works",{
+test_that("Filter instantiation and conversion works",{
   filter <- Filter$new(name = "MyFilter",
                        entityNamePattern = "ENamePattern",
                        signalNamePattern = "SNamePattern",
@@ -36,7 +36,7 @@ test_that("Filter instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("filter instanciation and conversion works (empty constructor)",{
+test_that("filter instantiation and conversion works (empty constructor)",{
   filter <- Filter$new()
 
   listed <- filter$toList()

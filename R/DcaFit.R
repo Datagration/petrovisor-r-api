@@ -217,7 +217,7 @@ DcaFit <- R6Class("DcaFit",
       dataPointsList <- list()
       if(!is.null(self$dataPoints)){
         for (i in 1:length(self$dataPoints)){
-          dataPointsList[[i]] <- self$dataPoints[[i]]$toList()
+          dataPointsList[[i]] <- self$dataPoints[[i]]$to_list()
         }
       } else {
         dataPointsList[[1]] <- ""
@@ -227,7 +227,7 @@ DcaFit <- R6Class("DcaFit",
       excludedDataPointsList <- list()
       if(!is.null(self$excludedDataPoints)){
         for (i in 1:length(self$excludedDataPoints)){
-          excludedDataPointsList[[i]] <- self$excludedDataPoints[[i]]$toList()
+          excludedDataPointsList[[i]] <- self$excludedDataPoints[[i]]$to_list()
         }
       } else {
         excludedDataPointsList[[1]] <- ""
@@ -237,7 +237,7 @@ DcaFit <- R6Class("DcaFit",
       cumulativeDataPointsList <- list()
       if(!is.null(self$cumulativeDataPoints)){
         for (i in 1:length(self$cumulativeDataPoints)){
-          cumulativeDataPointsList[[i]] <- self$cumulativeDataPoints[[i]]$toList()
+          cumulativeDataPointsList[[i]] <- self$cumulativeDataPoints[[i]]$to_list()
         }
       } else {
         cumulativeDataPointsList[[1]] <- ""

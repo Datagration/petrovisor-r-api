@@ -1,7 +1,7 @@
 ##### WORKFLOW #####
-context("Workflow instanciation and conversion to list")
+context("Workflow instantiation and conversion to list")
 
-test_that("Workflow instanciation and conversion works",{
+test_that("Workflow instantiation and conversion works",{
   ma1 <- ActivityMappedArgument$new(argumentName = "MyMappedArgument1",
                                     argumentType = "StaticSignalUnit",
                                     acceptableArgumentTypes = list(
@@ -74,7 +74,7 @@ test_that("Workflow instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Workflow instanciation and conversion works (empty constructor)",{
+test_that("Workflow instantiation and conversion works (empty constructor)",{
   wf <- Workflow$new()
 
   listed <- wf$toList()
@@ -89,9 +89,9 @@ test_that("Workflow instanciation and conversion works (empty constructor)",{
 })
 
 ##### WORKFLOW ACTIVITY #####
-context("Workflow activity instanciation and conversion to list")
+context("Workflow activity instantiation and conversion to list")
 
-test_that("Workflow activity instanciation and conversion works",{
+test_that("Workflow activity instantiation and conversion works",{
   ma1 <- ActivityMappedArgument$new(argumentName = "MyMappedArgument1",
                                     argumentType = "StaticSignalUnit",
                                     acceptableArgumentTypes = list(
@@ -150,7 +150,7 @@ test_that("Workflow activity instanciation and conversion works",{
                     InputArgumentsInfo = list(arg1$toList(), arg2$toList())))
 })
 
-test_that("Workflow activity instanciation and conversion works
+test_that("Workflow activity instantiation and conversion works
           (empty constructor)",{
   wfa <- WorkflowActivity$new()
 
@@ -166,9 +166,9 @@ test_that("Workflow activity instanciation and conversion works
 })
 
 ##### CUSTOM WORKFLOW ACTIVITY #####
-context("Custom workflow activity instanciation and conversion to list")
+context("Custom workflow activity instantiation and conversion to list")
 
-test_that("Custom workflow activity instanciation and conversion works",{
+test_that("Custom workflow activity instantiation and conversion works",{
   cwfa <- CustomWorkflowActivity$new(name = "MyActivity",
                                      className = "MyName",
                                      assemblyContent = "MyContent")
@@ -181,7 +181,7 @@ test_that("Custom workflow activity instanciation and conversion works",{
                     AssemblyContent = "MyContent"))
 })
 
-test_that("Custom workflow activity instanciation and conversion works
+test_that("Custom workflow activity instantiation and conversion works
           (empty constructor)",{
   cwfa <- CustomWorkflowActivity$new()
 
@@ -194,9 +194,9 @@ test_that("Custom workflow activity instanciation and conversion works
 })
 
 ##### R WORKFLOW ACTIVITY #####
-context("R workflow activity instanciation and conversion to list")
+context("R workflow activity instantiation and conversion to list")
 
-test_that("R workflow activity instanciation and conversion works",{
+test_that("R workflow activity instantiation and conversion works",{
   config <- RProviderConfiguration$new(providerType = "RNET",
                                        rServerAddress = "192.168.23.21",
                                        rServerPort = 8099,
@@ -240,7 +240,7 @@ test_that("R workflow activity instanciation and conversion works",{
                     Output = list(arg1$toList(), arg2$toList())))
 })
 
-test_that("R workflow activity instanciation and conversion works
+test_that("R workflow activity instantiation and conversion works
           (empty constructor)",{
   rWorkflowActivity <- RWorkflowActivity$new()
 
@@ -256,9 +256,9 @@ test_that("R workflow activity instanciation and conversion works
 })
 
 ##### R PROVIDER CONFIGURATION #####
-context("R provider configuration instanciation and conversion to list")
+context("R provider configuration instantiation and conversion to list")
 
-test_that("R provider configuration instanciation and conversion works",{
+test_that("R provider configuration instantiation and conversion works",{
   rConfig <- RProviderConfiguration$new(providerType = "RNET",
                                         rServerAddress = "192.168.23.21",
                                         rServerPort = 8099,
@@ -273,7 +273,7 @@ test_that("R provider configuration instanciation and conversion works",{
                     RServerScriptsFolder = "/home/scripts"))
 })
 
-test_that("R provider configuration instanciation and conversion works
+test_that("R provider configuration instantiation and conversion works
           (empty constructor)",{
   rConfig <- RProviderConfiguration$new()
 
@@ -287,9 +287,9 @@ test_that("R provider configuration instanciation and conversion works
 })
 
 ##### ACTIVITY ARGUMENT #####
-context("Activity argument instanciation and conversion to list")
+context("Activity argument instantiation and conversion to list")
 
-test_that("Activity argument instanciation and conversion works",{
+test_that("Activity argument instantiation and conversion works",{
   aa <- ActivityArgument$new(argumentName = "MyArgument",
                              acceptableArgumentTypes = list(
                                "StaticSignalUnit",
@@ -314,7 +314,7 @@ test_that("Activity argument instanciation and conversion works",{
                     DefaultString = "DefaultString"))
 })
 
-test_that("Activity argument instanciation and conversion works
+test_that("Activity argument instantiation and conversion works
           (empty constructor)",{
   aa <- ActivityArgument$new()
 
@@ -330,9 +330,9 @@ test_that("Activity argument instanciation and conversion works
 })
 
 ##### ACTIVITY MAPPED ARGUMENT #####
-context("Activity mapped argument instanciation and conversion to list")
+context("Activity mapped argument instantiation and conversion to list")
 
-test_that("Activity mapped argument instanciation and conversion works",{
+test_that("Activity mapped argument instantiation and conversion works",{
   ama <- ActivityMappedArgument$new(argumentName = "MyMappedArgument",
                                     argumentType = "StaticSignalUnit",
                                     acceptableArgumentTypes = list(
@@ -357,7 +357,7 @@ test_that("Activity mapped argument instanciation and conversion works",{
                     MappedString = "MyMappedstring"))
 })
 
-test_that("Activity mapped argument instanciation and conversion works
+test_that("Activity mapped argument instantiation and conversion works
           (empty constructor)",{
   ama <- ActivityMappedArgument$new()
 
@@ -373,9 +373,9 @@ test_that("Activity mapped argument instanciation and conversion works
 })
 
 ##### WORKFLOW SCHEDULE #####
-context("Workflow schedule instanciation and conversion to list")
+context("Workflow schedule instantiation and conversion to list")
 
-test_that("Workflow schedule instanciation and conversion works",{
+test_that("Workflow schedule instantiation and conversion works",{
   se <- ScheduleEnd$new(endType = 1,
                         repetitionsCount = 2,
                         totalRepetitions = 5,
@@ -442,7 +442,7 @@ test_that("Workflow schedule instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Workflow schedule instanciation and conversion works
+test_that("Workflow schedule instantiation and conversion works
           (empty constructor)",{
   schedule <- WorkflowSchedule$new()
 
@@ -471,9 +471,9 @@ test_that("Workflow schedule instanciation and conversion works
 })
 
 ##### SCHEDULE END #####
-context("Schedule end instanciation and conversion to list")
+context("Schedule end instantiation and conversion to list")
 
-test_that("Schedule end instanciation and conversion works",{
+test_that("Schedule end instantiation and conversion works",{
   se <- ScheduleEnd$new(endType = 1,
                         repetitionsCount = 2,
                         totalRepetitions = 5,
@@ -488,7 +488,7 @@ test_that("Schedule end instanciation and conversion works",{
                     EndDate = "2020-04-30T00:00:00.000Z"))
 })
 
-test_that("Schedule end instanciation and conversion works
+test_that("Schedule end instantiation and conversion works
           (empty constructor)",{
   se <- ScheduleEnd$new()
 
@@ -502,9 +502,9 @@ test_that("Schedule end instanciation and conversion works
 })
 
 ##### SCHEDULE RECURRENCE #####
-context("Schedule recurrence instanciation and conversion to list")
+context("Schedule recurrence instantiation and conversion to list")
 
-test_that("Schedule recurrence instanciation and conversion works",{
+test_that("Schedule recurrence instantiation and conversion works",{
   sr <- ScheduleRecurrence$new(recurrenceType = "Daily",
                                intervalsAmount = 2,
                                skipWeekend = TRUE,
@@ -539,7 +539,7 @@ test_that("Schedule recurrence instanciation and conversion works",{
                     RunOnSunday = TRUE))
 })
 
-test_that("Schedule recurrence instanciation and conversion works
+test_that("Schedule recurrence instantiation and conversion works
           (empty constructor)",{
   sr <- ScheduleRecurrence$new()
 

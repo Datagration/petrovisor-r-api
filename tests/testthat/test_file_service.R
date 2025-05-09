@@ -25,7 +25,7 @@ test_that("File can be downloaded", {
   file <- sp$files$load("test_file.csv")
 
   # Convert content to data.frame
-  data_retrieved <- read.csv(text = file)
+  data_retrieved <- read.csv(file)
 
   expect_equal(data_retrieved, test_data)
 })

@@ -1,13 +1,13 @@
 context("Tag Tests")
 
-test_that("Tag instanciation and conversion works", {
+test_that("Tag instantiation and conversion works", {
   tag <- Tag$new(name = "TagName", tag_group = "TestGroup")
   tag_list <- tag$toList()
 
   expect_equal(tag_list, list(Name = "TagName", TagGroup = "TestGroup"))
 })
 
-test_that("Tag instanciation and conversion works (empty constructor)", {
+test_that("Tag instantiation and conversion works (empty constructor)", {
   tag <- Tag$new()
   tag_list <- tag$toList()
 

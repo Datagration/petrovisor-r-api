@@ -1,6 +1,6 @@
 context("TagEntry Tests")
 
-test_that("TagEntry instanciation and conversion works (no end date)", {
+test_that("TagEntry instantiation and conversion works (no end date)", {
   tag_entry <- TagEntry$new(entity_name = "Test Entity",
                             tag_name = "Test R Tag",
                             start = "2020-02-01T00:00:00.000Z")
@@ -14,7 +14,7 @@ test_that("TagEntry instanciation and conversion works (no end date)", {
                     End = ""))
 })
 
-test_that("TagEntry instanciation and conversion works (with end date)", {
+test_that("TagEntry instantiation and conversion works (with end date)", {
   tag_entry <- TagEntry$new(entity_name = "Test Entity",
                             tag_name = "Test R Tag",
                             start = "2020-02-01T00:00:00.000Z",
@@ -29,7 +29,7 @@ test_that("TagEntry instanciation and conversion works (with end date)", {
                     End = "2020-03-01T00:00:00.000Z"))
 })
 
-test_that("TagEntry instanciation and conversion works (empty constructor)", {
+test_that("TagEntry instantiation and conversion works (empty constructor)", {
   tag_entry <- TagEntry$new()
   tag_entry_list <- tag_entry$to_list()
 
