@@ -1,7 +1,7 @@
 ##### STATIC DATA #####
-context("Static data instanciation and conversion to list")
+context("Static data instantiation and conversion to list")
 
-test_that("Static data instanciation and conversion works", {
+test_that("Static data instantiation and conversion works", {
   ds <- StaticData$new(signal_name = "x-coordinate",
                        unit_name = "m",
                        entity_name = "Well01",
@@ -18,7 +18,7 @@ test_that("Static data instanciation and conversion works", {
                     Scenario = ""))
 })
 
-test_that("Static data instanciation and conversion works (empty constructor)", {
+test_that("Static data instantiation and conversion works (empty constructor)", {
   ds <- StaticData$new()
 
   listed <- ds$to_list()
@@ -32,9 +32,9 @@ test_that("Static data instanciation and conversion works (empty constructor)", 
 })
 
 ##### TIME DATA #####
-context("Time data instanciation and conversion to list")
+context("Time data instantiation and conversion to list")
 
-test_that("Time data instanciation and conversion works", {
+test_that("Time data instantiation and conversion works", {
   dp1 <- list(Date = "2020-01-01T00:00:00.000Z",
               Value = 10)
   dp2 <- list(Date = "2020-02-01T00:00:00.000Z",
@@ -56,7 +56,7 @@ test_that("Time data instanciation and conversion works", {
                     Scenario = ""))
 })
 
-test_that("Time data instanciation and conversion works (empty constructor)", {
+test_that("Time data instantiation and conversion works (empty constructor)", {
   dt <- TimeData$new()
 
   listed <- dt$to_list()
@@ -70,9 +70,9 @@ test_that("Time data instanciation and conversion works (empty constructor)", {
 })
 
 ##### DEPTH DATA #####
-context("Depth data instanciation and conversion to list")
+context("Depth data instantiation and conversion to list")
 
-test_that("Depth data instanciation and conversion works", {
+test_that("Depth data instantiation and conversion works", {
   dp1 <- list(Depth = 100,
               Value = 10)
   dp2 <- list(Depth = 200,
@@ -94,7 +94,7 @@ test_that("Depth data instanciation and conversion works", {
                     Scenario = ""))
 })
 
-test_that("Depth data instanciation and conversion works (empty constructor)", {
+test_that("Depth data instantiation and conversion works (empty constructor)", {
   dt <- DepthData$new()
 
   listed <- dt$to_list()
@@ -108,9 +108,9 @@ test_that("Depth data instanciation and conversion works (empty constructor)", {
 })
 
 ##### PVT DATA #####
-context("PVT data instanciation and conversion to list")
+context("PVT data instantiation and conversion to list")
 
-test_that("PVT data instanciation and conversion works", {
+test_that("PVT data instantiation and conversion works", {
   p1 <- list(Pressure = 150,
              Temperature = 100,
              Value = 10)
@@ -134,7 +134,7 @@ test_that("PVT data instanciation and conversion works", {
                     Scenario = ""))
 })
 
-test_that("PVT data instanciation and conversion works (empty constructor)", {
+test_that("PVT data instantiation and conversion works (empty constructor)", {
   dpvt <- PVTData$new()
 
   listed <- dpvt$to_list()
@@ -148,9 +148,9 @@ test_that("PVT data instanciation and conversion works (empty constructor)", {
 })
 
 ##### DATA POINT #####
-context("Data point instanciation and conversion to list")
+context("Data point instantiation and conversion to list")
 
-test_that("Data point instanciation and conversion works", {
+test_that("Data point instantiation and conversion works", {
   dp <- DataPoint$new(date = "2020-03-01T00:00:00.000Z",
                       value = 10)
 
@@ -161,7 +161,7 @@ test_that("Data point instanciation and conversion works", {
                     Value = 10))
 })
 
-test_that("Data point instanciation and conversion works (empty constructor)", {
+test_that("Data point instantiation and conversion works (empty constructor)", {
   dp <- DataPoint$new()
 
   listed <- dp$to_list()
@@ -172,9 +172,9 @@ test_that("Data point instanciation and conversion works (empty constructor)", {
 })
 
 ##### POINT #####
-context("Point instanciation and conversion to list")
+context("Point instantiation and conversion to list")
 
-test_that("Point instanciation and conversion works", {
+test_that("Point instantiation and conversion works", {
   p <- Point$new(x = 20,
                  y = 10)
 
@@ -185,7 +185,7 @@ test_that("Point instanciation and conversion works", {
                     Y = 10))
 })
 
-test_that("Point instanciation and conversion works (empty constructor)", {
+test_that("Point instantiation and conversion works (empty constructor)", {
   p <- Point$new()
 
   listed <- p$toList()
@@ -196,9 +196,9 @@ test_that("Point instanciation and conversion works (empty constructor)", {
 })
 
 ##### NAMED POINT #####
-context("Named point instanciation and conversion to list")
+context("Named point instantiation and conversion to list")
 
-test_that("Named point instanciation and conversion works", {
+test_that("Named point instantiation and conversion works", {
   np <- NamedPoint$new(name = "MyPoint",
                        tagName = "MyTagName",
                        x = 20,
@@ -213,7 +213,7 @@ test_that("Named point instanciation and conversion works", {
                     Y = 10))
 })
 
-test_that("Named point instanciation and conversion works (empty constructor)", {
+test_that("Named point instantiation and conversion works (empty constructor)", {
   np <- NamedPoint$new()
 
   listed <- np$toList()

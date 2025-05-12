@@ -1,6 +1,6 @@
 context("Entity Tests")
 
-test_that("Entity instanciation and conversion works", {
+test_that("Entity instantiation and conversion works", {
   entity <- Entity$new(name = "TestName",
                        entity_type_name = "Well",
                        alias = "TestAlias",
@@ -13,7 +13,7 @@ test_that("Entity instanciation and conversion works", {
                                  IsOpportunity = FALSE))
 })
 
-test_that("Entity instanciation and conversion works (empty constructor)", {
+test_that("Entity instantiation and conversion works (empty constructor)", {
   entity <- Entity$new()
   entity_list <- entity$toList()
 

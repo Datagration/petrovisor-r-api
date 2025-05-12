@@ -1,7 +1,7 @@
 ##### CLEANSING CALCULATION #####
-context("Cleansing calculation instanciation and conversion to list")
+context("Cleansing calculation instantiation and conversion to list")
 
-test_that("CleansingCalculation instanciation and conversion works",{
+test_that("CleansingCalculation instantiation and conversion works",{
   filter1 <- CleansingFilter$new(name = "MyFilterName1",
                                  formula = "MyFormula1",
                                  unitName = "m")
@@ -29,7 +29,7 @@ test_that("CleansingCalculation instanciation and conversion works",{
                     Formula = "MyCcFormula"))
 })
 
-test_that("CleansingCalculation instanciation and conversion works
+test_that("CleansingCalculation instantiation and conversion works
           (empty constructor)",{
   cc <- CleansingCalculation$new()
 
@@ -46,9 +46,9 @@ test_that("CleansingCalculation instanciation and conversion works
 })
 
 ##### CLEANSING FILTER #####
-context("Cleansing filter instanciation and conversion to list")
+context("Cleansing filter instantiation and conversion to list")
 
-test_that("CleansingFilter instanciation and conversion works",{
+test_that("CleansingFilter instantiation and conversion works",{
   filter <- CleansingFilter$new(name = "MyFilterName1",
                                  formula = "MyFormula1",
                                  unitName = "m")
@@ -61,7 +61,7 @@ test_that("CleansingFilter instanciation and conversion works",{
                     UnitName = "m"))
 })
 
-test_that("CleansingFilter instanciation and conversion works
+test_that("CleansingFilter instantiation and conversion works
           (empty constructor)",{
   filter <- CleansingFilter$new()
 
@@ -74,9 +74,9 @@ test_that("CleansingFilter instanciation and conversion works
 })
 
 ##### EVENT CALCULATION #####
-context("Event calculation instanciation and conversion to list")
+context("Event calculation instantiation and conversion to list")
 
-test_that("EventCalculation instanciation and conversion works",{
+test_that("EventCalculation instantiation and conversion works",{
   event1 <- Event$new(name = "MyEventName1",
                       formula = "MyFormula1")
   event2 <- Event$new(name = "MyEventName2",
@@ -104,7 +104,7 @@ test_that("EventCalculation instanciation and conversion works",{
                     Formula = "MyEcFormula"))
 })
 
-test_that("EventCalculation instanciation and conversion works
+test_that("EventCalculation instantiation and conversion works
           (empty constructor)",{
   ec <- EventCalculation$new()
 
@@ -122,9 +122,9 @@ test_that("EventCalculation instanciation and conversion works
 })
 
 ##### EVENT #####
-context("Event instanciation and conversion to list")
+context("Event instantiation and conversion to list")
 
-test_that("Event instanciation and conversion works",{
+test_that("Event instantiation and conversion works",{
   event <- Event$new(name = "MyEventName",
                      formula = "MyFormula")
 
@@ -135,7 +135,7 @@ test_that("Event instanciation and conversion works",{
                     Formula = "MyFormula"))
 })
 
-test_that("Event instanciation and conversion works (empty constructor)",{
+test_that("Event instantiation and conversion works (empty constructor)",{
   event <- Event$new()
 
   listed <- event$toList()
@@ -146,12 +146,12 @@ test_that("Event instanciation and conversion works (empty constructor)",{
 })
 
 ##### TABLE CALCULATION #####
-context("Table calculation instanciation and conversion to list")
+context("Table calculation instantiation and conversion to list")
 
-test_that("TableCalculation instanciation and conversion works",{
+test_that("TableCalculation instantiation and conversion works",{
   column1 <- Column$new(name = "MyColumnName1",
                         unit = Unit$new(name = "MyUnit",
-                                        measurementName = "Length",
+                                        measurement_name = "Length",
                                         factor = 1,
                                         summand = 0),
                         formula = "MyFormula1",
@@ -160,7 +160,7 @@ test_that("TableCalculation instanciation and conversion works",{
                         saveToParentEntity = FALSE)
   column2 <- Column$new(name = "MyColumnName2",
                         unit = Unit$new(name = "MyUnit",
-                                        measurementName = "Length",
+                                        measurement_name = "Length",
                                         factor = 1,
                                         summand = 0),
                         formula = "MyFormula2",
@@ -190,7 +190,7 @@ test_that("TableCalculation instanciation and conversion works",{
                     Formula = "MyTcFormula"))
 })
 
-test_that("TableCalculation instanciation and conversion works
+test_that("TableCalculation instantiation and conversion works
           (empty constructor)",{
   tc <- TableCalculation$new()
 
@@ -208,12 +208,12 @@ test_that("TableCalculation instanciation and conversion works
 })
 
 ##### COLUMN #####
-context("Column instanciation and conversion to list")
+context("Column instantiation and conversion to list")
 
-test_that("Column instanciation and conversion works",{
+test_that("Column instantiation and conversion works",{
   column <- Column$new(name = "MyColumnName",
                         unit = Unit$new(name = "MyUnit",
-                                        measurementName = "Length",
+                                        measurement_name = "Length",
                                         factor = 1,
                                         summand = 0),
                         formula = "MyFormula",
@@ -235,7 +235,7 @@ test_that("Column instanciation and conversion works",{
                     SaveToParentEntity = FALSE))
 })
 
-test_that("Column instanciation and conversion works (empty constructor)",{
+test_that("Column instantiation and conversion works (empty constructor)",{
   column <- Column$new()
 
   listed <- column$toList()

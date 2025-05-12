@@ -1,7 +1,7 @@
 ##### DATA SET REQUEST #####
-context("Data set request instanciation and conversion to list")
+context("Data set request instantiation and conversion to list")
 
-test_that("Data set request instanciation and conversion works",{
+test_that("Data set request instantiation and conversion works",{
   dsr <- DataSetRequest$new(entityName = "Well01",
                             signalName = "oil rate",
                             unitName = "m3/d")
@@ -14,7 +14,7 @@ test_that("Data set request instanciation and conversion works",{
                     Unit = "m3/d"))
 })
 
-test_that("Data set request instanciation and conversion works
+test_that("Data set request instantiation and conversion works
           (empty constructor)",{
   dsr <- DataSetRequest$new()
 

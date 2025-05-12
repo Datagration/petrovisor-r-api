@@ -1,7 +1,7 @@
 ##### DATA CONNECTION #####
-context("Data connection instanciation and conversion to list")
+context("Data connection instantiation and conversion to list")
 
-test_that("Data connection instanciation and conversion works",{
+test_that("Data connection instantiation and conversion works",{
   dc <- DataConnection$new(name = "MyDataConnection",
                            connectionType = "MyType",
                            settings = "MySettings",
@@ -22,7 +22,7 @@ test_that("Data connection instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Data Connection instanciation and conversion works
+test_that("Data Connection instantiation and conversion works
           (empty constructor)",{
   dc <- DataConnection$new()
 
@@ -39,9 +39,9 @@ test_that("Data Connection instanciation and conversion works
 })
 
 ##### DATA SOURCE #####
-context("Data source instanciation and conversion to list")
+context("Data source instantiation and conversion to list")
 
-test_that("Data source instanciation and conversion works",{
+test_that("Data source instantiation and conversion works",{
   mapping1 <- DataMapping$new(sourceRef = "MySourceRef1",
                               entityName = "Well01",
                               signalName = "oil rate",
@@ -108,7 +108,7 @@ test_that("Data source instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Data source instanciation and conversion works
+test_that("Data source instantiation and conversion works
           (empty constructor)",{
   ds <- DataSource$new()
 
@@ -142,9 +142,9 @@ test_that("Data source instanciation and conversion works
 })
 
 ##### DATA MAPPING #####
-context("Data mapping instanciation and conversion to list")
+context("Data mapping instantiation and conversion to list")
 
-test_that("Data mapping instanciation and conversion works",{
+test_that("Data mapping instantiation and conversion works",{
   dm <- DataMapping$new(sourceRef = "MySourceRef",
                         entityName = "Well01",
                         signalName = "oil rate",
@@ -159,7 +159,7 @@ test_that("Data mapping instanciation and conversion works",{
                     UnitName = "m3/d"))
 })
 
-test_that("Data mapping instanciation and conversion works
+test_that("Data mapping instantiation and conversion works
           (empty constructor)",{
   dm <- DataMapping$new()
 
@@ -173,9 +173,9 @@ test_that("Data mapping instanciation and conversion works
 })
 
 ##### DATA INTEGRATION SET #####
-context("Data integration set instanciation and conversion to list")
+context("Data integration set instantiation and conversion to list")
 
-test_that("Data integration set instanciation and conversion works",{
+test_that("Data integration set instantiation and conversion works",{
   dis <- DataIntegrationSet$new(name = "MyIntegrationSet",
                                 overwriteExistingData = FALSE,
                                 trackNewEntities = TRUE,
@@ -214,7 +214,7 @@ test_that("Data integration set instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Data integration set instanciation and conversion works
+test_that("Data integration set instantiation and conversion works
           (empty constructor)",{
   dis <- DataIntegrationSet$new()
 

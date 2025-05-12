@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^.*\.yml$
 ^\.yml$
+LICENSE.md$
+NEWS.md$
+README.md$

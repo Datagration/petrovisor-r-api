@@ -1,7 +1,7 @@
 ##### GEO DATA GRID #####
-context("Geo data grid instanciation and conversion to list")
+context("Geo data grid instantiation and conversion to list")
 
-test_that("Geo data grid instanciation and conversion works",{
+test_that("Geo data grid instantiation and conversion works",{
   geoGrid <- GeoDataGrid$new(name = "MyGrid",
                              gridData = list(1,2,3,4,5,6,7,8),
                              rows = 4,
@@ -34,7 +34,7 @@ test_that("Geo data grid instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Geo data grid instanciation and conversion works (empty constructor)",{
+test_that("Geo data grid instantiation and conversion works (empty constructor)",{
   geoGrid <- GeoDataGrid$new()
 
   listed <- geoGrid$toList()

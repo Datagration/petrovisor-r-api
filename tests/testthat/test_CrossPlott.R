@@ -1,7 +1,7 @@
 ##### CROSS PLOT #####
-context("Cross plot instanciation and conversion to list")
+context("Cross plot instantiation and conversion to list")
 
-test_that("Cross plot instanciation and conversion works",{
+test_that("Cross plot instantiation and conversion works",{
   ds1 <- CrossPlotDataSet$new(signalName = "oil rate",
                               unitName = "m3/d",
                               entityName = "Well01",
@@ -65,7 +65,7 @@ test_that("Cross plot instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Cross plot instanciation and conversion works
+test_that("Cross plot instantiation and conversion works
           (empty constructor)",{
   cp <- CrossPlot$new()
 
@@ -95,9 +95,9 @@ test_that("Cross plot instanciation and conversion works
 })
 
 ##### CROSS PLOT DATA SET #####
-context("Cross plot data set instanciation and conversion to list")
+context("Cross plot data set instantiation and conversion to list")
 
-test_that("Cross plot data set instanciation and conversion works",{
+test_that("Cross plot data set instantiation and conversion works",{
   cpds <- CrossPlotDataSet$new(signalName = "oil rate",
                                unitName = "m3/d",
                                entityName = "Well01",
@@ -120,7 +120,7 @@ test_that("Cross plot data set instanciation and conversion works",{
                     TrendLine = "On"))
 })
 
-test_that("Cross plot data set instanciation and conversion works
+test_that("Cross plot data set instantiation and conversion works
           (empty constructor)",{
   cpds <- CrossPlotDataSet$new()
 

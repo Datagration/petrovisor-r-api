@@ -1,46 +1,46 @@
 ##### DCA FIT #####
-context("DCA fit instanciation and conversion to list")
+context("DCA fit instantiation and conversion to list")
 
-test_that("DCA fit instanciation and conversion works", {
+test_that("DCA fit instantiation and conversion works", {
   entity <- Entity$new(name = "Well01",
                        alias = "Alias01",
                        entity_type_name = "Well")
 
   rate_signal <- Signal$new(name = "oil rate",
-                            shortName = "or",
-                            measurementName = "FlowRate",
-                            storageUnitName = "m3/s",
-                            aggregationType = "Average",
-                            containerAggregationType = "Average",
-                            signalType = "Time-dependent",
-                            defaultColor = 0,
-                            defaultLineType = "Solid",
-                            settingName = NULL)
+                            short_name = "or",
+                            measurement_name = "FlowRate",
+                            storage_unit_name = "m3/s",
+                            aggregation_type = "Average",
+                            container_aggregation_type = "Average",
+                            signal_type = "TimeDependent",
+                            default_color = 0,
+                            default_line_type = "Solid",
+                            setting_name = NULL)
 
   rate_unit <- Unit$new(name = "m3/d",
-                        measurementName = "FlowRate",
+                        measurement_name = "FlowRate",
                         factor = 1,
                         summand = 0)
 
   cum_signal <- Signal$new(name = "oil",
-                           shortName = "o",
-                           measurementName = "Volume",
-                           storageUnitName = "m3",
-                           aggregationType = "Sum",
-                           containerAggregationType = "Sum",
-                           signalType = "Time-dependent",
-                           defaultColor = 0,
-                           defaultLineType = "Solid",
-                           settingName = NULL)
+                           short_name = "o",
+                           measurement_name = "Volume",
+                           storage_unit_name = "m3",
+                           aggregation_type = "Sum",
+                           container_aggregation_type = "Sum",
+                           signal_type = "TimeDependent",
+                           default_color = 0,
+                           default_line_type = "Solid",
+                           setting_name = NULL)
 
   cum_unit <- Unit$new(name = "m3",
-                       measurementName = "Volume",
+                       measurement_name = "Volume",
                        factor = 1,
                        summand = 0)
 
   scope <- Scope$new(start = "2020-01-01T00:00:00.000Z",
                      end = "2020-03-01T00:00:00.000Z",
-                     timeIncrement = "Daily")
+                     time_increment = "Daily")
 
   dp1 <- DataPoint$new(date = "2020-01-01T00:00:00.000Z",
                        value = 35)
@@ -100,9 +100,9 @@ test_that("DCA fit instanciation and conversion works", {
                     CumulativeSignal = cum_signal$toList(),
                     CumulativeUnit = cum_unit$toList(),
                     TimeScope = scope$toList(),
-                    DataPoints = list(dp1$toList(), dp2$toList()),
-                    ExcludedDataPoints = list(edp1$toList(), edp2$toList()),
-                    CumulativeDataPoints = list(cdp1$toList(), cdp2$toList()),
+                    DataPoints = list(dp1$to_list(), dp2$to_list()),
+                    ExcludedDataPoints = list(edp1$to_list(), edp2$to_list()),
+                    CumulativeDataPoints = list(cdp1$to_list(), cdp2$to_list()),
                     FitRange = list(Start = "2020-01-01T00:00:00.000Z",
                                     End = "2020-04-01T00:00:00.000Z"),
                     FitType = "linear",
@@ -127,7 +127,7 @@ test_that("DCA fit instanciation and conversion works", {
                     Labels = list("label1", "label2")))
 })
 
-test_that("DCA fit instanciation and conversion works (empty constructor)", {
+test_that("DCA fit instantiation and conversion works (empty constructor)", {
   dca_fit <- DcaFit$new()
 
   listed <- dca_fit$toList()

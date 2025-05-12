@@ -1,6 +1,6 @@
 context("Scenario Tests")
 
-test_that("Scenario instanciation and conversion works", {
+test_that("Scenario instantiation and conversion works", {
   cs_one <- ConfigurationSetting$new(name = "MyCsOne",
                                      numeric_value = 1,
                                      string_value = "string",
@@ -49,7 +49,7 @@ test_that("Scenario instanciation and conversion works", {
                     Labels = list("label1", "label2")))
 })
 
-test_that("Scenario instanciation and conversion works (empty constructor)", {
+test_that("Scenario instantiation and conversion works (empty constructor)", {
   scenario <- Scenario$new()
 
   listed <- scenario$toList()

@@ -1,6 +1,6 @@
 context("Unit Tests")
 
-test_that("Unit instanciation and conversion works", {
+test_that("Unit instantiation and conversion works", {
   unit <- Unit$new(name = "MyUnit",
                    measurement_name = "Length",
                    factor = 1.5,
@@ -15,7 +15,7 @@ test_that("Unit instanciation and conversion works", {
                     Summand = 0))
 })
 
-test_that("Unit instanciation and conversion works (empty constructor)", {
+test_that("Unit instantiation and conversion works (empty constructor)", {
   unit <- Unit$new()
 
   listed <- unit$toList()

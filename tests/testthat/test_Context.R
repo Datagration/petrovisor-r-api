@@ -1,6 +1,6 @@
 context("Context Tests")
 
-test_that("Context instanciation and conversion works", {
+test_that("Context instantiation and conversion works", {
   e1 <- Entity$new(name = "MyWell1",
                    entity_type_name = "Well",
                    alias = "MyAlias1")
@@ -69,7 +69,7 @@ test_that("Context instanciation and conversion works", {
                     Labels = list("label1", "label2")))
 })
 
-test_that("Context instanciation and conversion works (empty constructor)", {
+test_that("Context instantiation and conversion works (empty constructor)", {
   context <- Context$new()
 
   listed <- context$toList()

@@ -9,6 +9,12 @@ library("jsonlite")
 #'   access to various services such as logging, repository, data, and tag
 #'   entries.
 #'
+#' @import R6
+#' @import base64enc
+#' @import httr
+#' @import jsonlite
+#' @import tidyr
+#'
 #' @export ServiceProvider
 #'
 #' @field url Full URL to the PetroVisor API (either with or without token).

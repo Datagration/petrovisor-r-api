@@ -1,6 +1,6 @@
 context("LogEntry Tests")
 
-test_that("LogEntry instanciation and conversion works", {
+test_that("LogEntry instantiation and conversion works", {
   le <- LogEntry$new(timestamp = "2020-03-01-00:00:00.000Z",
                      message = "Test message",
                      category = "Test R",
@@ -39,7 +39,7 @@ test_that("LogEntry instanciation and conversion works", {
                     Directory = "Test Directory"))
 })
 
-test_that("LogEntry instanciation and conversion works (empty constructor)", {
+test_that("LogEntry instantiation and conversion works (empty constructor)", {
   le <- LogEntry$new(timestamp = "2020-03-01-00:00:00.000Z",
                      item_change = "Other",
                      item_type = "Unknown",

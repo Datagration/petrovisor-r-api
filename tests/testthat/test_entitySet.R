@@ -1,6 +1,6 @@
 context("EntitySet Tests")
 
-test_that("Entity set instanciation and conversion works", {
+test_that("Entity set instantiation and conversion works", {
   e1 <- Entity$new(name = "MyWell1",
                    entity_type_name = "Well",
                    alias = "MyAlias1")
@@ -25,7 +25,7 @@ test_that("Entity set instanciation and conversion works", {
                     Labels = list("label1", "label2")))
 })
 
-test_that("Entity set instanciation and conversion works (empty constructor)", {
+test_that("Entity set instantiation and conversion works (empty constructor)", {
   eset <- EntitySet$new()
 
   listed <- eset$toList()

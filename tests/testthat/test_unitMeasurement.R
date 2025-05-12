@@ -1,6 +1,6 @@
 context("UnitMeasurement Tests")
 
-test_that("Unit measurement instanciation and conversion works", {
+test_that("Unit measurement instantiation and conversion works", {
   um <- UnitMeasurement$new(name = "MyMeasurement",
                             canonical_unit_name = "MyCanonicalUnitName")
 
@@ -11,7 +11,7 @@ test_that("Unit measurement instanciation and conversion works", {
                     CanonicalUnitName = "MyCanonicalUnitName"))
 })
 
-test_that("Unit measurement instanciation and conversion works (empty constructor)", {
+test_that("Unit measurement instantiation and conversion works (empty constructor)", {
   um <- UnitMeasurement$new()
 
   listed <- um$toList()

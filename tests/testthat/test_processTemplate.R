@@ -1,12 +1,12 @@
 ##### PROCESS TEMPLATE #####
-context("Process template instanciation and conversion to list")
+context("Process template instantiation and conversion to list")
 
-test_that("Process template instanciation and conversion works",{
+test_that("Process template instantiation and conversion works",{
   cf1 <- CustomField$new(name = "MyCustomField1",
                          evaluatedColumn =
                            Column$new(name = "MyColumn1",
                                       unit = Unit$new(name = "MyUnitName1",
-                                                      measurementName =
+                                                      measurement_name =
                                                         "Length",
                                                       factor = 1,
                                                       summand = 0),
@@ -29,7 +29,7 @@ test_that("Process template instanciation and conversion works",{
                          evaluatedColumn =
                            Column$new(name = "MyColumn2",
                                       unit = Unit$new(name = "MyUnitName2",
-                                                      measurementName =
+                                                      measurement_name =
                                                         "Length",
                                                       factor = 1,
                                                       summand = 0),
@@ -76,7 +76,7 @@ test_that("Process template instanciation and conversion works",{
                     CustomFields = list(cf1$toList(), cf2$toList())))
 })
 
-test_that("Process template instanciation and conversion works
+test_that("Process template instantiation and conversion works
           (empty constructor)",{
   pt <- ProcessTemplate$new()
 
@@ -94,9 +94,9 @@ test_that("Process template instanciation and conversion works
 })
 
 ##### STEP #####
-context("Step instanciation and conversion to list")
+context("Step instantiation and conversion to list")
 
-test_that("Step instanciation and conversion works",{
+test_that("Step instantiation and conversion works",{
   step <- Step$new(name = "MyStep",
                    userGroupName = "MyUserGroup")
 
@@ -107,7 +107,7 @@ test_that("Step instanciation and conversion works",{
                     UserGroup = "MyUserGroup"))
 })
 
-test_that("Step instanciation and conversion works (empty constructor)",{
+test_that("Step instantiation and conversion works (empty constructor)",{
   step <- Step$new()
 
   listed <- step$toList()
@@ -118,12 +118,12 @@ test_that("Step instanciation and conversion works (empty constructor)",{
 })
 
 ##### CUSTOM FIELD #####
-context("Custom field instanciation and conversion to list")
+context("Custom field instantiation and conversion to list")
 
-test_that("Custom field instanciation and conversion works",{
+test_that("Custom field instantiation and conversion works",{
   c1 <- Column$new(name = "MyColumn1",
                    unit = Unit$new(name = "MyUnitName1",
-                                   measurementName = "Length",
+                                   measurement_name = "Length",
                                    factor = 1,
                                    summand = 0),
                    formula = "MyColumnFormula",
@@ -161,7 +161,7 @@ test_that("Custom field instanciation and conversion works",{
                     SettingName = "MySetting"))
 })
 
-test_that("Custom field instanciation and conversion works
+test_that("Custom field instantiation and conversion works
           (empty constructor)",{
   cf <- CustomField$new()
 

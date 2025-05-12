@@ -1,6 +1,6 @@
 context("ConfigurationSetting Tests")
 
-test_that("ConfigurationSetting instanciation and conversion works", {
+test_that("ConfigurationSetting instantiation and conversion works", {
   cs <- ConfigurationSetting$new(name = "MyCS",
                                  numeric_value = 1,
                                  string_value = "string",
@@ -39,7 +39,7 @@ test_that("ConfigurationSetting instanciation and conversion works", {
                                            Three = 3)))
 })
 
-test_that("ConfigurationSetting instanciation and conversion works (empty constructor)", {
+test_that("ConfigurationSetting instantiation and conversion works (empty constructor)", {
   cs <- ConfigurationSetting$new()
 
   listed <- cs$toList()

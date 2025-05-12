@@ -1,7 +1,7 @@
 ##### PLOT #####
-context("plot instanciation and conversion to list")
+context("plot instantiation and conversion to list")
 
-test_that("plot instanciation and conversion works",{
+test_that("plot instantiation and conversion works",{
   p <- Plot$new(name = "MyPlot",
                 plotType = "scatter",
                 inputTableNames = list("Table1", "Table2"),
@@ -40,7 +40,7 @@ test_that("plot instanciation and conversion works",{
                     Labels = list("label1", "label2")))
 })
 
-test_that("Plot instanciation and conversion works (empty constructor)",{
+test_that("Plot instantiation and conversion works (empty constructor)",{
   p <- Plot$new()
 
   listed <- p$toList()
