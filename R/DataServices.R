@@ -73,13 +73,16 @@ DataServices <- R6Class(
     #' @param url the URL for the API calls.
     #' @param token_type the type of the issued token.
     #' @param token the issued token.
-    initialize = function(url, token_type, token) {
+    #' @param sp instance of the service provider
+    initialize = function(url, token_type, token, sp) {
       private$url <- url
       private$token_type <- token_type
       private$token <- token
+      private$sp <- sp
     },
 
-    #' @description Load data from PetroVisor.
+    #' @description Load data from PetroVisor. This function is deprecated.
+    #'  Use \code{load_signals()} or \code{load_reference_table()} instead.
     #' @param entities List of entities to retrieve data for. Either a list of
     #'  strings or a list of items of type Entity.
     #' @param signals List of parsed signals to retrieve data for.
@@ -106,6 +109,7 @@ DataServices <- R6Class(
     #' @param reshape Whether to return the raw output of the api call or
     #'   reshape the data into a more user-friendly format. Defaults to
     #'   \code{TRUE}.
+    # ToDo: remove in version 3.2.0
     load = function(entities,
                     signals,
                     scenario_names = NULL,
@@ -126,18 +130,80 @@ DataServices <- R6Class(
                     temperature_unit = NULL,
                     aggregation = NULL,
                     reshape = TRUE) {
+      lifecycle::deprecate_warn("3.1.0", "load()", "load_signals()")
+
+      return(self$load_signals(entities,
+                               signals,
+                               scenario_names,
+                               hierarchy_name,
+                               top_records,
+                               include_workspace_data,
+                               time_increment,
+                               time_start,
+                               time_end,
+                               depth_increment,
+                               depth_start,
+                               depth_end,
+                               with_gaps,
+                               gap_numeric_value,
+                               gap_string_value,
+                               depth_unit,
+                               pressure_unit,
+                               temperature_unit,
+                               aggregation,
+                               reshape))
+    },
+
+    #' @description Load signal data from PetroVisor.
+    #' @param entities List of entities to retrieve data for. Either a list of
+    #'  strings or a list of items of type Entity.
+    #' @param signals List of parsed signals to retrieve data for.
+    #' @param scenario_names List of scenario names to load data for.
+    #' @param hierarchy_name Hierarchy used in the data retrieval process.
+    #' @param top_records Number of records to return.
+    #' @param include_workspace_data Whether workspace data shall be included in
+    #'   the output (only applies if scenarios are used). Defaults to
+    #'   \code{TRUE}.
+    #' @param time_increment The time increment to load the data in.
+    #' @param time_start The first time stamp data is loaded for.
+    #' @param time_end The last time stamp data is loaded for.
+    #' @param depth_increment The depth increment to load the data in.
+    #' @param depth_start The first depth data is loaded for.
+    #' @param depth_end The last depth data is loaded for.
+    #' @param with_gaps Whether gaps shall be returned. Defaults to \code{TRUE}.
+    #' @param gap_numeric_value Replacement value for gaps in numeric data.
+    #' @param gap_string_value Replacement value for gaps in string data.
+    #' @param depth_unit The depth unit for retrieving depth data.
+    #' @param pressure_unit The pressure unit used when retrieving PVT data.
+    #' @param temperature_unit The temperature unit used when retrieving PVT
+    #'   data.
+    #' @param aggregation Aggregation type applied to the data.
+    #' @param reshape Whether to return the raw output of the api call or
+    #'   reshape the data into a more user-friendly format. Defaults to
+    #'   \code{TRUE}.
+    load_signals = function(entities,
+                            signals,
+                            scenario_names = NULL,
+                            hierarchy_name = NULL,
+                            top_records = NULL,
+                            include_workspace_data = TRUE,
+                            time_increment = NULL,
+                            time_start = NULL,
+                            time_end = NULL,
+                            depth_increment = NULL,
+                            depth_start = NULL,
+                            depth_end = NULL,
+                            with_gaps = TRUE,
+                            gap_numeric_value = NULL,
+                            gap_string_value = NULL,
+                            depth_unit = NULL,
+                            pressure_unit = NULL,
+                            temperature_unit = NULL,
+                            aggregation = NULL,
+                            reshape = TRUE) {
 
       # Get entity names from input
-      entity_names <- lapply(
-        entities,
-        function(x) {
-          if ("Entity" %in% as.list(class(x))) {
-            x$name
-          } else {
-            x
-          }
-        }
-      )
+      entity_names <- private$get_entity_names(entities)
 
       # Build request
       request <- list()
@@ -289,7 +355,145 @@ DataServices <- R6Class(
       return(data_out)
     },
 
-    #' @description Save data to PetroVisor.
+    #' @description Load reference table data from PetroVisor.
+    #'
+    #' @param table The name of the reference table to load from.
+    #' @param entities List of entities to retrieve data for. Either a list of
+    #'  strings or a list of items of type Entity.
+    #' @param time_start The first time stamp data is loaded for.
+    #' @param time_end The last time stamp data is loaded for.
+    #' @param top_records Number of records to return.
+    #' @param key_unit_name The unit in which to retrieve the key values.
+    #' @param columns List of strings defining the columns and units to be
+    #'   retrieved. E.g. list("column name 1 [unit]", "column name 2 [unit]").
+    #'   When \code{specified_columns_only = TRUE}, only columns given in this
+    #'   argument will be returned. Otherwise, this argument will be used to
+    #'   define the units in which the column data will be returned.
+    #' @param specified_columns_only Whether to return the columns specified in
+    #'   \code{columns} only. Defaults to \code{FALSE}.
+    #' @param where WHERE-like clause to filter the reference table data.
+    load_reference_table = function(table,
+                                    entities = NULL,
+                                    time_start = NULL,
+                                    time_end = NULL,
+                                    top_records = NULL,
+                                    key_unit_name = NULL,
+                                    columns = NULL,
+                                    specified_columns_only = FALSE,
+                                    where = NULL) {
+
+      # Get entity names from input
+      entity_names <- private$get_entity_names(entities)
+
+      # Build request
+      request <- list()
+      request$Entities <- entity_names
+
+      if (!is.null(time_start))
+        request$StartTimestamp <- time_start
+
+      if (!is.null(time_end))
+        request$EndTimestamp <- time_end
+
+      if (!is.null(top_records))
+        request$TopRows <- top_records
+
+      if (!is.null(key_unit_name))
+        request$KeyUnitName <- key_unit_name
+
+      if (!is.null(columns)) {
+        column_units <- list()
+        for (i in seq_along(columns)) {
+          parsed <- private$sp$parse_signal(columns[[i]])
+          column_units[[parsed$Signal]] <- parsed$Unit
+        }
+        request$ValuesUnitNames <- column_units
+      }
+
+      request$ReturnOnlySpecifiedValuesUnitNames <- specified_columns_only
+      request$WhereExpression <- where
+
+      # Retrieve data (data does not contain the column names)
+      data <- private$post(request,
+                           private$url,
+                           paste0("RefTables/", table, "/Data"),
+                           private$token_type,
+                           private$token,
+                           expect_data = TRUE)
+
+      if (length(data) == 0)
+        return(data.frame())
+
+      # add column names (needs the table definition)
+      table_definition <- private$sp$items$load("ReferenceTable", table)
+
+      # these are always there
+      column_names <- c("Entity", "Timestamp", table_definition$key$name)
+
+      # depending on the input, either append the selected column names only,
+      # or get all column names from the table definition
+      if (specified_columns_only) {
+        # handle instances where specified_columns_only is TRUE, but no columns
+        # are given
+        if (is.null(columns)) {
+          column_names <- c(
+            column_names,
+            lapply(
+              table_definition$values,
+              function(x) {
+                x$name
+              }
+            )
+          )
+        } else {
+          column_names <- c(column_names, names(request$ValuesUnitNames))
+        }
+      } else {
+        column_names <- c(
+          column_names,
+          lapply(
+            table_definition$values,
+            function(x) {
+              x$name
+            }
+          )
+        )
+      }
+
+      colnames(data) <- column_names
+      data <- as.data.frame(data)
+
+      # convert strings to data type mentioned in column definitions
+      # position 4 in the column_names variable is the first value column
+      # the key column is handled separately
+      for (name in column_names[4:length(column_names)]) {
+        # get column definition
+        column_definition <-
+          table_definition$values[sapply(
+            table_definition$values, function(x) {
+              x$name == name
+            }
+          )][[1]]
+
+        switch(column_definition$column_type,
+          Numeric = data[, name] <- as.double(data[, name]),
+          Boolean = data[, name] <- as.logical(data[, name])
+        )
+      }
+
+      # handle conversion of the key column
+      switch(table_definition$key$column_type,
+        Numeric = data[, table_definition$key$name] <-
+          as.double(data[, table_definition$key$name]),
+        Boolean = data[, table_definition$key$name] <-
+          as.logical(data[, table_definition$key$name])
+      )
+
+      return(data)
+    },
+
+    #' @description Save data to PetroVisor. This function is deprecated.
+    #'  Use \code{save_signals()} or \code{save_reference_table()} instead.
     #' @param data_type The type of the data. One of:
     #'  \code{StaticNumeric}, \code{StaticString}, \code{TimeNumeric},
     #'  \code{TimeString}, \code{DepthNumeric}, \code{DepthString},
@@ -306,6 +510,7 @@ DataServices <- R6Class(
     #'  values.
     #' @param pressure_unit The pressure unit of the PVT values.
     #' @param temperature_unit The temperature unit of the PVT values.
+    # ToDo: remove in version 3.2.0
     save = function(data_type = c("StaticNumeric",
                                   "StaticString",
                                   "TimeNumeric",
@@ -321,6 +526,50 @@ DataServices <- R6Class(
                     values_depth_increment = NULL,
                     pressure_unit = NULL,
                     temperature_unit = NULL) {
+      lifecycle::deprecate_warn("3.1.0", "save()", "save_signals()")
+
+      return(self$save_signals(data_type,
+                               data, signals,
+                               generate_logs,
+                               no_range_delete,
+                               values_time_increment,
+                               values_depth_increment,
+                               pressure_unit,
+                               temperature_unit))
+    },
+
+    #' @description Save signal data to PetroVisor.
+    #' @param data_type The type of the data. One of:
+    #'  \code{StaticNumeric}, \code{StaticString}, \code{TimeNumeric},
+    #'  \code{TimeString}, \code{DepthNumeric}, \code{DepthString},
+    #'  \code{PVTNumeric}.
+    #' @param data The data as data frame.
+    #' @param signals List of parsed signals to save data for.
+    #' @param generate_logs Whether to generate log entries. Defaults to
+    #'  \code{TRUE}.
+    #' @param no_range_delete Whether to skip deleting all data in the saving
+    #'  scope before storing the new values. Defaults to \code{TRUE}.
+    #' @param values_time_increment The time increment of the time-dependent
+    #'  values.
+    #' @param values_depth_increment The depth increment of the depth-dependent
+    #'  values.
+    #' @param pressure_unit The pressure unit of the PVT values.
+    #' @param temperature_unit The temperature unit of the PVT values.
+    save_signals = function(data_type = c("StaticNumeric",
+                                          "StaticString",
+                                          "TimeNumeric",
+                                          "TimeString",
+                                          "DepthNumeric",
+                                          "DepthString",
+                                          "PVTNumeric"),
+                            data,
+                            signals,
+                            generate_logs = TRUE,
+                            no_range_delete = TRUE,
+                            values_time_increment = NULL,
+                            values_depth_increment = NULL,
+                            pressure_unit = NULL,
+                            temperature_unit = NULL) {
       # Input checks
       data_type <- match.arg(data_type)
 
@@ -761,7 +1010,26 @@ DataServices <- R6Class(
                           private$token))
     },
 
-    #' @description Remove data from PetroVisor.
+    #' @description Save reference table data to PetroVisor.
+    #' @param table The name of the reference table to save to.
+    #' @param data The data to save as data frame.
+    #' @param skip_existing Whether to skip existing rows (defined by key!) or
+    #'   update all rows. Defaults to \code{FALSE}, which means all rows will be
+    #'   updated.
+    save_reference_table = function(table, data, skip_existing = FALSE) {
+      data <- as.matrix(data)
+      body <- split(data, seq_len(nrow(data)))
+      names(body) <- NULL
+      return(private$put(body,
+                         private$url,
+                         paste0("RefTables/", table, "/Data/String"),
+                         private$token_type,
+                         private$token,
+                         query = list(SkipExistingData = skip_existing)))
+    },
+
+    #' @description Remove data from PetroVisor. This function is deprecated.
+    #'  Use \code{delete_signals()} or \code{delete_reference_table()} instead.
     #' @param entities List of entities to delete data for. Either a list of
     #'  strings or a list of items of type Entity.
     #' @param signal_names List of signal names to delete data for.
@@ -772,6 +1040,7 @@ DataServices <- R6Class(
     #' @param time_end The last time stamp data is deleted for.
     #' @param depth_start The first depth data is deleted for.
     #' @param depth_end The last depth data is deleted for.
+    # ToDo: remove in version 3.2.0
     delete = function(entities,
                       signal_names,
                       scenario_names = NULL,
@@ -781,17 +1050,40 @@ DataServices <- R6Class(
                       depth_start = NULL,
                       depth_end = NULL) {
 
+      lifecycle::deprecate_warn("3.1.0", "delete()", "delete_signals()")
+
+      return(self$delete_signals(entities,
+                                 signal_names,
+                                 scenario_names,
+                                 include_workspace_data,
+                                 time_start,
+                                 time_end,
+                                 depth_start,
+                                 depth_end))
+    },
+
+    #' @description Remove signal data from PetroVisor.
+    #' @param entities List of entities to delete data for. Either a list of
+    #'  strings or a list of items of type Entity.
+    #' @param signal_names List of signal names to delete data for.
+    #' @param scenario_names List of scenario names to delete data from.
+    #' @param include_workspace_data Whether workspace data shall be deleted as
+    #'   well (only applies if scenarios are used). Defaults to \code{TRUE}.
+    #' @param time_start The first time stamp data is deleted for.
+    #' @param time_end The last time stamp data is deleted for.
+    #' @param depth_start The first depth data is deleted for.
+    #' @param depth_end The last depth data is deleted for.
+    delete_signals = function(entities,
+                              signal_names,
+                              scenario_names = NULL,
+                              include_workspace_data = TRUE,
+                              time_start = NULL,
+                              time_end = NULL,
+                              depth_start = NULL,
+                              depth_end = NULL) {
+
       # Get entity names from input
-      entity_names <- lapply(
-        entities,
-        function(x) {
-          if ("Entity" %in% as.list(class(x))) {
-            x$name
-          } else {
-            x
-          }
-        }
-      )
+      entity_names <- private$get_entity_names(entities)
 
       # Build request
       request <- list()
@@ -822,12 +1114,42 @@ DataServices <- R6Class(
                           "Data/Delete",
                           private$token_type,
                           private$token))
+    },
+
+    #' @description Remove reference table data from PetroVisor.
+    #' @param table The name of the reference table to delete from.
+    #' @param where WHERE-like clause to filter the reference table data to
+    #'   delete. If \code{NULL} (default), all data will be deleted.
+    delete_reference_table = function(table, where = NULL) {
+      # set name NULL, because it is appended to the route in ApiRequests.R
+      return(private$delete(name = NULL,
+                            private$url,
+                            paste0("RefTables/", table, "/Data"),
+                            private$token_type,
+                            private$token,
+                            query = list(WhereExpression = where)))
     }
   ),
   private = list(
     url = NULL,
     token_type = NULL,
     token = NULL,
+    sp = NULL,
+
+    get_entity_names = function(entities) {
+      entity_names <- lapply(
+        entities,
+        function(x) {
+          if ("Entity" %in% as.list(class(x))) {
+            x$name
+          } else {
+            x
+          }
+        }
+      )
+
+      return(entity_names)
+    },
 
     unnest_and_reshape = function(data) {
       unnested <- tidyr::unnest(data, cols = names(data), keep_empty = TRUE)

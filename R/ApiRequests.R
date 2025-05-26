@@ -134,10 +134,16 @@ ApiRequests <- R6Class("ApiRequests",
     #' param route The route to use. E.g. Signal, Files, etc.
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
+    #' param query named list of query parameters.
     delete = function(name, url, route, token_type, token, query = NULL) {
+      # build url
+      url <- httr::parse_url(url)
+      url$path <- paste0(url$path, route, name)
+      if (!is.null(query))
+        url$query <- query
+
       ret <- httr::DELETE(
-        url = gsub(" ", "%20", paste0(url, route, name)),
-        query = query,
+        url = gsub(" ", "%20", httr::build_url(url)),
         httr::add_headers(
           Authorization = paste(token_type, token)
         )
@@ -154,9 +160,16 @@ ApiRequests <- R6Class("ApiRequests",
     #' param route The route to use. E.g. Signal, Files, etc.
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
-    put = function(body, url, route, token_type, token) {
+    #' param query named list of query parameters.
+    put = function(body, url, route, token_type, token, query = NULL) {
+      # build url
+      url <- httr::parse_url(url)
+      url$path <- paste0(url$path, route)
+      if (!is.null(query))
+        url$query <- query
+
       ret <- httr::PUT(
-        gsub(" ", "%20", paste0(url, route)),
+        url = gsub(" ", "%20", httr::build_url(url)),
         body =
           jsonlite::toJSON(body, auto_unbox = TRUE)
         ,

@@ -14,6 +14,7 @@ library("jsonlite")
 #' @import httr
 #' @import jsonlite
 #' @import tidyr
+#' @import lifecycle
 #'
 #' @export ServiceProvider
 #'
@@ -102,7 +103,8 @@ ServiceProvider <- R6Class("ServiceProvider",
       self$data <- DataServices$new(
         self$workspace_data_url,
         private$tokenType,
-        private$token
+        private$token,
+        self
       )
       self$tag_entries <- TagEntriesService$new(
         self$workspace_data_url,

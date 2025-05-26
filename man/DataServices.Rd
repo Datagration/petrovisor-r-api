@@ -73,8 +73,14 @@ result <- sp$data$save(
 \itemize{
 \item \href{#method-DataServices-new}{\code{DataServices$new()}}
 \item \href{#method-DataServices-load}{\code{DataServices$load()}}
+\item \href{#method-DataServices-load_signals}{\code{DataServices$load_signals()}}
+\item \href{#method-DataServices-load_reference_table}{\code{DataServices$load_reference_table()}}
 \item \href{#method-DataServices-save}{\code{DataServices$save()}}
+\item \href{#method-DataServices-save_signals}{\code{DataServices$save_signals()}}
+\item \href{#method-DataServices-save_reference_table}{\code{DataServices$save_reference_table()}}
 \item \href{#method-DataServices-delete}{\code{DataServices$delete()}}
+\item \href{#method-DataServices-delete_signals}{\code{DataServices$delete_signals()}}
+\item \href{#method-DataServices-delete_reference_table}{\code{DataServices$delete_reference_table()}}
 \item \href{#method-DataServices-clone}{\code{DataServices$clone()}}
 }
 }
@@ -85,7 +91,7 @@ result <- sp$data$save(
 Create a new DataServices instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$new(url, token_type, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$new(url, token_type, token, sp)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -96,6 +102,8 @@ ServiceProvider automatically.
 \item{\code{token_type}}{the type of the issued token.}
 
 \item{\code{token}}{the issued token.}
+
+\item{\code{sp}}{instance of the service provider}
 }
 \if{html}{\out{</div>}}
 }
@@ -104,7 +112,8 @@ ServiceProvider automatically.
 \if{html}{\out{<a id="method-DataServices-load"></a>}}
 \if{latex}{\out{\hypertarget{method-DataServices-load}{}}}
 \subsection{Method \code{load()}}{
-Load data from PetroVisor.
+Load data from PetroVisor. This function is deprecated.
+ Use \code{load_signals()} or \code{load_reference_table()} instead.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataServices$load(
   entities,
@@ -183,10 +192,142 @@ reshape the data into a more user-friendly format. Defaults to
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-load_signals"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-load_signals}{}}}
+\subsection{Method \code{load_signals()}}{
+Load signal data from PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$load_signals(
+  entities,
+  signals,
+  scenario_names = NULL,
+  hierarchy_name = NULL,
+  top_records = NULL,
+  include_workspace_data = TRUE,
+  time_increment = NULL,
+  time_start = NULL,
+  time_end = NULL,
+  depth_increment = NULL,
+  depth_start = NULL,
+  depth_end = NULL,
+  with_gaps = TRUE,
+  gap_numeric_value = NULL,
+  gap_string_value = NULL,
+  depth_unit = NULL,
+  pressure_unit = NULL,
+  temperature_unit = NULL,
+  aggregation = NULL,
+  reshape = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{entities}}{List of entities to retrieve data for. Either a list of
+strings or a list of items of type Entity.}
+
+\item{\code{signals}}{List of parsed signals to retrieve data for.}
+
+\item{\code{scenario_names}}{List of scenario names to load data for.}
+
+\item{\code{hierarchy_name}}{Hierarchy used in the data retrieval process.}
+
+\item{\code{top_records}}{Number of records to return.}
+
+\item{\code{include_workspace_data}}{Whether workspace data shall be included in
+the output (only applies if scenarios are used). Defaults to
+\code{TRUE}.}
+
+\item{\code{time_increment}}{The time increment to load the data in.}
+
+\item{\code{time_start}}{The first time stamp data is loaded for.}
+
+\item{\code{time_end}}{The last time stamp data is loaded for.}
+
+\item{\code{depth_increment}}{The depth increment to load the data in.}
+
+\item{\code{depth_start}}{The first depth data is loaded for.}
+
+\item{\code{depth_end}}{The last depth data is loaded for.}
+
+\item{\code{with_gaps}}{Whether gaps shall be returned. Defaults to \code{TRUE}.}
+
+\item{\code{gap_numeric_value}}{Replacement value for gaps in numeric data.}
+
+\item{\code{gap_string_value}}{Replacement value for gaps in string data.}
+
+\item{\code{depth_unit}}{The depth unit for retrieving depth data.}
+
+\item{\code{pressure_unit}}{The pressure unit used when retrieving PVT data.}
+
+\item{\code{temperature_unit}}{The temperature unit used when retrieving PVT
+data.}
+
+\item{\code{aggregation}}{Aggregation type applied to the data.}
+
+\item{\code{reshape}}{Whether to return the raw output of the api call or
+reshape the data into a more user-friendly format. Defaults to
+\code{TRUE}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-load_reference_table"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-load_reference_table}{}}}
+\subsection{Method \code{load_reference_table()}}{
+Load reference table data from PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$load_reference_table(
+  table,
+  entities = NULL,
+  time_start = NULL,
+  time_end = NULL,
+  top_records = NULL,
+  key_unit_name = NULL,
+  columns = NULL,
+  specified_columns_only = FALSE,
+  where = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{table}}{The name of the reference table to load from.}
+
+\item{\code{entities}}{List of entities to retrieve data for. Either a list of
+strings or a list of items of type Entity.}
+
+\item{\code{time_start}}{The first time stamp data is loaded for.}
+
+\item{\code{time_end}}{The last time stamp data is loaded for.}
+
+\item{\code{top_records}}{Number of records to return.}
+
+\item{\code{key_unit_name}}{The unit in which to retrieve the key values.}
+
+\item{\code{columns}}{List of strings defining the columns and units to be
+retrieved. E.g. list("column name 1 [unit]", "column name 2 [unit]").
+When \code{specified_columns_only = TRUE}, only columns given in this
+argument will be returned. Otherwise, this argument will be used to
+define the units in which the column data will be returned.}
+
+\item{\code{specified_columns_only}}{Whether to return the columns specified in
+\code{columns} only. Defaults to \code{FALSE}.}
+
+\item{\code{where}}{WHERE-like clause to filter the reference table data.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-save"></a>}}
 \if{latex}{\out{\hypertarget{method-DataServices-save}{}}}
 \subsection{Method \code{save()}}{
-Save data to PetroVisor.
+Save data to PetroVisor. This function is deprecated.
+ Use \code{save_signals()} or \code{save_reference_table()} instead.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataServices$save(
   data_type = c("StaticNumeric", "StaticString", "TimeNumeric", "TimeString",
@@ -234,10 +375,85 @@ values.}
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-save_signals"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-save_signals}{}}}
+\subsection{Method \code{save_signals()}}{
+Save signal data to PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$save_signals(
+  data_type = c("StaticNumeric", "StaticString", "TimeNumeric", "TimeString",
+    "DepthNumeric", "DepthString", "PVTNumeric"),
+  data,
+  signals,
+  generate_logs = TRUE,
+  no_range_delete = TRUE,
+  values_time_increment = NULL,
+  values_depth_increment = NULL,
+  pressure_unit = NULL,
+  temperature_unit = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{data_type}}{The type of the data. One of:
+\code{StaticNumeric}, \code{StaticString}, \code{TimeNumeric},
+\code{TimeString}, \code{DepthNumeric}, \code{DepthString},
+\code{PVTNumeric}.}
+
+\item{\code{data}}{The data as data frame.}
+
+\item{\code{signals}}{List of parsed signals to save data for.}
+
+\item{\code{generate_logs}}{Whether to generate log entries. Defaults to
+\code{TRUE}.}
+
+\item{\code{no_range_delete}}{Whether to skip deleting all data in the saving
+scope before storing the new values. Defaults to \code{TRUE}.}
+
+\item{\code{values_time_increment}}{The time increment of the time-dependent
+values.}
+
+\item{\code{values_depth_increment}}{The depth increment of the depth-dependent
+values.}
+
+\item{\code{pressure_unit}}{The pressure unit of the PVT values.}
+
+\item{\code{temperature_unit}}{The temperature unit of the PVT values.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-save_reference_table"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-save_reference_table}{}}}
+\subsection{Method \code{save_reference_table()}}{
+Save reference table data to PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$save_reference_table(table, data, skip_existing = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{table}}{The name of the reference table to save to.}
+
+\item{\code{data}}{The data to save as data frame.}
+
+\item{\code{skip_existing}}{Whether to skip existing rows (defined by key!) or
+update all rows. Defaults to \code{FALSE}, which means all rows will be
+updated.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-DataServices-delete}{}}}
 \subsection{Method \code{delete()}}{
-Remove data from PetroVisor.
+Remove data from PetroVisor. This function is deprecated.
+ Use \code{delete_signals()} or \code{delete_reference_table()} instead.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataServices$delete(
   entities,
@@ -271,6 +487,68 @@ well (only applies if scenarios are used). Defaults to \code{TRUE}.}
 \item{\code{depth_start}}{The first depth data is deleted for.}
 
 \item{\code{depth_end}}{The last depth data is deleted for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-delete_signals"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-delete_signals}{}}}
+\subsection{Method \code{delete_signals()}}{
+Remove signal data from PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$delete_signals(
+  entities,
+  signal_names,
+  scenario_names = NULL,
+  include_workspace_data = TRUE,
+  time_start = NULL,
+  time_end = NULL,
+  depth_start = NULL,
+  depth_end = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{entities}}{List of entities to delete data for. Either a list of
+strings or a list of items of type Entity.}
+
+\item{\code{signal_names}}{List of signal names to delete data for.}
+
+\item{\code{scenario_names}}{List of scenario names to delete data from.}
+
+\item{\code{include_workspace_data}}{Whether workspace data shall be deleted as
+well (only applies if scenarios are used). Defaults to \code{TRUE}.}
+
+\item{\code{time_start}}{The first time stamp data is deleted for.}
+
+\item{\code{time_end}}{The last time stamp data is deleted for.}
+
+\item{\code{depth_start}}{The first depth data is deleted for.}
+
+\item{\code{depth_end}}{The last depth data is deleted for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-delete_reference_table"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-delete_reference_table}{}}}
+\subsection{Method \code{delete_reference_table()}}{
+Remove reference table data from PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$delete_reference_table(table, where = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{table}}{The name of the reference table to delete from.}
+
+\item{\code{where}}{WHERE-like clause to filter the reference table data to
+delete. If \code{NULL} (default), all data will be deleted.}
 }
 \if{html}{\out{</div>}}
 }
