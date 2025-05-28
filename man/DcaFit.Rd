@@ -108,7 +108,7 @@ PetroVisor. Defaults to \code{FALSE}.}
 \if{html}{\out{<a id="method-DcaFit-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DcaFit-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new GeoDataGrid instance.
+Create a new DCAFit instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DcaFit$new(
   name = NULL,

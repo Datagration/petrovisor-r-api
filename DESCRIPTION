@@ -1,7 +1,7 @@
 Package: Myrconn.PetroVisor.Client
 Type: Package
 Title: Wrapper for PetroVisor API
-Version: 3.1.0
+Version: 3.1.1
 Description: R interface to the PetroVisor REST API.
 License: MIT + file LICENSE
 Encoding: UTF-8

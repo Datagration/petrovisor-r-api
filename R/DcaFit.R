@@ -93,7 +93,7 @@ DcaFit <- R6Class("DcaFit",
     isFavorite = NULL,
     labels = NULL,
 
-    #' @description Create a new GeoDataGrid instance.
+    #' @description Create a new DCAFit instance.
     #'
     #' @param name The name of the DCA fit.
     #' @param entity The entity for which the DCA fit is created. Must be an

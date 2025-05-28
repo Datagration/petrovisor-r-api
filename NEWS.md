@@ -1,3 +1,12 @@
+**3.1.1 (2025-05-28)**
+
+- remove objects no longer supported by PetroVisor
+  - VoronoiGrid
+  - CrossPlot
+  - GeoDataGrid
+  - Plot
+  - Polygon
+
 **3.1.0 (2025-05-26)**
 
 - add reference table support (table definitions and data)
