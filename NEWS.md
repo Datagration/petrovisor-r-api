@@ -5,7 +5,7 @@
   - update RepositoryService to handle reference table objects
   - update DataServices to require an instance of the ServiceProvider for instantiation
   - rename existing load, save and delete functions to be more specific
-  - add functions to hanlde reference table data
+  - add functions to handle reference table data
   - update ApiRequests to handle query parameters in PUT and DELETE calls correctly
   - add unit tests for ReferenceTables
   - update documentation

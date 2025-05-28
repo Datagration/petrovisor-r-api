@@ -67,11 +67,12 @@ Create a new ReferenceTable instance.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the scope.}
+\item{\code{name}}{The name of the reference table.}
 
 \item{\code{description}}{The description of the item.}
 
-\item{\code{labels}}{A list of strings holding the labels of the scope.}
+\item{\code{labels}}{A list of strings holding the labels of the reference
+table.}
 
 \item{\code{key}}{The key column definition. Object of type
 ReferenceTableColumn.}

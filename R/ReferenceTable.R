@@ -41,9 +41,10 @@ ReferenceTable <- R6Class("ReferenceTable",
 
     #' @description Create a new ReferenceTable instance.
     #'
-    #' @param name The name of the scope.
+    #' @param name The name of the reference table.
     #' @param description The description of the item.
-    #' @param labels A list of strings holding the labels of the scope.
+    #' @param labels A list of strings holding the labels of the reference
+    #'   table.
     #' @param key The key column definition. Object of type
     #'   ReferenceTableColumn.
     #' @param values List of value column definitions. I.e. a list of objects of
