@@ -168,6 +168,30 @@ RepositoryService <- R6Class(
             canonical_unit_name = cont$CanonicalUnitName
           )
         ),
+        ReferenceTable = {
+          values_list <- list()
+          if (length(cont$Values) > 0) {
+            for (i in seq_len(nrow(cont$Values))) {
+              values_list[[i]] <- ReferenceTableColumn$new(
+                name = cont$Values[i, "Name"],
+                column_type = cont$Values[i, "ColumnType"],
+                unit_name = cont$Values[i, "UnitName"]
+              )
+            }
+          }
+
+          return(
+            ReferenceTable$new(
+              name = cont$Name,
+              description = cont$Description,
+              labels = cont$Labels,
+              key = ReferenceTableColumn$new(name = cont$Key$Name,
+                                             column_type = cont$Key$ColumnType,
+                                             unit_name = cont$Key$UnitName),
+              values = values_list
+            )
+          )
+        },
         Scenario = {
           cs_list <- list()
           if (length(cont$WorkspaceValues) > 0) {
@@ -275,6 +299,7 @@ RepositoryService <- R6Class(
                                      "GeoDataGrid", "Hierarchy", "MLModel",
                                      "PivotTable", "Plot", "Polygon",
                                      "ProcessTemplate", "PSharpScript",
+                                     "ReferenceTable",
                                      "RScript", "RWorkflowActivity", "Scenario",
                                      "Scope", "Signal", "TableCalculation",
                                      "Tag", "UnitMeasurement", "Unit",
@@ -309,6 +334,7 @@ RepositoryService <- R6Class(
         Polygon = return("Polygons"),
         ProcessTemplate = return("ProcessTemplates"),
         PSharpScript = return("PSharpScripts"),
+        ReferenceTable = return("RefTables"),
         RScript = return("RScripts"),
         RWorkflowActivity = return("RWorkflowActivities"),
         Scenario = return("Scenarios"),

@@ -329,10 +329,39 @@ colnames(pvt_numeric_data) <- c("scenario",
                                 pvt_numeric_signal_1$name,
                                 pvt_numeric_signal_2$name)
 
+# Create test reference table
+key_column <- ReferenceTableColumn$new(name = "KeyColumn",
+                                       column_type = "Numeric",
+                                       unit_name = " ")
+
+name_column <- ReferenceTableColumn$new(name = "PersonName",
+                                        column_type = "String",
+                                        unit_name = " ")
+
+age_column <- ReferenceTableColumn$new(name = "PersonAge",
+                                       column_type = "Numeric",
+                                       unit_name = " ")
+
+reference_table <- ReferenceTable$new(name = "Test R Table",
+                                      description = "Test Description",
+                                      key = key_column,
+                                      values = list(name_column, age_column))
+
+result <- sp$items$save("ReferenceTable", reference_table)
+
+# Create test reference table data
+reference_table_data <- data.frame(
+  Entity = c(NA, "TestName", NA, "TestName"),
+  Timestamp = c(NA, "2025-05-20T00:00:00", NA, NA),
+  KeyColumn = c(1, 2, 3, 4),
+  PersonName = c("Franz", "Herbert", "Josef", "Hans"),
+  PersonAge = c(12, 34.4, 56.9, 20.3)
+)
+
 # Perform tests
 # Static numeric data tests
 test_that("Static numeric data can be saved", {
-  result <- sp$data$save(
+  result <- sp$data$save_signals(
     "StaticNumeric",
     static_numeric_data,
     signals = lapply(
@@ -348,7 +377,7 @@ test_that("Static numeric data can be saved", {
 })
 
 test_that("Static numeric data can be retrieved", {
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test static numeric signal one [m]",
@@ -386,7 +415,7 @@ test_that("Static numeric data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test static numeric signal one [m]",
@@ -418,7 +447,7 @@ test_that("Static numeric data can be deleted", {
 
 # Static string data tests
 test_that("Static string data can be saved", {
-  result <- sp$data$save(
+  result <- sp$data$save_signals(
     "StaticString",
     static_string_data,
     signals = lapply(
@@ -434,7 +463,7 @@ test_that("Static string data can be saved", {
 })
 
 test_that("Static string data can be retrieved", {
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test static string signal one [ ]",
@@ -472,7 +501,7 @@ test_that("Static string data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test static string signal one [ ]",
@@ -504,7 +533,7 @@ test_that("Static string data can be deleted", {
 
 # Time numeric data tests
 test_that("Time numeric data can be saved", {
-  result <- sp$data$save(
+  result <- sp$data$save_signals(
     "TimeNumeric",
     time_numeric_data,
     signals = lapply(
@@ -520,7 +549,7 @@ test_that("Time numeric data can be saved", {
 })
 
 test_that("Time numeric data can be retrieved", {
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test time numeric signal one [m3]",
@@ -561,7 +590,7 @@ test_that("Time numeric data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test time numeric signal one [m3]",
@@ -594,7 +623,7 @@ test_that("Time numeric data can be deleted", {
 
 # Time string data tests
 test_that("Time string data can be saved", {
-  result <- sp$data$save(
+  result <- sp$data$save_signals(
     "TimeString",
     time_string_data,
     signals = lapply(
@@ -610,7 +639,7 @@ test_that("Time string data can be saved", {
 })
 
 test_that("Time string data can be retrieved", {
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test time string signal one [ ]",
@@ -651,7 +680,7 @@ test_that("Time string data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test time string signal one [ ]",
@@ -684,7 +713,7 @@ test_that("Time string data can be deleted", {
 
 # Depth numeric data tests
 test_that("Depth numeric data can be saved", {
-  result <- sp$data$save(
+  result <- sp$data$save_signals(
     "DepthNumeric",
     depth_numeric_data,
     signals = lapply(
@@ -700,7 +729,7 @@ test_that("Depth numeric data can be saved", {
 })
 
 test_that("Depth numeric data can be retrieved", {
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test depth numeric signal one [m3]",
@@ -747,7 +776,7 @@ test_that("Depth numeric data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test depth numeric signal one [m3]",
@@ -783,7 +812,7 @@ test_that("Depth numeric data can be deleted", {
 
 # Depth string data tests
 test_that("Depth string data can be saved", {
-  result <- sp$data$save(
+  result <- sp$data$save_signals(
     "DepthString",
     depth_string_data,
     signals = lapply(
@@ -799,7 +828,7 @@ test_that("Depth string data can be saved", {
 })
 
 test_that("Depth string data can be retrieved", {
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test depth string signal one [ ]",
@@ -840,7 +869,7 @@ test_that("Depth string data can be deleted", {
 
   expect_equal(result$status_code, 200)
 
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test depth string signal one [ ]",
@@ -873,7 +902,7 @@ test_that("Depth string data can be deleted", {
 
 # PVT numeric data tests
 test_that("PVT numeric data can be saved", {
-  result <- sp$data$save(
+  result <- sp$data$save_signals(
     "PVTNumeric",
     pvt_numeric_data,
     signals = lapply(
@@ -891,7 +920,7 @@ test_that("PVT numeric data can be saved", {
 })
 
 test_that("PVT numeric data can be retrieved", {
-  retrieved_data <- sp$data$load(
+  retrieved_data <- sp$data$load_signals(
     c(entity),
     lapply(
       c("test pvt numeric signal one [kg/m3]",
@@ -971,6 +1000,40 @@ test_that("PVT numeric data can be deleted", {
   # )
 })
 
+# Reference table data tests
+test_that("Reference table data can be saved", {
+  result <- sp$data$save_reference_table(reference_table$name,
+                                         reference_table_data)
+
+  expect_equal(result$status_code, 200)
+})
+
+test_that("Reference table data can be retrieved", {
+  data <- sp$data$load_reference_table(reference_table$name)
+
+  expect_equal(data, reference_table_data)
+})
+
+test_that("Reference table data can be deleted (with WHERE clause)", {
+  result <- sp$data$delete_reference_table(reference_table$name,
+                                           where = "[PersonAge] = 20.3")
+  expect_equal(result$status_code, 200)
+
+  data <- sp$data$load_reference_table(reference_table$name)
+
+  expect_equal(data, reference_table_data[1:3, ])
+})
+
+test_that("Reference table data can be deleted (no WHERE clause)", {
+  result <- sp$data$delete_reference_table(reference_table$name)
+  expect_equal(result$status_code, 200)
+
+  data <- sp$data$load_reference_table(reference_table$name)
+
+  expect_equal(data, data.frame())
+})
+
+
 # Clean up
 # Remove test entity
 sp$items$delete("Entity", entity$name)
@@ -989,3 +1052,4 @@ sp$items$delete("Signal", depth_string_signal_1$name)
 sp$items$delete("Signal", depth_string_signal_2$name)
 sp$items$delete("Signal", pvt_numeric_signal_1$name)
 sp$items$delete("Signal", pvt_numeric_signal_2$name)
+sp$items$delete("ReferenceTable", reference_table$name)

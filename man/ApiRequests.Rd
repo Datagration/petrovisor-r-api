@@ -53,6 +53,7 @@ param url The base url of the API.
 param route The route to use. E.g. Signal, Files, etc.
 param token_type The type of the used token.
 param token The token used for authenticating the request.
+param query named list of query parameters.
 description Issue a PUT request to the api
 
 param body The body of the request.
@@ -60,6 +61,7 @@ param url The base url of the API.
 param route The route to use. E.g. Signal, Files, etc.
 param token_type The type of the used token.
 param token The token used for authenticating the request.
+param query named list of query parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ApiRequests$new()}\if{html}{\out{</div>}}
 }
