@@ -19,12 +19,14 @@ Hierarchy$new(name = "MyHierarchy",
 \describe{
 \item{\code{name}}{The name of the hierarchy.}
 
-\item{\code{relationship}}{The child-parent relationships (named list) stored in the
-hierarchy.}
+\item{\code{relationship}}{The child-parent relationships stored in the hierarchy.
+A single data frame with the columns \code{child} and \code{parent} if the
+hierarchy is static. For time-dependent hierarchies a list of data frames.
+The names of the list refer to the date of the relationship.}
 
 \item{\code{is_time_dependent}}{Whether the hierarchy is time dependent or static.}
 
-\item{\code{time_stamp}}{The time stamp of the time dependent hierarchy.}
+\item{\code{time_stamp}}{The (first) time stamp of the time dependent hierarchy.}
 
 \item{\code{description}}{The description of the item.}
 
@@ -61,13 +63,16 @@ Create a new Scope instance.
 \describe{
 \item{\code{name}}{The name of the hierarchy.}
 
-\item{\code{relationship}}{The child-parent relationships (named list) stored in
-the hierarchy.}
+\item{\code{relationship}}{The child-parent relationships stored in the
+hierarchy. A single data frame with the columns \code{child} and
+\code{parent} if the hierarchy is static. For time-dependent
+hierarchies a list of data frames. The names of the list refer to the
+date of the relationship.}
 
 \item{\code{is_time_dependent}}{Whether the hierarchy is time dependent or
 static.}
 
-\item{\code{time_stamp}}{The time stamp of the time dependent hierarchy.}
+\item{\code{time_stamp}}{The (first) time stamp of the time dependent hierarchy.}
 
 \item{\code{description}}{The description of the item.}
 

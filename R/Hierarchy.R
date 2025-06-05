@@ -7,10 +7,12 @@ library("R6")
 #' @export Hierarchy
 #'
 #' @field name The name of the hierarchy.
-#' @field relationship The child-parent relationships (named list) stored in the
-#'   hierarchy.
+#' @field relationship The child-parent relationships stored in the hierarchy.
+#'   A single data frame with the columns \code{child} and \code{parent} if the
+#'   hierarchy is static. For time-dependent hierarchies a list of data frames.
+#'   The names of the list refer to the date of the relationship.
 #' @field is_time_dependent Whether the hierarchy is time dependent or static.
-#' @field time_stamp The time stamp of the time dependent hierarchy.
+#' @field time_stamp The (first) time stamp of the time dependent hierarchy.
 #' @field description The description of the item.
 #' @field labels A list of strings holding the labels of the scope.
 #' @examples
@@ -32,11 +34,14 @@ Hierarchy <- R6Class("Hierarchy",
     #' @description Create a new Scope instance.
     #'
     #' @param name The name of the hierarchy.
-    #' @param relationship The child-parent relationships (named list) stored in
-    #'   the hierarchy.
+    #' @param relationship The child-parent relationships stored in the
+    #'   hierarchy. A single data frame with the columns \code{child} and
+    #'   \code{parent} if the hierarchy is static. For time-dependent
+    #'   hierarchies a list of data frames. The names of the list refer to the
+    #'   date of the relationship.
     #' @param is_time_dependent Whether the hierarchy is time dependent or
     #'   static.
-    #' @param time_stamp The time stamp of the time dependent hierarchy.
+    #' @param time_stamp The (first) time stamp of the time dependent hierarchy.
     #' @param description The description of the item.
     #' @param labels A list of strings holding the labels of the scope.
     initialize = function(name = NULL,
@@ -57,13 +62,18 @@ Hierarchy <- R6Class("Hierarchy",
     #' by the RepositoryService to convert the objects to lists and then
     #' call the web API.
     toList = function() {
+      # convert relationship to named list
+      if (as.logical(self$is_time_dependent)) {
+        rel_list <- as.list(self$relationship[[1]]$parent)
+        names(rel_list) <- self$relationship[[1]]$child
+      } else {
+        rel_list <- as.list(self$relationship$parent)
+        names(rel_list) <- self$relationship$child
+      }
+
       dl <- list(
         Name = if (is.null(self$name)) "" else self$name,
-        Relationship = if (is.null(self$relationship)) {
-          ""
-        } else {
-          self$relationship
-        },
+        Relationship = rel_list,
         IsTimeDependent = if (is.null(self$is_time_dependent)) {
           ""
         } else {

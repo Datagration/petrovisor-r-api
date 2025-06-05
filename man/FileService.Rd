@@ -31,7 +31,7 @@ sp <- ServiceProvider$new(
 file <- sp$files$load("Test_File.csv")
 
 # save file
-result <- sp$file$save("Test_File.csv")
+result <- sp$files$save("Test_File.csv")
 }
 }
 \section{Super class}{

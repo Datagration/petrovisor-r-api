@@ -23,7 +23,7 @@ library("R6")
 #' file <- sp$files$load("Test_File.csv")
 #'
 #' # save file
-#' result <- sp$file$save("Test_File.csv")
+#' result <- sp$files$save("Test_File.csv")
 #' }
 FileService <- R6Class(
   "FileService",

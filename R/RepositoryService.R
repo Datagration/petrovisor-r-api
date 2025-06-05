@@ -278,11 +278,33 @@ RepositoryService <- R6Class(
       route <- paste0(private$get_url_type(type), "/", item$name)
 
       # Add or edit item
-      private$put(item$toList(),
-                  private$url,
-                  route,
-                  private$token_type,
-                  private$token)
+      result <- private$put(item$toList(),
+                            private$url,
+                            route,
+                            private$token_type,
+                            private$token)
+
+      # For hierarchies make sure to save the relationships
+      if (type == "Hierarchy") {
+        if (item$is_time_dependent) {
+          # Update time-dependent relationships
+          rel_list <- lapply(
+            item$relationship,
+            function(x) {
+              y <- as.list(x$parent)
+              names(y) <- x$child
+              return(y)
+            }
+          )
+          private$post(rel_list,
+                       private$url,
+                       paste0(route, "/Relationships/AddOrEdit"),
+                       private$token_type,
+                       private$token)
+        }
+      }
+
+      return(result)
     }
   ),
   private = list(
@@ -390,10 +412,43 @@ RepositoryService <- R6Class(
     },
 
     get_hierarchy_from_content = function(content) {
+      # load relationships separately if time dependent
+      if (as.logical(content$IsTimeDependent)) {
+        rel <- super$get(
+          private$url,
+          paste0("Hierarchies/", content$Name, "/Relationship/All"),
+          private$token_type,
+          private$token
+        )
+        relationship <- lapply(
+          rel, function(x) {
+            data.frame(
+              child = names(x),
+              parent = sapply(
+                x,
+                function(y) if (is.null(y)) NA else as.character(y),
+                USE.NAMES = FALSE
+              ),
+              row.names = NULL
+            )
+          }
+        )
+      } else {
+        relationship <- data.frame(
+          child = names(content$Relationship),
+          parent = sapply(
+            content$Relationship,
+            function(x) if (is.null(x)) NA else as.character(x),
+            USE.NAMES = FALSE
+          ),
+          row.names = NULL
+        )
+      }
+
       return(
         Hierarchy$new(
           name = content$Name,
-          relationship = content$Relationship,
+          relationship = relationship,
           is_time_dependent = content$IsTimeDependent,
           time_stamp = content$TimeStamp,
           description = content$Description,

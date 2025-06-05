@@ -1,3 +1,12 @@
+**3.2.0 (2025-06-04)**
+
+- update hierarchy handling
+  - change type of field relationship from named list to data frame (static) or
+  list of data frames (time-dependent)
+  - add support for time dependent hierarchies (retrieve / save relationships)
+  - add unit tests
+- fix typo in documentation of FileService.R
+
 **3.1.1 (2025-05-28)**
 
 - remove objects no longer supported by PetroVisor

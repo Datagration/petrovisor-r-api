@@ -32,10 +32,10 @@ test_that("Context instantiation and conversion works", {
                      labels = list("label1", "label2"))
 
   # build relationship
-  relationship <- list()
-  relationship[[e1$name]] <- parent$name
-  relationship[[e1$name]] <- parent$name
-  relationship[[parent$name]] <- NA
+  relationship <- data.frame(
+    child = c(e1$name, e2$name, parent$name),
+    parent = c(parent$name, parent$name, NA)
+  )
 
   hierarchy <- Hierarchy$new(name = "Hierarchy R Test",
                              relationship = relationship,
@@ -124,10 +124,10 @@ test_that("Context can be created", {
   sp$items$save("Entity", parent)
 
   # build relationship
-  relationship <- list()
-  relationship[[entity_one$name]] <- parent$name
-  relationship[[entity_two$name]] <- parent$name
-  relationship[[parent$name]] <- NA
+  relationship <- data.frame(
+    child = c(entity_one$name, entity_two$name, parent$name),
+    parent = c(parent$name, parent$name, NA)
+  )
 
   hierarchy <- Hierarchy$new(name = "Hierarchy R Test",
                              relationship = relationship,
@@ -192,8 +192,10 @@ test_that("Context can be retrieved", {
                        is_opportunity = NULL)
 
   # build relationship
-  relationship <- list("Test Parent", "Test Parent", NULL)
-  names(relationship) <- c("TestNameOne", "TestNameTwo", "Test Parent")
+  relationship <- data.frame(
+    child = c("TestNameOne", "TestNameTwo", "Test Parent"),
+    parent = c("Test Parent", "Test Parent", NA)
+  )
 
   hierarchy <- Hierarchy$new(name = "Hierarchy R Test",
                              relationship = relationship,
