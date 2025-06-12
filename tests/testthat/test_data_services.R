@@ -358,6 +358,21 @@ reference_table_data <- data.frame(
   PersonAge = c(12, 34.4, 56.9, 20.3)
 )
 
+# Create test pivot table
+pivot_table_definition <- PivotTable$new(
+  name = "Test R PivotTable",
+  add_entity_alias_column = TRUE,
+  add_entity_type_column = TRUE,
+  scope_formula = "Scope \"At Date\"\r\n\tBetween #01/01/2025#\r\n\tAnd #02/01/2025#\r\n\tStep Daily\r\nEnd Scope",
+  entity_set_formula = "Entity Set \"Test\"\r\n\t\"TestName\"\r\nEnd Set",
+  table_formula = "Table \"Test\"\r\n\tColumn \"Oil\" in \"m3\"\r\n\t\tRandom()\r\n\tEnd Column\r\nEnd Table",
+  skip_empty_rows = TRUE,
+  add_is_opportunity_column = TRUE,
+  append_data = TRUE,
+  description = "Test R Description")
+
+result <- sp$items$save("PivotTable", pivot_table_definition)
+
 # Perform tests
 # Static numeric data tests
 test_that("Static numeric data can be saved", {
@@ -1033,6 +1048,20 @@ test_that("Reference table data can be deleted (no WHERE clause)", {
   expect_equal(data, data.frame())
 })
 
+# Pivot table data tests
+test_that("Pivot table data can be generated/saved", {
+  expect_no_error(sp$data$save_pivot_table(pivot_table_definition$name))
+})
+
+test_that("Pivot table data can be retrieved", {
+  expect_no_error(sp$data$load_pivot_table(pivot_table_definition$name))
+
+  expect_no_error(sp$data$load_pivot_table(pivot_table_definition$name, 100))
+})
+
+test_that("Pivot table data can be deleted", {
+  expect_no_error(sp$data$delete_pivot_table(pivot_table_definition$name))
+})
 
 # Clean up
 # Remove test entity
@@ -1053,3 +1082,4 @@ sp$items$delete("Signal", depth_string_signal_2$name)
 sp$items$delete("Signal", pvt_numeric_signal_1$name)
 sp$items$delete("Signal", pvt_numeric_signal_2$name)
 sp$items$delete("ReferenceTable", reference_table$name)
+sp$items$delete("PivotTable", pivot_table_definition$name)

@@ -75,12 +75,15 @@ result <- sp$data$save(
 \item \href{#method-DataServices-load}{\code{DataServices$load()}}
 \item \href{#method-DataServices-load_signals}{\code{DataServices$load_signals()}}
 \item \href{#method-DataServices-load_reference_table}{\code{DataServices$load_reference_table()}}
+\item \href{#method-DataServices-load_pivot_table}{\code{DataServices$load_pivot_table()}}
 \item \href{#method-DataServices-save}{\code{DataServices$save()}}
 \item \href{#method-DataServices-save_signals}{\code{DataServices$save_signals()}}
 \item \href{#method-DataServices-save_reference_table}{\code{DataServices$save_reference_table()}}
+\item \href{#method-DataServices-save_pivot_table}{\code{DataServices$save_pivot_table()}}
 \item \href{#method-DataServices-delete}{\code{DataServices$delete()}}
 \item \href{#method-DataServices-delete_signals}{\code{DataServices$delete_signals()}}
 \item \href{#method-DataServices-delete_reference_table}{\code{DataServices$delete_reference_table()}}
+\item \href{#method-DataServices-delete_pivot_table}{\code{DataServices$delete_pivot_table()}}
 \item \href{#method-DataServices-clone}{\code{DataServices$clone()}}
 }
 }
@@ -323,6 +326,25 @@ define the units in which the column data will be returned.}
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-load_pivot_table"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-load_pivot_table}{}}}
+\subsection{Method \code{load_pivot_table()}}{
+Load pivot table data from PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$load_pivot_table(table, top_records = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{table}}{The name of the pivot table to load from.}
+
+\item{\code{top_records}}{Number of records to return.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-save"></a>}}
 \if{latex}{\out{\hypertarget{method-DataServices-save}{}}}
 \subsection{Method \code{save()}}{
@@ -449,6 +471,23 @@ updated.}
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-save_pivot_table"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-save_pivot_table}{}}}
+\subsection{Method \code{save_pivot_table()}}{
+Generate and save the data of the specified pivot table.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$save_pivot_table(table)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{table}}{The name of the pivot table to generate and save.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-delete"></a>}}
 \if{latex}{\out{\hypertarget{method-DataServices-delete}{}}}
 \subsection{Method \code{delete()}}{
@@ -549,6 +588,23 @@ Remove reference table data from PetroVisor.
 
 \item{\code{where}}{WHERE-like clause to filter the reference table data to
 delete. If \code{NULL} (default), all data will be deleted.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataServices-delete_pivot_table"></a>}}
+\if{latex}{\out{\hypertarget{method-DataServices-delete_pivot_table}{}}}
+\subsection{Method \code{delete_pivot_table()}}{
+Remove pivot table data from PetroVisor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$delete_pivot_table(table)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{table}}{The name of the pivot table to delete the data for.}
 }
 \if{html}{\out{</div>}}
 }

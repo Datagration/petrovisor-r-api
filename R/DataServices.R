@@ -492,6 +492,24 @@ DataServices <- R6Class(
       return(data)
     },
 
+    #' @description Load pivot table data from PetroVisor.
+    #'
+    #' @param table The name of the pivot table to load from.
+    #' @param top_records Number of records to return.
+    load_pivot_table = function(table, top_records = NULL) {
+      data <- private$get(private$url,
+                          paste0("PivotTables/", table, "/Saved"),
+                          private$token_type,
+                          private$token,
+                          query = list(RowCount = top_records))
+      # restructure data
+      # promote first row to colnames
+      df <- data.frame(data[-1, ])
+      colnames(df) <- data[1,]
+
+      return(df)
+    },
+
     #' @description Save data to PetroVisor. This function is deprecated.
     #'  Use \code{save_signals()} or \code{save_reference_table()} instead.
     #' @param data_type The type of the data. One of:
@@ -1028,6 +1046,16 @@ DataServices <- R6Class(
                          query = list(SkipExistingData = skip_existing)))
     },
 
+    #' @description Generate and save the data of the specified pivot table.
+    #' @param table The name of the pivot table to generate and save.
+    save_pivot_table = function(table) {
+      return(private$get(private$url,
+                         paste0("PivotTables/", table, "/Save"),
+                         private$token_type,
+                         private$token,
+                         parse_json = FALSE))
+    },
+
     #' @description Remove data from PetroVisor. This function is deprecated.
     #'  Use \code{delete_signals()} or \code{delete_reference_table()} instead.
     #' @param entities List of entities to delete data for. Either a list of
@@ -1128,6 +1156,16 @@ DataServices <- R6Class(
                             private$token_type,
                             private$token,
                             query = list(WhereExpression = where)))
+    },
+
+    #' @description Remove pivot table data from PetroVisor.
+    #' @param table The name of the pivot table to delete the data for.
+    delete_pivot_table = function(table) {
+      return(private$get(private$url,
+                         paste0("PivotTables/", table, "/Delete"),
+                         private$token_type,
+                         private$token,
+                         parse_json = FALSE))
     }
   ),
   private = list(

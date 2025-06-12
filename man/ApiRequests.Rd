@@ -40,7 +40,7 @@ param url The base url of the API.
 param route The route to use. E.g. Signal, Files, etc.
 param token_type The type of the used token.
 param token The token used for authenticating the request.
-param query Additional parameters for the query string.
+param query named list of query parameters.
 param parse_json Whether to parse the result of the request. Defaults to
  \code{TRUE}. If set to \code{FALSE}, the raw content will be returned.
 

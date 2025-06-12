@@ -1,3 +1,13 @@
+**3.3.0 (2025-06-12)**
+
+- add support for PivotTables (objects and data)
+  - update class PivotTable
+  - update RepositoryService to handle pivot table objects
+  - add functions to handle pivot table data
+  - update ApiRequests to handle query parameters in GET calls correctly
+  - update unit tests for PivotTables
+  - update documentation
+
 **3.2.0 (2025-06-04)**
 
 - update hierarchy handling
