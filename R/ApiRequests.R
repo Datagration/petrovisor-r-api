@@ -96,7 +96,7 @@ ApiRequests <- R6Class("ApiRequests",
     #' param route The route to use. E.g. Signal, Files, etc.
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
-    #' param query Additional parameters for the query string.
+    #' param query named list of query parameters.
     #' param parse_json Whether to parse the result of the request. Defaults to
     #'  \code{TRUE}. If set to \code{FALSE}, the raw content will be returned.
     #'
@@ -109,12 +109,25 @@ ApiRequests <- R6Class("ApiRequests",
                    query = NULL,
                    parse_json = TRUE) {
 
+      # build url
+      url <- httr::parse_url(url)
+      url$path <- paste0(url$path, route)
+      if (!is.null(query))
+        url$query <- query
+
       ret <- httr::GET(
-        url = gsub(" ", "%20", paste0(url, route, query)),
+        url = gsub(" ", "%20", httr::build_url(url)),
         httr::add_headers(
           Authorization = paste(token_type, token)
         )
       )
+
+      # ret <- httr::GET(
+      #   url = gsub(" ", "%20", paste0(url, route, query)),
+      #   httr::add_headers(
+      #     Authorization = paste(token_type, token)
+      #   )
+      # )
 
       httr::stop_for_status(ret, task = paste("GET with result:", ret))
 

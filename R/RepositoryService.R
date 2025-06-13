@@ -89,14 +89,13 @@ RepositoryService <- R6Class(
     #' @return An object of the specified type class.
     load = function(type, name) {
       # get the url_type
-      route <- paste0(private$get_url_type(type), "/")
+      route <- paste0(private$get_url_type(type), "/", name)
 
       # Retrieve the item
       cont <- private$get(private$url,
                           route,
                           private$token_type,
-                          private$token,
-                          query = name)
+                          private$token)
 
       # parse to object
       switch(type,
@@ -154,6 +153,26 @@ RepositoryService <- R6Class(
           )
         ),
         Hierarchy = return(private$get_hierarchy_from_content(cont)),
+        PivotTable = return(
+          PivotTable$new(
+            name = cont$Name,
+            add_entity_alias_column = cont$AddEntityAliasColumn,
+            entity_parent_columns = cont$AddEntityParentsColumns,
+            add_entity_type_column = cont$AddEntityTypeColumn,
+            scope_formula = cont$ScopeFormula,
+            entity_set_formula = cont$EntitySetFormula,
+            table_formula = cont$TableFormula,
+            hierarchy_name = cont$HierarchyName,
+            tag_entry_date = cont$TagEntryDate,
+            saved_date = cont$SavedDate,
+            used_tags = cont$UsedTags,
+            skip_empty_rows = cont$SkipEmptyDataRows,
+            add_is_opportunity_column = cont$AddIsOpportunityColumn,
+            append_data = cont$AppendSavedData,
+            description = cont$Description,
+            labels = cont$Labels
+          )
+        ),
         Unit = return(
           Unit$new(
             name = cont$Name,

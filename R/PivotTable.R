@@ -7,35 +7,27 @@ library("R6")
 #' @export PivotTable
 #'
 #' @field name The name of the pivot table.
-#' @field addEntityAliasColumn This flag specifies whether a column containing
-#'   the entity's alias shall be added to the pivot table.
-#' @field addEntityParentColumn This flag specifies whether a column containing
-#'   the entity's parent shall be added to the pivot table.
-#' @field addEntityTypeColumn This flag specifies whether a column containing
+#' @field add_entity_alias_column This flag specifies whether a column
+#'   containing the entity's alias shall be added to the pivot table.
+#' @field entity_parent_columns Defines the number of parent columns added to
+#'   the pivot table (when a hierarchy is specified).
+#' @field add_entity_type_column This flag specifies whether a column containing
 #'   the entity's type shall be added to the pivot table.
-#' @field scopeFormula The scope definition as string (P# syntax).
-#' @field entitySetFormula The entity set definition as string (P# syntax).
-#' @field tableFormula The table definition as string (P# syntax).
-#' @field hierarchyName The name of the hierarchy used to retrieve the parent
+#' @field scope_formula The scope definition as string (P# syntax).
+#' @field entity_set_formula The entity set definition as string (P# syntax).
+#' @field table_formula The table definition as string (P# syntax).
+#' @field hierarchy_name The name of the hierarchy used to retrieve the parent
 #'   name.
-#' @field useDataPreloading This flag specifies whether data preloading shall be
-#'   used when calculating the pivot table.
-#' @field allowScriptExecution This flag specifies whether calculations in the
-#'   table formula are executed or not.
-#' @field tagEntryDate The date used to evaluate tag entries.
-#' @field savedDate The date the pivot table was saved to the database.
-#' @field usedTags A list of tag names used in the pivot table.
-#' @field dateTimeFormat A string specifying the time format in the pivot table.
-#' @field numberFormat A string specifying the number format in the pivot table.
-#' @field nanValueString A string specifying the NaN value in the pivot table.
-#' @field tagActiveString A string specifying the text that is stored in the
-#'   table if a tag is active.
-#' @field isLocked This flag specifies whether the pivot table is locked.
-#'   Defaults to \code{FALSE}.
-#' @field user The user the pivot table belongs to.
-#' @field isFavorite This flag specifies whether the pivot table is marked as
-#'   favorite item, and thus shown in the favorites tab on the home module in
-#'   PetroVisor. Defaults to \code{FALSE}.
+#' @field tag_entry_date The date used to evaluate tag entries.
+#' @field saved_date The date the pivot table was saved to the database.
+#' @field used_tags A list of tag names used in the pivot table.
+#' @field skip_empty_rows This flag specifies whether empty rows shall be
+#'   skipped during table generation.
+#' @field add_is_opportunity_column This flag specifies whether the column
+#'   IsOpportunity shall be added to the pivot table.
+#' @field append_data This flag specifies whether new data shall be appended to
+#'   the saved table.
+#' @field description The description of the item.
 #' @field labels A list of strings holding the labels of the pivot table.
 #' @examples
 #' \dontrun{
@@ -44,177 +36,151 @@ library("R6")
 PivotTable <- R6Class("PivotTable",
   public = list(
     name = NULL,
-    addEntityAliasColumn = NULL,
-    addEntityParentColumn = NULL,
-    addEntityTypeColumn = NULL,
-    scopeFormula = NULL,
-    entitySetFormula = NULL,
-    tableFormula = NULL,
-    hierarchyName = NULL,
-    useDataPreloading = NULL,
-    allowScriptExecution = NULL,
-    tagEntryDate = NULL,
-    savedDate = NULL,
-    usedTags = NULL,
-    dateTimeFormat = NULL,
-    numberFormat = NULL,
-    nanValueString = NULL,
-    tagActiveString = NULL,
-    isLocked = NULL,
-    user = NULL,
-    isFavorite = NULL,
+    add_entity_alias_column = NULL,
+    entity_parent_columns = NULL,
+    add_entity_type_column = NULL,
+    scope_formula = NULL,
+    entity_set_formula = NULL,
+    table_formula = NULL,
+    hierarchy_name = NULL,
+    tag_entry_date = NULL,
+    saved_date = NULL,
+    used_tags = NULL,
+    skip_empty_rows = NULL,
+    add_is_opportunity_column = NULL,
+    append_data = NULL,
+    description = NULL,
     labels = NULL,
 
     #' @description Create a new PivotTable instance.
     #'
     #' @param name The name of the pivot table.
-    #' @param addEntityAliasColumn This flag specifies whether a column
+    #' @param add_entity_alias_column This flag specifies whether a column
     #'   containing the entity's alias shall be added to the pivot table.
-    #' @param addEntityParentColumn This flag specifies whether a column
-    #'   containing the entity's parent shall be added to the pivot table.
-    #' @param addEntityTypeColumn This flag specifies whether a column
+    #' @param entity_parent_columns Defines the number of parent columns added
+    #'   to the pivot table (when a hierarchy is specified).
+    #' @param add_entity_type_column This flag specifies whether a column
     #'   containing the entity's type shall be added to the pivot table.
-    #' @param scopeFormula The scope definition as string (P# syntax).
-    #' @param entitySetFormula The entity set definition as string (P# syntax).
-    #' @param tableFormula The table definition as string (P# syntax).
-    #' @param hierarchyName The name of the hierarchy used to retrieve the
+    #' @param scope_formula The scope definition as string (P# syntax).
+    #' @param entity_set_formula The entity set definition as string
+    #'   (P# syntax).
+    #' @param table_formula The table definition as string (P# syntax).
+    #' @param hierarchy_name The name of the hierarchy used to retrieve the
     #'   parent name.
-    #' @param useDataPreloading This flag specifies whether data preloading
-    #'   shall be used when calculating the pivot table.
-    #' @param allowScriptExecution This flag specifies whether calculations in
-    #'   the table formula are executed or not.
-    #' @param tagEntryDate The date used to evaluate tag entries.
-    #' @param savedDate The date the pivot table was saved to the database.
-    #' @param usedTags A list of tag names used in the pivot table.
-    #' @param dateTimeFormat A string specifying the time format in the pivot
-    #'   table.
-    #' @param numberFormat A string specifying the number format in the pivot
-    #'   table.
-    #' @param nanValueString A string specifying the NaN value in the pivot
-    #'   table.
-    #' @param tagActiveString A string specifying the text that is stored in the
-    #'   table if a tag is active.
-    #' @param isLocked This flag specifies whether the pivot table is locked.
-    #'   Defaults to \code{FALSE}.
-    #' @param user The user the pivot table belongs to.
-    #' @param isFavorite This flag specifies whether the pivot table is marked
-    #'   as favorite item, and thus shown in the favorites tab on the home
-    #'   module in PetroVisor. Defaults to \code{FALSE}.
+    #' @param tag_entry_date The date used to evaluate tag entries.
+    #' @param saved_date The date the pivot table was saved to the database.
+    #' @param used_tags A list of tag names used in the pivot table.
+    #' @param skip_empty_rows This flag specifies whether empty rows shall be
+    #'   skipped during table generation.
+    #' @param add_is_opportunity_column This flag specifies whether the column
+    #'   IsOpportunity shall be added to the pivot table.
+    #' @param append_data This flag specifies whether new data shall be appended
+    #'   to the saved table.
+    #' @param description The description of the item.
     #' @param labels A list of strings holding the labels of the pivot table.
     initialize = function(name = NULL,
-                          addEntityAliasColumn = NULL,
-                          addEntityParentColumn = NULL,
-                          addEntityTypeColumn = NULL,
-                          scopeFormula = NULL,
-                          entitySetFormula = NULL,
-                          tableFormula = NULL,
-                          hierarchyName = NULL,
-                          useDataPreloading = NULL,
-                          allowScriptExecution = NULL,
-                          tagEntryDate = NULL,
-                          savedDate = NULL,
-                          usedTags = NULL,
-                          dateTimeFormat = NULL,
-                          numberFormat = NULL,
-                          nanValueString = NULL,
-                          tagActiveString = NULL,
-                          isLocked = FALSE,
-                          user = NULL,
-                          isFavorite = FALSE,
-                          labels = NULL){
+                          add_entity_alias_column = NULL,
+                          entity_parent_columns = 0,
+                          add_entity_type_column = NULL,
+                          scope_formula = NULL,
+                          entity_set_formula = NULL,
+                          table_formula = NULL,
+                          hierarchy_name = "",
+                          tag_entry_date = NULL,
+                          saved_date = NULL,
+                          used_tags = list(),
+                          skip_empty_rows = NULL,
+                          add_is_opportunity_column = NULL,
+                          append_data = NULL,
+                          description = NULL,
+                          labels = list()) {
       self$name <- name
-      self$addEntityAliasColumn <- addEntityAliasColumn
-      self$addEntityParentColumn <- addEntityParentColumn
-      self$addEntityTypeColumn <- addEntityTypeColumn
-      self$scopeFormula <- scopeFormula
-      self$entitySetFormula <- entitySetFormula
-      self$tableFormula <- tableFormula
-      self$hierarchyName <- hierarchyName
-      self$useDataPreloading <- useDataPreloading
-      self$allowScriptExecution <- allowScriptExecution
-      self$tagEntryDate <- tagEntryDate
-      self$savedDate <- savedDate
-      self$usedTags <- usedTags
-      self$dateTimeFormat <- dateTimeFormat
-      self$numberFormat <- numberFormat
-      self$nanValueString <- nanValueString
-      self$tagActiveString <- tagActiveString
-      self$isLocked <- isLocked
-      self$user <- user
-      self$isFavorite <- isFavorite
+      self$add_entity_alias_column <- add_entity_alias_column
+      self$entity_parent_columns <- entity_parent_columns
+      self$add_entity_type_column <- add_entity_type_column
+      self$scope_formula <- scope_formula
+      self$entity_set_formula <- entity_set_formula
+      self$table_formula <- table_formula
+      self$hierarchy_name <- hierarchy_name
+      self$tag_entry_date <- tag_entry_date
+      self$saved_date <- saved_date
+      self$used_tags <- used_tags
+      self$skip_empty_rows <- skip_empty_rows
+      self$add_is_opportunity_column <- add_is_opportunity_column
+      self$append_data <- append_data
+      self$description <- description
       self$labels <- labels
     },
 
     #' @details Convert the object to a list. This function is mainly used
     #' by the RepositoryService to convert the objects to lists and then
     #' call the web API.
-    toList = function(){
+    toList = function() {
       dl <- list(
-        Name = if(is.null(self$name)) "" else self$name,
-        AddEntityAliasColumn = if(is.null(self$addEntityAliasColumn)) {
+        Name = if (is.null(self$name)) "" else self$name,
+        AddEntityAliasColumn = if (is.null(self$add_entity_alias_column)) {
           ""
         } else {
-          self$addEntityAliasColumn
+          self$add_entity_alias_column
         },
-        AddEntityParentColumn = if(is.null(self$addEntityParentColumn)) {
+        AddEntityParentsColumns = if (is.null(self$entity_parent_columns)) {
           ""
         } else {
-          self$addEntityParentColumn
+          self$entity_parent_columns
         },
-        AddEntityTypeColumn = if(is.null(self$addEntityTypeColumn)) {
+        AddEntityTypeColumn = if (is.null(self$add_entity_type_column)) {
           ""
         } else {
-          self$addEntityTypeColumn
+          self$add_entity_type_column
         },
-        ScopeFormula = if(is.null(self$scopeFormula)) "" else self$scopeFormula,
-        EntitySetFormula = if(is.null(self$entitySetFormula)) {
+        ScopeFormula = if (is.null(self$scope_formula)) {
           ""
         } else {
-          self$entitySetFormula
+          self$scope_formula
         },
-        TableFormula = if(is.null(self$tableFormula)) "" else self$tableFormula,
-        HierarchyName = if(is.null(self$hierarchyName)) {
+        EntitySetFormula = if (is.null(self$entity_set_formula)) {
           ""
         } else {
-          self$hierarchyName
+          self$entity_set_formula
         },
-        UseDataPreloading = if(is.null(self$useDataPreloading)) {
+        TableFormula = if (is.null(self$table_formula)) {
           ""
         } else {
-          self$useDataPreloading
+          self$table_formula
         },
-        AllowScriptExecution = if(is.null(self$allowScriptExecution)) {
+        HierarchyName = if (is.null(self$hierarchy_name)) {
           ""
         } else {
-          self$allowScriptExecution
+          self$hierarchy_name
         },
-        TagEntryDate = if(is.null(self$tagEntryDate)) {
+        TagEntryDate = if (is.null(self$tag_entry_date)) {
+          NA
+        } else {
+          self$tag_entry_date
+        },
+        SavedDate = if (is.null(self$saved_date)) {
+          NA
+        } else {
+          self$saved_date
+        },
+        UsedTags = self$used_tags,
+        SkipEmptyDataRows = if (is.null(self$skip_empty_rows)) {
           ""
         } else {
-          self$tagEntryDate
+          self$skip_empty_rows
         },
-        SavedDate = if(is.null(self$savedDate)) "" else self$savedDate,
-        UsedTags = if(is.null(self$usedTags)) "" else self$usedTags,
-        DateTimeFormat = if(is.null(self$dateTimeFormat)) {
+        AddIsOpportunityColumn = if (is.null(self$add_is_opportunity_column)) {
           ""
         } else {
-          self$dateTimeFormat
+          self$add_is_opportunity_column
         },
-        NumberFormat = if(is.null(self$numberFormat)) "" else self$numberFormat,
-        NaNValueString = if(is.null(self$nanValueString)) {
+        AppendSavedData = if (is.null(self$append_data)) {
           ""
         } else {
-          self$nanValueString
+          self$append_data
         },
-        TagActiveString = if(is.null(self$tagActiveString)) {
-          ""
-        } else {
-          self$tagActiveString
-        },
-        IsLocked = if(is.null(self$isLocked)) "" else self$isLocked,
-        User = if(is.null(self$user)) "" else self$user,
-        IsFavorite = if(is.null(self$isFavorite)) "" else self$isFavorite,
-        Labels = if(is.null(self$labels)) "" else self$labels
+        Description = if (is.null(self$description)) "" else self$description,
+        Labels = self$labels
       )
       return(dl)
     }

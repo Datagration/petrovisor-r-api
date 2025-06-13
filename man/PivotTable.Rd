@@ -16,53 +16,40 @@ PivotTable$new()
 \describe{
 \item{\code{name}}{The name of the pivot table.}
 
-\item{\code{addEntityAliasColumn}}{This flag specifies whether a column containing
-the entity's alias shall be added to the pivot table.}
+\item{\code{add_entity_alias_column}}{This flag specifies whether a column
+containing the entity's alias shall be added to the pivot table.}
 
-\item{\code{addEntityParentColumn}}{This flag specifies whether a column containing
-the entity's parent shall be added to the pivot table.}
+\item{\code{entity_parent_columns}}{Defines the number of parent columns added to
+the pivot table (when a hierarchy is specified).}
 
-\item{\code{addEntityTypeColumn}}{This flag specifies whether a column containing
+\item{\code{add_entity_type_column}}{This flag specifies whether a column containing
 the entity's type shall be added to the pivot table.}
 
-\item{\code{scopeFormula}}{The scope definition as string (P# syntax).}
+\item{\code{scope_formula}}{The scope definition as string (P# syntax).}
 
-\item{\code{entitySetFormula}}{The entity set definition as string (P# syntax).}
+\item{\code{entity_set_formula}}{The entity set definition as string (P# syntax).}
 
-\item{\code{tableFormula}}{The table definition as string (P# syntax).}
+\item{\code{table_formula}}{The table definition as string (P# syntax).}
 
-\item{\code{hierarchyName}}{The name of the hierarchy used to retrieve the parent
+\item{\code{hierarchy_name}}{The name of the hierarchy used to retrieve the parent
 name.}
 
-\item{\code{useDataPreloading}}{This flag specifies whether data preloading shall be
-used when calculating the pivot table.}
+\item{\code{tag_entry_date}}{The date used to evaluate tag entries.}
 
-\item{\code{allowScriptExecution}}{This flag specifies whether calculations in the
-table formula are executed or not.}
+\item{\code{saved_date}}{The date the pivot table was saved to the database.}
 
-\item{\code{tagEntryDate}}{The date used to evaluate tag entries.}
+\item{\code{used_tags}}{A list of tag names used in the pivot table.}
 
-\item{\code{savedDate}}{The date the pivot table was saved to the database.}
+\item{\code{skip_empty_rows}}{This flag specifies whether empty rows shall be
+skipped during table generation.}
 
-\item{\code{usedTags}}{A list of tag names used in the pivot table.}
+\item{\code{add_is_opportunity_column}}{This flag specifies whether the column
+IsOpportunity shall be added to the pivot table.}
 
-\item{\code{dateTimeFormat}}{A string specifying the time format in the pivot table.}
+\item{\code{append_data}}{This flag specifies whether new data shall be appended to
+the saved table.}
 
-\item{\code{numberFormat}}{A string specifying the number format in the pivot table.}
-
-\item{\code{nanValueString}}{A string specifying the NaN value in the pivot table.}
-
-\item{\code{tagActiveString}}{A string specifying the text that is stored in the
-table if a tag is active.}
-
-\item{\code{isLocked}}{This flag specifies whether the pivot table is locked.
-Defaults to \code{FALSE}.}
-
-\item{\code{user}}{The user the pivot table belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the pivot table is marked as
-favorite item, and thus shown in the favorites tab on the home module in
-PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the pivot table.}
 }
@@ -84,26 +71,21 @@ Create a new PivotTable instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{PivotTable$new(
   name = NULL,
-  addEntityAliasColumn = NULL,
-  addEntityParentColumn = NULL,
-  addEntityTypeColumn = NULL,
-  scopeFormula = NULL,
-  entitySetFormula = NULL,
-  tableFormula = NULL,
-  hierarchyName = NULL,
-  useDataPreloading = NULL,
-  allowScriptExecution = NULL,
-  tagEntryDate = NULL,
-  savedDate = NULL,
-  usedTags = NULL,
-  dateTimeFormat = NULL,
-  numberFormat = NULL,
-  nanValueString = NULL,
-  tagActiveString = NULL,
-  isLocked = FALSE,
-  user = NULL,
-  isFavorite = FALSE,
-  labels = NULL
+  add_entity_alias_column = NULL,
+  entity_parent_columns = 0,
+  add_entity_type_column = NULL,
+  scope_formula = NULL,
+  entity_set_formula = NULL,
+  table_formula = NULL,
+  hierarchy_name = "",
+  tag_entry_date = NULL,
+  saved_date = NULL,
+  used_tags = list(),
+  skip_empty_rows = NULL,
+  add_is_opportunity_column = NULL,
+  append_data = NULL,
+  description = NULL,
+  labels = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -112,56 +94,41 @@ Create a new PivotTable instance.
 \describe{
 \item{\code{name}}{The name of the pivot table.}
 
-\item{\code{addEntityAliasColumn}}{This flag specifies whether a column
+\item{\code{add_entity_alias_column}}{This flag specifies whether a column
 containing the entity's alias shall be added to the pivot table.}
 
-\item{\code{addEntityParentColumn}}{This flag specifies whether a column
-containing the entity's parent shall be added to the pivot table.}
+\item{\code{entity_parent_columns}}{Defines the number of parent columns added
+to the pivot table (when a hierarchy is specified).}
 
-\item{\code{addEntityTypeColumn}}{This flag specifies whether a column
+\item{\code{add_entity_type_column}}{This flag specifies whether a column
 containing the entity's type shall be added to the pivot table.}
 
-\item{\code{scopeFormula}}{The scope definition as string (P# syntax).}
+\item{\code{scope_formula}}{The scope definition as string (P# syntax).}
 
-\item{\code{entitySetFormula}}{The entity set definition as string (P# syntax).}
+\item{\code{entity_set_formula}}{The entity set definition as string
+(P# syntax).}
 
-\item{\code{tableFormula}}{The table definition as string (P# syntax).}
+\item{\code{table_formula}}{The table definition as string (P# syntax).}
 
-\item{\code{hierarchyName}}{The name of the hierarchy used to retrieve the
+\item{\code{hierarchy_name}}{The name of the hierarchy used to retrieve the
 parent name.}
 
-\item{\code{useDataPreloading}}{This flag specifies whether data preloading
-shall be used when calculating the pivot table.}
+\item{\code{tag_entry_date}}{The date used to evaluate tag entries.}
 
-\item{\code{allowScriptExecution}}{This flag specifies whether calculations in
-the table formula are executed or not.}
+\item{\code{saved_date}}{The date the pivot table was saved to the database.}
 
-\item{\code{tagEntryDate}}{The date used to evaluate tag entries.}
+\item{\code{used_tags}}{A list of tag names used in the pivot table.}
 
-\item{\code{savedDate}}{The date the pivot table was saved to the database.}
+\item{\code{skip_empty_rows}}{This flag specifies whether empty rows shall be
+skipped during table generation.}
 
-\item{\code{usedTags}}{A list of tag names used in the pivot table.}
+\item{\code{add_is_opportunity_column}}{This flag specifies whether the column
+IsOpportunity shall be added to the pivot table.}
 
-\item{\code{dateTimeFormat}}{A string specifying the time format in the pivot
-table.}
+\item{\code{append_data}}{This flag specifies whether new data shall be appended
+to the saved table.}
 
-\item{\code{numberFormat}}{A string specifying the number format in the pivot
-table.}
-
-\item{\code{nanValueString}}{A string specifying the NaN value in the pivot
-table.}
-
-\item{\code{tagActiveString}}{A string specifying the text that is stored in the
-table if a tag is active.}
-
-\item{\code{isLocked}}{This flag specifies whether the pivot table is locked.
-Defaults to \code{FALSE}.}
-
-\item{\code{user}}{The user the pivot table belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the pivot table is marked
-as favorite item, and thus shown in the favorites tab on the home
-module in PetroVisor. Defaults to \code{FALSE}.}
+\item{\code{description}}{The description of the item.}
 
 \item{\code{labels}}{A list of strings holding the labels of the pivot table.}
 }
