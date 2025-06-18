@@ -52,7 +52,9 @@ library("jsonlite")
 #'   password = "your_password"
 #' )
 #' }
-ServiceProvider <- R6Class("ServiceProvider",
+ServiceProvider <- R6Class(
+  "ServiceProvider",
+  inherit = ApiRequests,
   public = list(
     url = NULL,
     data_url = NULL,
@@ -154,6 +156,53 @@ ServiceProvider <- R6Class("ServiceProvider",
           stop("Failed to retrieve data URL. Error: ", e$message)
         }
       )
+    },
+
+    #' @description Convert values from a source unit to a target unit
+    #' @param x The value to convert. Either a single value, or a collection of
+    #'   values.
+    #' @param source_unit The name of the source unit.
+    #' @param target_unit The name of the target unit.
+    #'
+    #' @returns Converted values. Either single number or collection of values.
+    convert_unit = function(x, source_unit, target_unit) {
+      #handle special units (see swagger)
+      if (source_unit == " ") source_unit <- "_"
+      if (source_unit == "%") source_unit <- "@"
+      if (target_unit == " ") target_unit <- "_"
+      if (target_unit == "%") target_unit <- "@"
+
+      if (is.null(x) || all(is.na(x))) {
+        # Input is NULL, NA or consists entirely of NA values (including NaN)
+        return(x)
+      }
+
+      if (is.numeric(x) && length(x) == 1) {
+        # Input is a single numeric value
+        return(super$get(self$workspace_data_url,
+                         paste0("Units/",
+                                source_unit,
+                                "/Convert/",
+                                target_unit,
+                                "/",
+                                x),
+                         private$tokenType,
+                         private$token))
+      } else if ((is.vector(x) || is.list(x)) &&
+                 all(sapply(x, function(el) is.numeric(el) || is.na(el)))) {
+        # Input is a collection of numeric values (including NA)
+        # replace NA with NaN
+        x[is.na(x)] <- NaN
+        return(super$post(x,
+                          self$workspace_data_url,
+                          paste0("Units/",source_unit,"/Convert/",target_unit),
+                          private$tokenType,
+                          private$token,
+                          expect_data = TRUE))
+      } else {
+        stop(paste0("Error: Input must be a numeric value or a ",
+                    "list/vector of numeric values (including NA)."))
+      }
     }
   ),
   private = list(

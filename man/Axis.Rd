@@ -5,7 +5,7 @@
 \title{Axis}
 \description{
 Class representing a chart axis object. Axes are used when
-  creating a chart.
+creating a chart.
 }
 \examples{
 \dontrun{

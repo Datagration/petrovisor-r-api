@@ -1,13 +1,17 @@
 Package: Myrconn.PetroVisor.Client
 Type: Package
-Title: Wrapper for PetroVisor API
-Version: 3.3.0
-Description: R interface to the PetroVisor REST API.
+Title: Wrapper for PetroVisor's API
+Version: 3.4.0
+Authors@R: c(
+  person("Andreas", "Schweiger", email = "andreas.schweiger@weatherford.com", role = c("aut", "cre")),
+  person("Ramez", "Abdalla", email = "ramez.abdalla@weatherford.com", role = "aut"))
+Description: A wrapper for PetroVisor's REST API that structures calls into
+  services (data, items, logs, files, tag_entries). These services may be used
+  to interact with the respective PetroVisor objects.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Maintainer: Ramez Abdalla <ramez.abdalla@weatherford.com>
-Author: Andreas Schweiger <andreas.schweiger@weatherford.com>
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
   httr,

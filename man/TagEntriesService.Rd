@@ -97,7 +97,7 @@ update. The dataframe has to have for columns with the names
 \if{latex}{\out{\hypertarget{method-TagEntriesService-delete_range}{}}}
 \subsection{Method \code{delete_range()}}{
 Delete all tag entries with a start date in the specified
- time range.
+time range.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$delete_range(entity_name, tag_name, start, end = NULL)}\if{html}{\out{</div>}}
 }
@@ -205,7 +205,7 @@ will be returned.}
 }
 \subsection{Returns}{
 A dataframe containing the tag entries or a list of length zero
- if no tag entries for the specified filter are available.
+if no tag entries for the specified filter are available.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
