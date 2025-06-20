@@ -1192,7 +1192,7 @@ DataServices <- R6Class(
     unnest_and_reshape = function(data) {
       unnested <- tidyr::unnest(data, cols = names(data), keep_empty = TRUE)
       reshaped_data <- tidyr::pivot_wider(
-        unnested,
+        subset(unnested, select = -Unit),
         names_from = Signal,
         values_from = Value
       )
@@ -1204,7 +1204,7 @@ DataServices <- R6Class(
         }
       )
 
-      return(subset(reshaped_data, select = -unit))
+      return(reshaped_data)
     }
   )
 )
