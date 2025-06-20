@@ -42,10 +42,10 @@ param token_type The type of the used token.
 param token The token used for authenticating the request.
 param query named list of query parameters.
 param parse_json Whether to parse the result of the request. Defaults to
- \code{TRUE}. If set to \code{FALSE}, the raw content will be returned.
+\code{TRUE}. If set to \code{FALSE}, the raw content will be returned.
 
 returns The result of the GET request. Either as received, or parsed to
- an object using \code{jsonlite::fromJSON}.
+an object using \code{jsonlite::fromJSON}.
 description Issue a DELETE request to the api
 
 param name Name of the item to delete.

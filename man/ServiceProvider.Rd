@@ -3,13 +3,16 @@
 \name{ServiceProvider}
 \alias{ServiceProvider}
 \title{ServiceProvider}
+\value{
+Converted values. Either single number or collection of values.
+}
 \description{
 Provides access to all services provided through the web API.
 }
 \details{
 This class allows interaction with the PetroVisor API by providing
-  access to various services such as logging, repository, data, and tag
-  entries.
+access to various services such as logging, repository, data, and tag
+entries.
 }
 \examples{
 \dontrun{
@@ -27,6 +30,9 @@ sp <- ServiceProvider$new(
   password = "your_password"
 )
 }
+}
+\section{Super class}{
+\code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{ServiceProvider}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -68,6 +74,7 @@ related to files.}
 \item \href{#method-ServiceProvider-parse_signal}{\code{ServiceProvider$parse_signal()}}
 \item \href{#method-ServiceProvider-set_workspace_data_url}{\code{ServiceProvider$set_workspace_data_url()}}
 \item \href{#method-ServiceProvider-getDataUrl}{\code{ServiceProvider$getDataUrl()}}
+\item \href{#method-ServiceProvider-convert_unit}{\code{ServiceProvider$convert_unit()}}
 \item \href{#method-ServiceProvider-clone}{\code{ServiceProvider$clone()}}
 }
 }
@@ -107,7 +114,7 @@ Create a new ServiceProvider instance.
 \if{latex}{\out{\hypertarget{method-ServiceProvider-parse_signal}{}}}
 \subsection{Method \code{parse_signal()}}{
 Parse the mapped signal received from PetroVisor to a list
- containing the name and unit of the mapped signal.
+containing the name and unit of the mapped signal.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ServiceProvider$parse_signal(mapped_signal)}\if{html}{\out{</div>}}
 }
@@ -149,6 +156,28 @@ Retrieve the base data URL from the authentication service.
 \if{html}{\out{<div class="r">}}\preformatted{ServiceProvider$getDataUrl()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ServiceProvider-convert_unit"></a>}}
+\if{latex}{\out{\hypertarget{method-ServiceProvider-convert_unit}{}}}
+\subsection{Method \code{convert_unit()}}{
+Convert values from a source unit to a target unit
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ServiceProvider$convert_unit(x, source_unit, target_unit)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{The value to convert. Either a single value, or a collection of
+values.}
+
+\item{\code{source_unit}}{The name of the source unit.}
+
+\item{\code{target_unit}}{The name of the target unit.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ServiceProvider-clone"></a>}}

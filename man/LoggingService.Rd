@@ -62,7 +62,7 @@ sp$logs$CleanUpLogEntries()
 \if{latex}{\out{\hypertarget{method-LoggingService-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new LoggingService instance. This is done by
- the ServiceProvider automatically.
+the ServiceProvider automatically.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggingService$new(url, token_type, token)}\if{html}{\out{</div>}}
 }
@@ -84,7 +84,7 @@ Create a new LoggingService instance. This is done by
 \if{latex}{\out{\hypertarget{method-LoggingService-load_categories}{}}}
 \subsection{Method \code{load_categories()}}{
 Get all available categories from the existing log
- entries.
+entries.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggingService$load_categories()}\if{html}{\out{</div>}}
 }
@@ -98,7 +98,7 @@ A character vector containing all available categories.
 \if{latex}{\out{\hypertarget{method-LoggingService-load}{}}}
 \subsection{Method \code{load()}}{
 Retrieve all log entries matching the given filter from
- the database.
+the database.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggingService$load(
   last_entries = NULL,
@@ -139,8 +139,8 @@ contains the specified text.}
 }
 \subsection{Returns}{
 A dataframe containing the requested log entries. The number
- of returned columns depends on the available information.
- Columns that contain no information are not shown in the output.
+of returned columns depends on the available information.
+Columns that contain no information are not shown in the output.
 }
 }
 \if{html}{\out{<hr>}}

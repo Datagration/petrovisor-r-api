@@ -5,7 +5,7 @@
 \title{SeriesSetting}
 \description{
 Class representing a series setting object. These settings are
-  used when creating a chart.
+used when creating a chart.
 }
 \examples{
 \dontrun{

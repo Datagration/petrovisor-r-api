@@ -5,17 +5,17 @@
 \title{FileService}
 \value{
 A character vector containing the names of the file in the
- workspace's blob storage.
+workspace's blob storage.
 
 The content of the file as string.
 }
 \description{
 Provides access to file related functionality provided through
- the web API.
+the web API.
 }
 \details{
 A new instance of this class will be created by the ServiceProvider
- automatically.
+automatically.
 }
 \examples{
 \dontrun{
@@ -53,7 +53,7 @@ result <- sp$files$save("Test_File.csv")
 \if{latex}{\out{\hypertarget{method-FileService-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new FileService instance. This is done by the
- ServiceProvider automatically.
+ServiceProvider automatically.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FileService$new(url, token_type, token)}\if{html}{\out{</div>}}
 }
@@ -75,7 +75,7 @@ Create a new FileService instance. This is done by the
 \if{latex}{\out{\hypertarget{method-FileService-load_names}{}}}
 \subsection{Method \code{load_names()}}{
 Retrieve the names of the files in the workspace's blob
- storage.
+storage.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FileService$load_names(prefix = NULL)}\if{html}{\out{</div>}}
 }
@@ -94,7 +94,7 @@ returned.}
 \if{latex}{\out{\hypertarget{method-FileService-load}{}}}
 \subsection{Method \code{load()}}{
 Download the file with the specified name from the
- workspace's blob storage.
+workspace's blob storage.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FileService$load(name, target_path = "")}\if{html}{\out{</div>}}
 }
@@ -131,7 +131,7 @@ Upload a file to the workspace's blob storage.
 \if{latex}{\out{\hypertarget{method-FileService-delete}{}}}
 \subsection{Method \code{delete()}}{
 Delete the file with the specified name from the
- workspace's blob storage.
+workspace's blob storage.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FileService$delete(name)}\if{html}{\out{</div>}}
 }

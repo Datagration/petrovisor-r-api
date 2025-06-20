@@ -1,21 +1,30 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # Myrconn.PetroVisor.Client
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
-This package provides a wrapper for the PetroVisor API, enabling users
-to interact with PetroVisor services directly from R. It includes
-functionalities for authentication, data retrieval, logging, and more.
+This package provides a wrapper for the PetroVisor API, enabling users to interact with PetroVisor services directly from R. It includes functionalities for authentication, data retrieval, logging, and more.
 
 ## Installation
 
 To install the package using `remotes`, run the following command:
 
-``` r
+```r
 # Install from GitHub
 remotes::install_github("Datagration/petrovisor-r-api")
 ```
@@ -24,10 +33,9 @@ remotes::install_github("Datagration/petrovisor-r-api")
 
 ### Authentication
 
-Authenticate with the PetroVisor API using an API key,
-username/password, or refresh token.
+Authenticate with the PetroVisor API using an API key, username/password, or refresh token.
 
-``` r
+```r
 library(Myrconn.PetroVisor.Client)
 
 # Create an instance of the AuthenticationService
@@ -49,10 +57,9 @@ token <- auth_service$get_access_token(
 
 ### Service Provider
 
-Use the `ServiceProvider` class to interact with various PetroVisor
-services.
+Use the `ServiceProvider` class to interact with various PetroVisor services.
 
-``` r
+```r
 # Create a new instance of the ServiceProvider using a token
 sp <- ServiceProvider$new(
   url = "https://identity.us1.petrovisor.com",
@@ -76,5 +83,4 @@ entity_names <- sp$items$load_names("Entity")
 
 ## License
 
-This package is licensed under the MIT License. See the `LICENSE` file
-for details.
+This package is licensed under the MIT License. See the `LICENSE` file for details.

@@ -116,7 +116,7 @@ ServiceProvider automatically.
 \if{latex}{\out{\hypertarget{method-DataServices-load}{}}}
 \subsection{Method \code{load()}}{
 Load data from PetroVisor. This function is deprecated.
- Use \code{load_signals()} or \code{load_reference_table()} instead.
+Use \code{load_signals()} or \code{load_reference_table()} instead.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataServices$load(
   entities,
@@ -312,7 +312,7 @@ strings or a list of items of type Entity.}
 \item{\code{key_unit_name}}{The unit in which to retrieve the key values.}
 
 \item{\code{columns}}{List of strings defining the columns and units to be
-retrieved. E.g. list("column name 1 [unit]", "column name 2 [unit]").
+retrieved. E.g. list("column name 1 \link{unit}", "column name 2 \link{unit}").
 When \code{specified_columns_only = TRUE}, only columns given in this
 argument will be returned. Otherwise, this argument will be used to
 define the units in which the column data will be returned.}
@@ -349,7 +349,7 @@ Load pivot table data from PetroVisor.
 \if{latex}{\out{\hypertarget{method-DataServices-save}{}}}
 \subsection{Method \code{save()}}{
 Save data to PetroVisor. This function is deprecated.
- Use \code{save_signals()} or \code{save_reference_table()} instead.
+Use \code{save_signals()} or \code{save_reference_table()} instead.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataServices$save(
   data_type = c("StaticNumeric", "StaticString", "TimeNumeric", "TimeString",
@@ -492,7 +492,7 @@ Generate and save the data of the specified pivot table.
 \if{latex}{\out{\hypertarget{method-DataServices-delete}{}}}
 \subsection{Method \code{delete()}}{
 Remove data from PetroVisor. This function is deprecated.
- Use \code{delete_signals()} or \code{delete_reference_table()} instead.
+Use \code{delete_signals()} or \code{delete_reference_table()} instead.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataServices$delete(
   entities,
