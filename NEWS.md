@@ -1,3 +1,7 @@
+# Myrconn.PetroVisor.Client 3.4.1
+
+* fix issue with reshaping data pulled from PetroVisor
+
 # Myrconn.PetroVisor.Client 3.4.0
 
 * add a generic unit converter to the service provider
