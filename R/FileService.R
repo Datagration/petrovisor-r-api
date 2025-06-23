@@ -79,21 +79,19 @@ FileService <- R6Class(
       # If a path is given, detect the operating system and convert path as
       # needed. Also make sure that the path ends with "/" or "\\".
       if (target_path != "") {
-        os <- get_os()
-        print(os)
+        os <- private$get_os()
 
         if (os == "windows"){
-          target_path <- gsub("/", "\\", target_path)
+          target_path <- gsub("/", "\\\\", target_path)
           if (!endsWith("\\", target_path)) {
             target_path <- paste0(target_path, "\\")
           }
         } else {
-          target_path <- gsub("\\", "/", target_path)
+          target_path <- gsub("\\\\", "/", target_path)
           if (!endsWith("/", target_path)) {
             target_path <- paste0(target_path, "/")
           }
         }
-        print(target_path)
       }
 
       # Save response content (binary data) to specified path

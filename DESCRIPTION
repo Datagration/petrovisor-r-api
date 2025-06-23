@@ -21,4 +21,5 @@ Imports:
   tidyr,
   lifecycle
 Suggests:
-  testthat
+  testthat,
+  withr
