@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/Datagration/petrovisor-r-api/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Datagration/petrovisor-r-api/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This package provides a wrapper for the PetroVisor API, enabling users
