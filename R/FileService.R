@@ -52,7 +52,7 @@ FileService <- R6Class(
     #'  workspace's blob storage.
     load_names = function(prefix = NULL) {
       # Build query string
-      query <- if (!is.null(prefix)) paste0("?Prefix=", prefix) else NULL
+      query <- if (!is.null(prefix)) list(Prefix = prefix) else NULL
 
       file_names <- private$get(private$url,
                                 "Files",
@@ -79,21 +79,19 @@ FileService <- R6Class(
       # If a path is given, detect the operating system and convert path as
       # needed. Also make sure that the path ends with "/" or "\\".
       if (target_path != "") {
-        os <- get_os()
-        print(os)
+        os <- private$get_os()
 
         if (os == "windows"){
-          target_path <- gsub("/", "\\", target_path)
+          target_path <- gsub("/", "\\\\", target_path)
           if (!endsWith("\\", target_path)) {
             target_path <- paste0(target_path, "\\")
           }
         } else {
-          target_path <- gsub("\\", "/", target_path)
+          target_path <- gsub("\\\\", "/", target_path)
           if (!endsWith("/", target_path)) {
             target_path <- paste0(target_path, "/")
           }
         }
-        print(target_path)
       }
 
       # Save response content (binary data) to specified path
