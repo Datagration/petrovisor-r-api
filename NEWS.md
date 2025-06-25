@@ -1,3 +1,9 @@
+# Myrconn.PetroVisor.Client 3.4.2
+
+* add github action to automate R CMD check
+* update test_file_service.R to use temporary files
+* fix prefix handling in files$load_names()
+
 # Myrconn.PetroVisor.Client 3.4.1
 
 * fix issue with reshaping data pulled from PetroVisor

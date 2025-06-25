@@ -52,7 +52,7 @@ FileService <- R6Class(
     #'  workspace's blob storage.
     load_names = function(prefix = NULL) {
       # Build query string
-      query <- if (!is.null(prefix)) paste0("?Prefix=", prefix) else NULL
+      query <- if (!is.null(prefix)) list(Prefix = prefix) else NULL
 
       file_names <- private$get(private$url,
                                 "Files",

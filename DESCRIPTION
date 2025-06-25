@@ -1,7 +1,7 @@
 Package: Myrconn.PetroVisor.Client
 Type: Package
 Title: Wrapper for PetroVisor's API
-Version: 3.4.1
+Version: 3.4.2
 Authors@R: c(
   person("Andreas", "Schweiger", email = "andreas.schweiger@weatherford.com", role = c("aut", "cre")),
   person("Ramez", "Abdalla", email = "ramez.abdalla@weatherford.com", role = "aut"))

@@ -20,6 +20,10 @@ test_that("Files can be handled", {
       file_names <- sp$files$load_names()
       expect_true(basename(path) %in% file_names)
 
+      # When using the file name as prefix, only one file should be returned
+      file_names2 <- sp$files$load_names(prefix = basename(path))
+      expect_equal(length(file_names2), 1)
+
       # File can be downloaded
       withr::with_tempfile(
         "path2",
