@@ -422,8 +422,40 @@ test_that("Static numeric data can be retrieved", {
   )
 })
 
+test_that("Static numeric data can be retrieved (top_records)", {
+  retrieved_data <- sp$data$load_signals(
+    c(entity$name),
+    lapply(
+      c("test static numeric signal one [m]",
+        "test static numeric signal two [m]"),
+      function(x) {
+        sp$parse_signal(x)
+      }
+    ),
+    top_records = 1,
+    reshape = TRUE
+  )
+
+  expect_equal(
+    retrieved_data$StaticNumericData$scenario,
+    static_numeric_data$scenario[1]
+  )
+  expect_equal(
+    retrieved_data$StaticNumericData$entity,
+    static_numeric_data$entity[1]
+  )
+  expect_equal(
+    retrieved_data$StaticNumericData$`test static numeric signal one`,
+    static_numeric_data$`test static numeric signal one`[1]
+  )
+  expect_equal(
+    retrieved_data$StaticNumericData$`test static numeric signal two`,
+    static_numeric_data$`test static numeric signal two`[1]
+  )
+})
+
 test_that("Static numeric data can be deleted", {
-  result <- sp$data$delete(
+  result <- sp$data$delete_signals(
     c(entity),
     c("test static numeric signal one", "test static numeric signal two")
   )
@@ -509,7 +541,7 @@ test_that("Static string data can be retrieved", {
 })
 
 test_that("Static string data can be deleted", {
-  result <- sp$data$delete(
+  result <- sp$data$delete_signals(
     c(entity),
     c("test static string signal one", "test static string signal two")
   )
@@ -596,7 +628,7 @@ test_that("Time numeric data can be retrieved", {
 })
 
 test_that("Time numeric data can be deleted", {
-  result <- sp$data$delete(
+  result <- sp$data$delete_signals(
     c(entity),
     c("test time numeric signal one", "test time numeric signal two"),
     time_start = "2025-01-01T00:00:00",
@@ -686,7 +718,7 @@ test_that("Time string data can be retrieved", {
 })
 
 test_that("Time string data can be deleted", {
-  result <- sp$data$delete(
+  result <- sp$data$delete_signals(
     c(entity),
     c("test time string signal one", "test time string signal two"),
     time_start = "2025-01-01T00:00:00",
@@ -782,7 +814,7 @@ test_that("Depth numeric data can be retrieved", {
 })
 
 test_that("Depth numeric data can be deleted", {
-  result <- sp$data$delete(
+  result <- sp$data$delete_signals(
     c(entity),
     c("test depth numeric signal one", "test depth numeric signal two"),
     depth_start = 0,
@@ -875,7 +907,7 @@ test_that("Depth string data can be retrieved", {
 })
 
 test_that("Depth string data can be deleted", {
-  result <- sp$data$delete(
+  result <- sp$data$delete_signals(
     c(entity),
     c("test depth string signal one", "test depth string signal two"),
     depth_start = 0,
@@ -973,7 +1005,7 @@ test_that("PVT numeric data can be retrieved", {
 })
 
 test_that("PVT numeric data can be deleted", {
-  result <- sp$data$delete(
+  result <- sp$data$delete_signals(
     c(entity),
     c("test pvt numeric signal one", "test pvt numeric signal two")
   )
