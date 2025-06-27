@@ -8,6 +8,30 @@ library("R6")
 #' @details A new instance of this class will be created by the ServiceProvider
 #' automatically.
 #'
+#' @section Methods:
+#' \describe{
+#'   \item{Data Loading}{load_signals(),
+#'                       load_reference_table(),
+#'                       load_pivot_table()}
+#'   \item{Data Saving}{save_signals(),
+#'                      save_reference_table(),
+#'                      save_pivot_table()}
+#'   \item{Data Deletion}{delete_signals(),
+#'                        delete_reference_table(),
+#'                        delete_pivot_table()}
+#' }
+#'
+#' @section Data Types Supported:
+#' \describe{
+#'   \item{Static Data}{Entity-level data that doesn't change over time or
+#'                       depth.}
+#'   \item{Time Series Data}{Data that varies over time (daily, monthly, etc.)}
+#'   \item{Depth Data}{Data that varies with depth or measured depth.}
+#'   \item{PVT Data}{Pressure-Volume-Temperature dependent data.}
+#'   \item{Reference Tables}{Structured tabular data with defined schemas.}
+#'   \item{Pivot Tables}{Pre-aggregated summary tables.}
+#' }
+#'
 #' @export DataServices
 #'
 #' @examples \dontrun{
@@ -62,7 +86,7 @@ library("R6")
 #'   )
 #' )
 #' }
-DataServices <- R6Class(
+DataServices <- R6Class(  # nolint: object_name_linter
   "DataServices",
   inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
@@ -81,83 +105,14 @@ DataServices <- R6Class(
       private$sp <- sp
     },
 
-    #' @description Load data from PetroVisor. This function is deprecated.
-    #'  Use \code{load_signals()} or \code{load_reference_table()} instead.
-    #' @param entities List of entities to retrieve data for. Either a list of
-    #'  strings or a list of items of type Entity.
-    #' @param signals List of parsed signals to retrieve data for.
-    #' @param scenario_names List of scenario names to load data for.
-    #' @param hierarchy_name Hierarchy used in the data retrieval process.
-    #' @param top_records Number of records to return,
-    #' @param include_workspace_data Whether workspace data shall be included in
-    #'   the output (only applies if scenarios are used). Defaults to
-    #'   \code{TRUE}.
-    #' @param time_increment The time increment to load the data in.
-    #' @param time_start The first time stamp data is loaded for.
-    #' @param time_end The last time stamp data is loaded for.
-    #' @param depth_increment The depth increment to load the data in.
-    #' @param depth_start The first depth data is loaded for.
-    #' @param depth_end The last depth data is loaded for.
-    #' @param with_gaps Whether gaps shall be returned. Defaults to \code{TRUE}.
-    #' @param gap_numeric_value Replacement value for gaps in numeric data.
-    #' @param gap_string_value Replacement value for gaps in string data.
-    #' @param depth_unit The depth unit for retrieving depth data.
-    #' @param pressure_unit The pressure unit used when retrieving PVT data.
-    #' @param temperature_unit The temperature unit used when retrieving PVT
-    #'   data.
-    #' @param aggregation Aggregation type applied to the data.
-    #' @param reshape Whether to return the raw output of the api call or
-    #'   reshape the data into a more user-friendly format. Defaults to
-    #'   \code{TRUE}.
-    # ToDo: remove in version 3.2.0
-    load = function(entities,
-                    signals,
-                    scenario_names = NULL,
-                    hierarchy_name = NULL,
-                    top_records = NULL,
-                    include_workspace_data = TRUE,
-                    time_increment = NULL,
-                    time_start = NULL,
-                    time_end = NULL,
-                    depth_increment = NULL,
-                    depth_start = NULL,
-                    depth_end = NULL,
-                    with_gaps = TRUE,
-                    gap_numeric_value = NULL,
-                    gap_string_value = NULL,
-                    depth_unit = NULL,
-                    pressure_unit = NULL,
-                    temperature_unit = NULL,
-                    aggregation = NULL,
-                    reshape = TRUE) {
-      lifecycle::deprecate_warn("3.1.0", "load()", "load_signals()")
-
-      return(self$load_signals(entities,
-                               signals,
-                               scenario_names,
-                               hierarchy_name,
-                               top_records,
-                               include_workspace_data,
-                               time_increment,
-                               time_start,
-                               time_end,
-                               depth_increment,
-                               depth_start,
-                               depth_end,
-                               with_gaps,
-                               gap_numeric_value,
-                               gap_string_value,
-                               depth_unit,
-                               pressure_unit,
-                               temperature_unit,
-                               aggregation,
-                               reshape))
-    },
-
     #' @description Load signal data from PetroVisor.
-    #' @param entities List of entities to retrieve data for. Either a list of
-    #'  strings or a list of items of type Entity.
-    #' @param signals List of parsed signals to retrieve data for.
+    #' @param entities List of entities to retrieve data for. Can be:
+    #'   \itemize{
+    #'     \item Character vector: \code{c("Well_001", "Well_002")}
+    #'     \item List of Entity objects: \code{list(entity1, entity2)}
+    #'   }
+    #' @param signals List of parsed signal objects created using
+    #'   \code{sp$parse_signal()}. Each signal should specify name and unit.
     #' @param scenario_names List of scenario names to load data for.
     #' @param hierarchy_name Hierarchy used in the data retrieval process.
     #' @param top_records Number of records to return.
@@ -181,6 +136,55 @@ DataServices <- R6Class(
     #' @param reshape Whether to return the raw output of the api call or
     #'   reshape the data into a more user-friendly format. Defaults to
     #'   \code{TRUE}.
+    #' @return A list containing the loaded data, structured by data type
+    #'   (StaticNumericData, TimeNumericData, etc.) when reshape = TRUE,
+    #'   or raw API response when reshape = FALSE.
+    #' @examples \dontrun{
+    #'   # Time-series data with specific time range
+    #'   time_data <- sp$data$load(
+    #'     entities = c("Well_A"),
+    #'     signals = lapply(
+    #'       c("oil production [bbl/d]", "gas production [mcf/d]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     ),
+    #'     time_increment = "Daily",
+    #'     time_start = "2024-01-01T00:00:00",
+    #'     time_end = "2024-12-31T23:59:59",
+    #'     reshape = TRUE
+    #'   )
+    #' }
+    #' @details
+    #' This method supports loading multiple data types simultaneously and
+    #' automatically handles data reshaping for user convenience. The method
+    #' supports various filtering options:
+    #' \itemize{
+    #'   \item \strong{Entity Filtering}: Specify entities as strings or
+    #'   Entity objects
+    #'   \item \strong{Time Filtering}: Use ISO 8601 format for
+    #'   time_start/time_end
+    #'   \item \strong{Depth Filtering}: Specify depth ranges with
+    #'   depth_start/depth_end
+    #'   \item \strong{Scenario Filtering}: Load specific scenarios or
+    #'   workspace data
+    #' }
+    #'
+    #' When \code{reshape = TRUE} (default), the returned data structure
+    #' contains:
+    #' \itemize{
+    #'   \item \code{StaticNumericData/StaticStringData}: Wide format with
+    #'   entities as rows, signals as columns
+    #'   \item \code{TimeNumericData/TimeStringData}: Long format with Date,
+    #'   Entity, and signal columns
+    #'   \item \code{DepthNumericData/DepthStringData}: Long format with Depth,
+    #'   Entity, and signal columns
+    #'   \item \code{PVTNumericData}: Long format with Pressure, Temperature,
+    #'   Entity, and signal columns
+    #' }
+    #' @note When using time-based data loading, ensure time_start and time_end
+    #'   are in ISO 8601 format (e.g., "2025-01-01T00:00:00").
+    #' @note Large data requests may take significant time to process. Consider
+    #'   using top_records parameter to limit result size.
+    #' @family data loading functions
     load_signals = function(entities,
                             signals,
                             scenario_names = NULL,
@@ -201,6 +205,11 @@ DataServices <- R6Class(
                             temperature_unit = NULL,
                             aggregation = NULL,
                             reshape = TRUE) {
+
+      # Input checks
+      if (!is(signals, "list")) {
+        signals <- list(signals)
+      }
 
       # Get entity names from input
       entity_names <- private$get_entity_names(entities)
@@ -372,6 +381,51 @@ DataServices <- R6Class(
     #' @param specified_columns_only Whether to return the columns specified in
     #'   \code{columns} only. Defaults to \code{FALSE}.
     #' @param where WHERE-like clause to filter the reference table data.
+    #' @return A data frame containing the loaded reference table data.
+    #' @examples \dontrun{
+    #'   # Basic reference table loading
+    #'   ref_data <- sp$data$load_reference_table(
+    #'     table = "Well Properties"
+    #'   )
+    #'
+    #'   # With entity filtering
+    #'   ref_data <- sp$data$load_reference_table(
+    #'     table = "Production History",
+    #'     entities = c("Well_A", "Well_B")
+    #'   )
+    #'
+    #'   # With time filtering
+    #'   ref_data <- sp$data$load_reference_table(
+    #'     table = "Monthly Reports",
+    #'     entities = c("Field_1"),
+    #'     time_start = "2024-01-01T00:00:00",
+    #'     time_end = "2024-12-31T23:59:59"
+    #'   )
+    #'
+    #'   # With specific columns and units
+    #'   ref_data <- sp$data$load_reference_table(
+    #'     table = "Reservoir Properties",
+    #'     entities = c("Reservoir_A"),
+    #'     columns = list(
+    #'       "porosity [fraction]",
+    #'       "permeability [mD]",
+    #'       "thickness [ft]"
+    #'     ),
+    #'     specified_columns_only = TRUE,
+    #'     key_unit_name = "ft"
+    #'   )
+    #'
+    #'   # With WHERE clause and top records
+    #'   ref_data <- sp$data$load_reference_table(
+    #'     table = "Well Completion Data",
+    #'     where = "[WellType] = 'Horizontal' AND [TVD] > 5000",
+    #'     top_records = 50
+    #'   )
+    #' }
+    #' @note Reference table must exist in PetroVisor before loading data.
+    #'   Use \code{sp$items$load_names("ReferenceTable")} to list available
+    #'   tables.
+    #' @family data loading functions
     load_reference_table = function(table,
                                     entities = NULL,
                                     time_start = NULL,
@@ -496,6 +550,22 @@ DataServices <- R6Class(
     #'
     #' @param table The name of the pivot table to load from.
     #' @param top_records Number of records to return.
+    #' @return A data frame containing the loaded pivot table data.
+    #' @examples \dontrun{
+    #' # Basic pivot table loading
+    #'   pivot_data <- sp$data$load_pivot_table(
+    #'     table = "Production Summary"
+    #'   )
+    #'
+    #'   # With record limit
+    #'   pivot_data <- sp$data$load_pivot_table(
+    #'     table = "Monthly Production Report",
+    #'     top_records = 100
+    #'   )
+    #' }
+    #' @note Pivot table data is read-only. Use \code{save_pivot_table()} to
+    #'   regenerate the data if source data has changed.
+    #' @family data loading functions
     load_pivot_table = function(table, top_records = NULL) {
       data <- private$get(private$url,
                           paste0("PivotTables/", table, "/Saved"),
@@ -505,55 +575,9 @@ DataServices <- R6Class(
       # restructure data
       # promote first row to colnames
       df <- data.frame(data[-1, ])
-      colnames(df) <- data[1,]
+      colnames(df) <- data[1, ]
 
       return(df)
-    },
-
-    #' @description Save data to PetroVisor. This function is deprecated.
-    #'  Use \code{save_signals()} or \code{save_reference_table()} instead.
-    #' @param data_type The type of the data. One of:
-    #'  \code{StaticNumeric}, \code{StaticString}, \code{TimeNumeric},
-    #'  \code{TimeString}, \code{DepthNumeric}, \code{DepthString},
-    #'  \code{PVTNumeric}.
-    #' @param data The data as data frame.
-    #' @param signals List of parsed signals to save data for.
-    #' @param generate_logs Whether to generate log entries. Defaults to
-    #'  \code{TRUE}.
-    #' @param no_range_delete Whether to skip deleting all data in the saving
-    #'  scope before storing the new values. Defaults to \code{TRUE}.
-    #' @param values_time_increment The time increment of the time-dependent
-    #'  values.
-    #' @param values_depth_increment The depth increment of the depth-dependent
-    #'  values.
-    #' @param pressure_unit The pressure unit of the PVT values.
-    #' @param temperature_unit The temperature unit of the PVT values.
-    # ToDo: remove in version 3.2.0
-    save = function(data_type = c("StaticNumeric",
-                                  "StaticString",
-                                  "TimeNumeric",
-                                  "TimeString",
-                                  "DepthNumeric",
-                                  "DepthString",
-                                  "PVTNumeric"),
-                    data,
-                    signals,
-                    generate_logs = TRUE,
-                    no_range_delete = TRUE,
-                    values_time_increment = NULL,
-                    values_depth_increment = NULL,
-                    pressure_unit = NULL,
-                    temperature_unit = NULL) {
-      lifecycle::deprecate_warn("3.1.0", "save()", "save_signals()")
-
-      return(self$save_signals(data_type,
-                               data, signals,
-                               generate_logs,
-                               no_range_delete,
-                               values_time_increment,
-                               values_depth_increment,
-                               pressure_unit,
-                               temperature_unit))
     },
 
     #' @description Save signal data to PetroVisor.
@@ -573,6 +597,148 @@ DataServices <- R6Class(
     #'  values.
     #' @param pressure_unit The pressure unit of the PVT values.
     #' @param temperature_unit The temperature unit of the PVT values.
+    #' @return A response object from the API indicating success or failure of
+    #'   the save operation.
+    #' @examples \dontrun{
+    #'   # Static numeric data
+    #'   static_numeric_data <- data.frame(
+    #'     scenario = c("", ""),
+    #'     entity = c("Well_A", "Well_B"),
+    #'     `initial oil reserves` = c(1000000, 750000),
+    #'     `initial gas reserves` = c(2000000, 1500000)
+    #'   )
+    #'
+    #'   result <- sp$data$save_signals(
+    #'     data_type = "StaticNumeric",
+    #'     data = static_numeric_data,
+    #'     signals = lapply(
+    #'       c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     ),
+    #'     generate_logs = TRUE,
+    #'     no_range_delete = FALSE
+    #'   )
+    #'
+    #'   # Static string data
+    #'   static_string_data <- data.frame(
+    #'      scenario = c(""),
+    #'     entity = c("Well_A"),
+    #'     `well type` = c("Horizontal"),
+    #'     `completion type` = c("Multi-stage frac")
+    #'   )
+    #'
+    #'   result <- sp$data$save_signals(
+    #'     data_type = "StaticString",
+    #'     data = static_string_data,
+    #'     signals = lapply(
+    #'       c("well type [ ]", "completion type [ ]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     )
+    #'   )
+    #'
+    #'   # Time numeric data
+    #'   time_numeric_data <- data.frame(
+    #'     scenario = c("", "", ""),
+    #'     date = c("2024-01-01T00:00:00",
+    #'              "2024-01-02T00:00:00",
+    #'              "2024-01-03T00:00:00"),
+    #'     entity = c("Well_A", "Well_A", "Well_A"),
+    #'     `oil rate` = c(1000, 950, 900),
+    #'     `gas rate` = c(2000, 1900, 1800)
+    #'   )
+    #'
+    #'   result <- sp$data$save_signals(
+    #'     data_type = "TimeNumeric",
+    #'     data = time_numeric_data,
+    #'     signals = lapply(
+    #'       c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     ),
+    #'     values_time_increment = "Daily"
+    #'   )
+    #'
+    #'   # Time string data
+    #'   time_string_data <- data.frame(
+    #'     scenario = c("", ""),
+    #'     date = c("2024-01-01T00:00:00", "2024-01-02T00:00:00"),
+    #'     entity = c("Well_A", "Well_A"),
+    #'     `operation status` = c("Producing", "Shut-in"),
+    #'     `maintenance notes` = c("Normal operation", "Scheduled maintenance")
+    #'   )
+    #'
+    #'   result <- sp$data$save_signals(
+    #'     data_type = "TimeString",
+    #'     data = time_string_data,
+    #'     signals = lapply(
+    #'       c("operation status [ ]", "maintenance notes [ ]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     )
+    #'   )
+    #'
+    #'   # Depth numeric data
+    #'   depth_numeric_data <- data.frame(
+    #'     scenario = c("", ""),
+    #'     depth = c(1000, 1010),
+    #'     entity = c("Well_A", "Well_A"),
+    #'     porosity = c(0.15, 0.18),
+    #'     permeability = c(100, 150)
+    #'   )
+    #'
+    #'   result <- sp$data$save_signals(
+    #'     data_type = "DepthNumeric",
+    #'     data = depth_numeric_data,
+    #'     signals = lapply(
+    #'       c("porosity [fraction]", "permeability [mD]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     ),
+    #'     values_depth_increment = "Meter"
+    #'   )
+    #'
+    #'   # Depth string data
+    #'   depth_string_data <- data.frame(
+    #'     scenario = c("", ""),
+    #'     depth = c(1000, 1010),
+    #'     entity = c("Well_A", "Well_A"),
+    #'     `rock type` = c("Sandstone", "Shale"),
+    #'     `formation name` = c("Formation A", "Formation B")
+    #'   )
+    #'
+    #'   result <- sp$data$save_signals(
+    #'     data_type = "DepthString",
+    #'     data = depth_string_data,
+    #'     signals = lapply(
+    #'       c("rock type [ ]", "formation name [ ]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     )
+    #'   )
+    #'
+    #'   # PVT numeric data
+    #'   pvt_numeric_data <- data.frame(
+    #'     scenario = c("", ""),
+    #'     temperature = c(200, 250),
+    #'     pressure = c(3000, 4000),
+    #'     entity = c("Fluid_Sample_1", "Fluid_Sample_1"),
+    #'     density = c(800, 820),
+    #'     viscosity = c(1.2, 1.5)
+    #'   )
+    #'
+    #'   result <- sp$data$save_signals(
+    #'     data_type = "PVTNumeric",
+    #'     data = pvt_numeric_data,
+    #'     signals = lapply(
+    #'       c("density [kg/m3]", "viscosity [cP]"),
+    #'       function(x) { sp$parse_signal(x) }
+    #'     ),
+    #'     pressure_unit = "psi",
+    #'     temperature_unit = "degF"
+    #'   )
+    #' }
+    #' @note Data frame must contain required columns: entity, scenario, and
+    #'   additional columns depending on data_type (date for time data,
+    #'   depth for depth data, etc.).
+    #' @note When no_range_delete = FALSE, existing data in the scope will be
+    #'   deleted before saving new values.
+    #' @family data saving functions
     save_signals = function(data_type = c("StaticNumeric",
                                           "StaticString",
                                           "TimeNumeric",
@@ -590,6 +756,15 @@ DataServices <- R6Class(
                             temperature_unit = NULL) {
       # Input checks
       data_type <- match.arg(data_type)
+
+      if (!is(signals, "list")) {
+        signals <- list(signals)
+      }
+
+      # Make sure data is a data frame, if not, convert it
+      if (!is(data, "data.frame")) {
+        data <- as.data.frame(data)
+      }
 
       # create unit lookup
       unit_lookup <- data.frame(do.call(rbind, signals))
@@ -614,6 +789,9 @@ DataServices <- R6Class(
 
       # Reshape static numeric data
       if (data_type == "StaticNumeric") {
+        # check if data has the columns entity, scenario
+        private$check_columns(data, c("entity", "scenario"))
+
         # Pivot data into data.frame with columns scenario, entity, signal, data
         pivot <- tidyr::pivot_longer(
           data,
@@ -657,6 +835,9 @@ DataServices <- R6Class(
 
       # Reshape static string data
       if (data_type == "StaticString") {
+        # check if data has the columns entity, scenario
+        private$check_columns(data, c("entity", "scenario"))
+
         # Pivot data into data.frame with columns scenario, entity, signal, data
         pivot <- tidyr::pivot_longer(
           data,
@@ -700,6 +881,9 @@ DataServices <- R6Class(
 
       # Reshape time numeric data
       if (data_type == "TimeNumeric") {
+        # check if data has the columns entity, scenario, date
+        private$check_columns(data, c("entity", "scenario", "date"))
+
         # Pivot data into data.frame with columns:
         #  scenario, date, entity, signal, value
         pivot <- tidyr::pivot_longer(
@@ -765,6 +949,9 @@ DataServices <- R6Class(
 
       # Reshape time string data
       if (data_type == "TimeString") {
+        # check if data has the columns entity, scenario, date
+        private$check_columns(data, c("entity", "scenario", "date"))
+
         # Pivot data into data.frame with columns:
         #  scenario, date, entity, signal, value
         pivot <- tidyr::pivot_longer(
@@ -826,6 +1013,9 @@ DataServices <- R6Class(
 
       # Reshape depth numeric data
       if (data_type == "DepthNumeric") {
+        # check if data has the columns entity, scenario, depth
+        private$check_columns(data, c("entity", "scenario", "depth"))
+
         # Pivot data into data.frame with columns:
         #  scenario, depth, entity, signal, value
         pivot <- tidyr::pivot_longer(
@@ -891,6 +1081,9 @@ DataServices <- R6Class(
 
       # Reshape depth string data
       if (data_type == "DepthString") {
+        # check if data has the columns entity, scenario, depth
+        private$check_columns(data, c("entity", "scenario", "depth"))
+
         # Pivot data into data.frame with columns:
         #  scenario, depth, entity, signal, value
         pivot <- tidyr::pivot_longer(
@@ -952,6 +1145,12 @@ DataServices <- R6Class(
 
       # Reshape PVT data
       if (data_type == "PVTNumeric") {
+        # check if data has the columns entity, scenario, pressure, temperature
+        private$check_columns(data, c("entity",
+                                      "scenario",
+                                      "pressure",
+                                      "temperature"))
+
         # Pivot data into data.frame with columns:
         #  scenario, pressure, temperature, entity, signal, value
         pivot <- tidyr::pivot_longer(
@@ -1034,6 +1233,35 @@ DataServices <- R6Class(
     #' @param skip_existing Whether to skip existing rows (defined by key!) or
     #'   update all rows. Defaults to \code{FALSE}, which means all rows will be
     #'   updated.
+    #' @return A response object from the API indicating success or failure of
+    #'   the save operation.
+    #' @examples \dontrun{
+    #'   # Basic reference table data saving
+    #'   ref_table_data <- data.frame(
+    #'     Entity = c("Well_A", "Well_B", "Well_C"),
+    #'     Timestamp = c("2024-01-01T00:00:00",
+    #'                   "2024-01-01T00:00:00",
+    #'                   "2024-01-01T00:00:00"),
+    #'     KeyColumn = c(1, 2, 3),
+    #'     WellName = c("Alpha-1", "Beta-2", "Gamma-3"),
+    #'     TVD = c(5000, 5500, 6000),
+    #'     Status = c("Active", "Shut-in", "Active")
+    #'   )
+    #'
+    #'   result <- sp$data$save_reference_table(
+    #'     table = "Well Master Data",
+    #'     data = ref_table_data,
+    #'     skip_existing = FALSE
+    #'   )
+    #'
+    #'   # Skip existing records
+    #'   result <- sp$data$save_reference_table(
+    #'     table = "Well Master Data",
+    #'     data = ref_table_data,
+    #'     skip_existing = TRUE
+    #'   )
+    #' }
+    #' @family data saving functions
     save_reference_table = function(table, data, skip_existing = FALSE) {
       data <- as.matrix(data)
       body <- split(data, seq_len(nrow(data)))
@@ -1048,46 +1276,21 @@ DataServices <- R6Class(
 
     #' @description Generate and save the data of the specified pivot table.
     #' @param table The name of the pivot table to generate and save.
+    #' @return A response object from the API indicating success or failure of
+    #'   the save operation.
+    #' @examples \dontrun{
+    #'   # Generate and save pivot table data
+    #'   result <- sp$data$save_pivot_table(
+    #'     table = "Monthly Production Summary"
+    #'   )
+    #' }
+    #' @family data saving functions
     save_pivot_table = function(table) {
       return(private$get(private$url,
                          paste0("PivotTables/", table, "/Save"),
                          private$token_type,
                          private$token,
                          parse_json = FALSE))
-    },
-
-    #' @description Remove data from PetroVisor. This function is deprecated.
-    #'  Use \code{delete_signals()} or \code{delete_reference_table()} instead.
-    #' @param entities List of entities to delete data for. Either a list of
-    #'  strings or a list of items of type Entity.
-    #' @param signal_names List of signal names to delete data for.
-    #' @param scenario_names List of scenario names to delete data from.
-    #' @param include_workspace_data Whether workspace data shall be deleted as
-    #'   well (only applies if scenarios are used). Defaults to \code{TRUE}.
-    #' @param time_start The first time stamp data is deleted for.
-    #' @param time_end The last time stamp data is deleted for.
-    #' @param depth_start The first depth data is deleted for.
-    #' @param depth_end The last depth data is deleted for.
-    # ToDo: remove in version 3.2.0
-    delete = function(entities,
-                      signal_names,
-                      scenario_names = NULL,
-                      include_workspace_data = TRUE,
-                      time_start = NULL,
-                      time_end = NULL,
-                      depth_start = NULL,
-                      depth_end = NULL) {
-
-      lifecycle::deprecate_warn("3.1.0", "delete()", "delete_signals()")
-
-      return(self$delete_signals(entities,
-                                 signal_names,
-                                 scenario_names,
-                                 include_workspace_data,
-                                 time_start,
-                                 time_end,
-                                 depth_start,
-                                 depth_end))
     },
 
     #' @description Remove signal data from PetroVisor.
@@ -1101,6 +1304,40 @@ DataServices <- R6Class(
     #' @param time_end The last time stamp data is deleted for.
     #' @param depth_start The first depth data is deleted for.
     #' @param depth_end The last depth data is deleted for.
+    #' @return A response object from the API indicating success or failure of
+    #'   the delete operation.
+    #' @examples \dontrun{
+    #'   # Delete all signal data for specific entities
+    #'   result <- sp$data$delete_signals(
+    #'     entities = c("Well_A", "Well_B"),
+    #'     signal_names = c("oil production", "gas production")
+    #'   )
+    #'
+    #'   # Delete time-range specific data
+    #'   result <- sp$data$delete_signals(
+    #'     entities = c("Well_C"),
+    #'     signal_names = c("daily production"),
+    #'     time_start = "2024-01-01T00:00:00",
+    #'     time_end = "2024-01-31T23:59:59"
+    #'   )
+    #'
+    #'   # Delete depth-range specific data
+    #'   result <- sp$data$delete_signals(
+    #'     entities = c("Well_D"),
+    #'     signal_names = c("porosity", "permeability"),
+    #'     depth_start = 1000,
+    #'     depth_end = 2000
+    #'   )
+    #'
+    #'   # Delete scenario-specific data
+    #'   result <- sp$data$delete_signals(
+    #'     entities = c("Well_E"),
+    #'     signal_names = c("forecast production"),
+    #'     scenario_names = c("Pessimistic Case"),
+    #'     include_workspace_data = FALSE
+    #'   )
+    #' }
+    #' @family data deletion functions
     delete_signals = function(entities,
                               signal_names,
                               scenario_names = NULL,
@@ -1148,6 +1385,27 @@ DataServices <- R6Class(
     #' @param table The name of the reference table to delete from.
     #' @param where WHERE-like clause to filter the reference table data to
     #'   delete. If \code{NULL} (default), all data will be deleted.
+    #' @return A response object from the API indicating success or failure of
+    #'   the delete operation.
+    #' @examples \dontrun{
+    #'   # Delete all data from reference table
+    #'   result <- sp$data$delete_reference_table(
+    #'     table = "Temporary Data"
+    #'   )
+    #'
+    #'   # Delete with WHERE clause
+    #'   result <- sp$data$delete_reference_table(
+    #'     table = "Well Completion Data",
+    #'     where = "[Status] = 'Abandoned'"
+    #'   )
+    #'
+    #'   # Delete specific date range
+    #'   result <- sp$data$delete_reference_table(
+    #'     table = "Monthly Reports",
+    #'     where = "[ReportDate] < '2023-01-01'"
+    #'   )
+    #' }
+    #' @family data deletion functions
     delete_reference_table = function(table, where = NULL) {
       # set name NULL, because it is appended to the route in ApiRequests.R
       return(private$delete(name = NULL,
@@ -1160,6 +1418,15 @@ DataServices <- R6Class(
 
     #' @description Remove pivot table data from PetroVisor.
     #' @param table The name of the pivot table to delete the data for.
+    #' @return A response object from the API indicating success or failure of
+    #'   the delete operation.
+    #' @examples \dontrun{
+    #'   # Delete pivot table data
+    #'   result <- sp$data$delete_pivot_table(
+    #'     table = "Temporary Analysis"
+    #'   )
+    #' }
+    #' @family data deletion functions
     delete_pivot_table = function(table) {
       return(private$get(private$url,
                          paste0("PivotTables/", table, "/Delete"),
@@ -1205,6 +1472,17 @@ DataServices <- R6Class(
       )
 
       return(reshaped_data)
+    },
+
+    check_columns = function(data, columns) {
+      if (!all(columns %in% colnames(data))) {
+        stop(
+          paste0(
+            "Data must have the columns: ",
+            paste(columns, collapse = ", ")
+          )
+        )
+      }
     }
   )
 )

@@ -344,7 +344,7 @@ RepositoryService <- R6Class(
                                      "RScript", "RWorkflowActivity", "Scenario",
                                      "Scope", "Signal", "TableCalculation",
                                      "Tag", "UnitMeasurement", "Unit",
-                                     "UserSetting", "Workflow",
+                                     "Workflow",
                                      "WorkflowSchedule")) {
       # check input
       type <- match.arg(type)
@@ -381,7 +381,6 @@ RepositoryService <- R6Class(
         Tag = return("Tags"),
         UnitMeasurement = return("UnitMeasurements"),
         Unit = return("Units"),
-        UserSetting = return("UserSettings"),
         Workflow = return("Workflows"),
         WorkflowSchedule = return("WorkflowSchedules")
       )

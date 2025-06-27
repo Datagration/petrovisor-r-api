@@ -11,6 +11,55 @@ the web API.
 A new instance of this class will be created by the ServiceProvider
 automatically.
 }
+\note{
+When using time-based data loading, ensure time_start and time_end
+are in ISO 8601 format (e.g., "2025-01-01T00:00:00").
+
+Large data requests may take significant time to process. Consider
+using top_records parameter to limit result size.
+
+Reference table must exist in PetroVisor before loading data.
+Use \code{sp$items$load_names("ReferenceTable")} to list available
+tables.
+
+Pivot table data is read-only. Use \code{save_pivot_table()} to
+regenerate the data if source data has changed.
+
+Data frame must contain required columns: entity, scenario, and
+additional columns depending on data_type (date for time data,
+depth for depth data, etc.).
+
+When no_range_delete = FALSE, existing data in the scope will be
+deleted before saving new values.
+}
+\section{Methods}{
+
+\describe{
+\item{Data Loading}{load_signals(),
+load_reference_table(),
+load_pivot_table()}
+\item{Data Saving}{save_signals(),
+save_reference_table(),
+save_pivot_table()}
+\item{Data Deletion}{delete_signals(),
+delete_reference_table(),
+delete_pivot_table()}
+}
+}
+
+\section{Data Types Supported}{
+
+\describe{
+\item{Static Data}{Entity-level data that doesn't change over time or
+depth.}
+\item{Time Series Data}{Data that varies over time (daily, monthly, etc.)}
+\item{Depth Data}{Data that varies with depth or measured depth.}
+\item{PVT Data}{Pressure-Volume-Temperature dependent data.}
+\item{Reference Tables}{Structured tabular data with defined schemas.}
+\item{Pivot Tables}{Pre-aggregated summary tables.}
+}
+}
+
 \examples{
 \dontrun{
 # create a new instance of the service provider
@@ -64,7 +113,342 @@ result <- sp$data$save(
   )
 )
 }
+
+## ------------------------------------------------
+## Method `DataServices$load_signals`
+## ------------------------------------------------
+
+\dontrun{
+  # Time-series data with specific time range
+  time_data <- sp$data$load(
+    entities = c("Well_A"),
+    signals = lapply(
+      c("oil production [bbl/d]", "gas production [mcf/d]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    time_increment = "Daily",
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-12-31T23:59:59",
+    reshape = TRUE
+  )
 }
+
+## ------------------------------------------------
+## Method `DataServices$load_reference_table`
+## ------------------------------------------------
+
+\dontrun{
+  # Basic reference table loading
+  ref_data <- sp$data$load_reference_table(
+    table = "Well Properties"
+  )
+
+  # With entity filtering
+  ref_data <- sp$data$load_reference_table(
+    table = "Production History",
+    entities = c("Well_A", "Well_B")
+  )
+
+  # With time filtering
+  ref_data <- sp$data$load_reference_table(
+    table = "Monthly Reports",
+    entities = c("Field_1"),
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-12-31T23:59:59"
+  )
+
+  # With specific columns and units
+  ref_data <- sp$data$load_reference_table(
+    table = "Reservoir Properties",
+    entities = c("Reservoir_A"),
+    columns = list(
+      "porosity [fraction]",
+      "permeability [mD]",
+      "thickness [ft]"
+    ),
+    specified_columns_only = TRUE,
+    key_unit_name = "ft"
+  )
+
+  # With WHERE clause and top records
+  ref_data <- sp$data$load_reference_table(
+    table = "Well Completion Data",
+    where = "[WellType] = 'Horizontal' AND [TVD] > 5000",
+    top_records = 50
+  )
+}
+
+## ------------------------------------------------
+## Method `DataServices$load_pivot_table`
+## ------------------------------------------------
+
+\dontrun{
+# Basic pivot table loading
+  pivot_data <- sp$data$load_pivot_table(
+    table = "Production Summary"
+  )
+
+  # With record limit
+  pivot_data <- sp$data$load_pivot_table(
+    table = "Monthly Production Report",
+    top_records = 100
+  )
+}
+
+## ------------------------------------------------
+## Method `DataServices$save_signals`
+## ------------------------------------------------
+
+\dontrun{
+  # Static numeric data
+  static_numeric_data <- data.frame(
+    scenario = c("", ""),
+    entity = c("Well_A", "Well_B"),
+    `initial oil reserves` = c(1000000, 750000),
+    `initial gas reserves` = c(2000000, 1500000)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "StaticNumeric",
+    data = static_numeric_data,
+    signals = lapply(
+      c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    generate_logs = TRUE,
+    no_range_delete = FALSE
+  )
+
+  # Static string data
+  static_string_data <- data.frame(
+     scenario = c(""),
+    entity = c("Well_A"),
+    `well type` = c("Horizontal"),
+    `completion type` = c("Multi-stage frac")
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "StaticString",
+    data = static_string_data,
+    signals = lapply(
+      c("well type [ ]", "completion type [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # Time numeric data
+  time_numeric_data <- data.frame(
+    scenario = c("", "", ""),
+    date = c("2024-01-01T00:00:00",
+             "2024-01-02T00:00:00",
+             "2024-01-03T00:00:00"),
+    entity = c("Well_A", "Well_A", "Well_A"),
+    `oil rate` = c(1000, 950, 900),
+    `gas rate` = c(2000, 1900, 1800)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "TimeNumeric",
+    data = time_numeric_data,
+    signals = lapply(
+      c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    values_time_increment = "Daily"
+  )
+
+  # Time string data
+  time_string_data <- data.frame(
+    scenario = c("", ""),
+    date = c("2024-01-01T00:00:00", "2024-01-02T00:00:00"),
+    entity = c("Well_A", "Well_A"),
+    `operation status` = c("Producing", "Shut-in"),
+    `maintenance notes` = c("Normal operation", "Scheduled maintenance")
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "TimeString",
+    data = time_string_data,
+    signals = lapply(
+      c("operation status [ ]", "maintenance notes [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # Depth numeric data
+  depth_numeric_data <- data.frame(
+    scenario = c("", ""),
+    depth = c(1000, 1010),
+    entity = c("Well_A", "Well_A"),
+    porosity = c(0.15, 0.18),
+    permeability = c(100, 150)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "DepthNumeric",
+    data = depth_numeric_data,
+    signals = lapply(
+      c("porosity [fraction]", "permeability [mD]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    values_depth_increment = "Meter"
+  )
+
+  # Depth string data
+  depth_string_data <- data.frame(
+    scenario = c("", ""),
+    depth = c(1000, 1010),
+    entity = c("Well_A", "Well_A"),
+    `rock type` = c("Sandstone", "Shale"),
+    `formation name` = c("Formation A", "Formation B")
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "DepthString",
+    data = depth_string_data,
+    signals = lapply(
+      c("rock type [ ]", "formation name [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # PVT numeric data
+  pvt_numeric_data <- data.frame(
+    scenario = c("", ""),
+    temperature = c(200, 250),
+    pressure = c(3000, 4000),
+    entity = c("Fluid_Sample_1", "Fluid_Sample_1"),
+    density = c(800, 820),
+    viscosity = c(1.2, 1.5)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "PVTNumeric",
+    data = pvt_numeric_data,
+    signals = lapply(
+      c("density [kg/m3]", "viscosity [cP]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    pressure_unit = "psi",
+    temperature_unit = "degF"
+  )
+}
+
+## ------------------------------------------------
+## Method `DataServices$save_reference_table`
+## ------------------------------------------------
+
+\dontrun{
+  # Basic reference table data saving
+  ref_table_data <- data.frame(
+    Entity = c("Well_A", "Well_B", "Well_C"),
+    Timestamp = c("2024-01-01T00:00:00",
+                  "2024-01-01T00:00:00",
+                  "2024-01-01T00:00:00"),
+    KeyColumn = c(1, 2, 3),
+    WellName = c("Alpha-1", "Beta-2", "Gamma-3"),
+    TVD = c(5000, 5500, 6000),
+    Status = c("Active", "Shut-in", "Active")
+  )
+
+  result <- sp$data$save_reference_table(
+    table = "Well Master Data",
+    data = ref_table_data,
+    skip_existing = FALSE
+  )
+
+  # Skip existing records
+  result <- sp$data$save_reference_table(
+    table = "Well Master Data",
+    data = ref_table_data,
+    skip_existing = TRUE
+  )
+}
+
+## ------------------------------------------------
+## Method `DataServices$save_pivot_table`
+## ------------------------------------------------
+
+\dontrun{
+  # Generate and save pivot table data
+  result <- sp$data$save_pivot_table(
+    table = "Monthly Production Summary"
+  )
+}
+
+## ------------------------------------------------
+## Method `DataServices$delete_signals`
+## ------------------------------------------------
+
+\dontrun{
+  # Delete all signal data for specific entities
+  result <- sp$data$delete_signals(
+    entities = c("Well_A", "Well_B"),
+    signal_names = c("oil production", "gas production")
+  )
+
+  # Delete time-range specific data
+  result <- sp$data$delete_signals(
+    entities = c("Well_C"),
+    signal_names = c("daily production"),
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-01-31T23:59:59"
+  )
+
+  # Delete depth-range specific data
+  result <- sp$data$delete_signals(
+    entities = c("Well_D"),
+    signal_names = c("porosity", "permeability"),
+    depth_start = 1000,
+    depth_end = 2000
+  )
+
+  # Delete scenario-specific data
+  result <- sp$data$delete_signals(
+    entities = c("Well_E"),
+    signal_names = c("forecast production"),
+    scenario_names = c("Pessimistic Case"),
+    include_workspace_data = FALSE
+  )
+}
+
+## ------------------------------------------------
+## Method `DataServices$delete_reference_table`
+## ------------------------------------------------
+
+\dontrun{
+  # Delete all data from reference table
+  result <- sp$data$delete_reference_table(
+    table = "Temporary Data"
+  )
+
+  # Delete with WHERE clause
+  result <- sp$data$delete_reference_table(
+    table = "Well Completion Data",
+    where = "[Status] = 'Abandoned'"
+  )
+
+  # Delete specific date range
+  result <- sp$data$delete_reference_table(
+    table = "Monthly Reports",
+    where = "[ReportDate] < '2023-01-01'"
+  )
+}
+
+## ------------------------------------------------
+## Method `DataServices$delete_pivot_table`
+## ------------------------------------------------
+
+\dontrun{
+  # Delete pivot table data
+  result <- sp$data$delete_pivot_table(
+    table = "Temporary Analysis"
+  )
+}
+}
+\concept{data deletion functions}
+\concept{data loading functions}
+\concept{data saving functions}
 \section{Super class}{
 \code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{DataServices}
 }
@@ -72,15 +456,12 @@ result <- sp$data$save(
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataServices-new}{\code{DataServices$new()}}
-\item \href{#method-DataServices-load}{\code{DataServices$load()}}
 \item \href{#method-DataServices-load_signals}{\code{DataServices$load_signals()}}
 \item \href{#method-DataServices-load_reference_table}{\code{DataServices$load_reference_table()}}
 \item \href{#method-DataServices-load_pivot_table}{\code{DataServices$load_pivot_table()}}
-\item \href{#method-DataServices-save}{\code{DataServices$save()}}
 \item \href{#method-DataServices-save_signals}{\code{DataServices$save_signals()}}
 \item \href{#method-DataServices-save_reference_table}{\code{DataServices$save_reference_table()}}
 \item \href{#method-DataServices-save_pivot_table}{\code{DataServices$save_pivot_table()}}
-\item \href{#method-DataServices-delete}{\code{DataServices$delete()}}
 \item \href{#method-DataServices-delete_signals}{\code{DataServices$delete_signals()}}
 \item \href{#method-DataServices-delete_reference_table}{\code{DataServices$delete_reference_table()}}
 \item \href{#method-DataServices-delete_pivot_table}{\code{DataServices$delete_pivot_table()}}
@@ -107,89 +488,6 @@ ServiceProvider automatically.
 \item{\code{token}}{the issued token.}
 
 \item{\code{sp}}{instance of the service provider}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataServices-load"></a>}}
-\if{latex}{\out{\hypertarget{method-DataServices-load}{}}}
-\subsection{Method \code{load()}}{
-Load data from PetroVisor. This function is deprecated.
-Use \code{load_signals()} or \code{load_reference_table()} instead.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$load(
-  entities,
-  signals,
-  scenario_names = NULL,
-  hierarchy_name = NULL,
-  top_records = NULL,
-  include_workspace_data = TRUE,
-  time_increment = NULL,
-  time_start = NULL,
-  time_end = NULL,
-  depth_increment = NULL,
-  depth_start = NULL,
-  depth_end = NULL,
-  with_gaps = TRUE,
-  gap_numeric_value = NULL,
-  gap_string_value = NULL,
-  depth_unit = NULL,
-  pressure_unit = NULL,
-  temperature_unit = NULL,
-  aggregation = NULL,
-  reshape = TRUE
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{entities}}{List of entities to retrieve data for. Either a list of
-strings or a list of items of type Entity.}
-
-\item{\code{signals}}{List of parsed signals to retrieve data for.}
-
-\item{\code{scenario_names}}{List of scenario names to load data for.}
-
-\item{\code{hierarchy_name}}{Hierarchy used in the data retrieval process.}
-
-\item{\code{top_records}}{Number of records to return,}
-
-\item{\code{include_workspace_data}}{Whether workspace data shall be included in
-the output (only applies if scenarios are used). Defaults to
-\code{TRUE}.}
-
-\item{\code{time_increment}}{The time increment to load the data in.}
-
-\item{\code{time_start}}{The first time stamp data is loaded for.}
-
-\item{\code{time_end}}{The last time stamp data is loaded for.}
-
-\item{\code{depth_increment}}{The depth increment to load the data in.}
-
-\item{\code{depth_start}}{The first depth data is loaded for.}
-
-\item{\code{depth_end}}{The last depth data is loaded for.}
-
-\item{\code{with_gaps}}{Whether gaps shall be returned. Defaults to \code{TRUE}.}
-
-\item{\code{gap_numeric_value}}{Replacement value for gaps in numeric data.}
-
-\item{\code{gap_string_value}}{Replacement value for gaps in string data.}
-
-\item{\code{depth_unit}}{The depth unit for retrieving depth data.}
-
-\item{\code{pressure_unit}}{The pressure unit used when retrieving PVT data.}
-
-\item{\code{temperature_unit}}{The temperature unit used when retrieving PVT
-data.}
-
-\item{\code{aggregation}}{Aggregation type applied to the data.}
-
-\item{\code{reshape}}{Whether to return the raw output of the api call or
-reshape the data into a more user-friendly format. Defaults to
-\code{TRUE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -227,10 +525,14 @@ Load signal data from PetroVisor.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{entities}}{List of entities to retrieve data for. Either a list of
-strings or a list of items of type Entity.}
+\item{\code{entities}}{List of entities to retrieve data for. Can be:
+\itemize{
+\item Character vector: \code{c("Well_001", "Well_002")}
+\item List of Entity objects: \code{list(entity1, entity2)}
+}}
 
-\item{\code{signals}}{List of parsed signals to retrieve data for.}
+\item{\code{signals}}{List of parsed signal objects created using
+\code{sp$parse_signal()}. Each signal should specify name and unit.}
 
 \item{\code{scenario_names}}{List of scenario names to load data for.}
 
@@ -275,6 +577,61 @@ reshape the data into a more user-friendly format. Defaults to
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+This method supports loading multiple data types simultaneously and
+automatically handles data reshaping for user convenience. The method
+supports various filtering options:
+\itemize{
+\item \strong{Entity Filtering}: Specify entities as strings or
+Entity objects
+\item \strong{Time Filtering}: Use ISO 8601 format for
+time_start/time_end
+\item \strong{Depth Filtering}: Specify depth ranges with
+depth_start/depth_end
+\item \strong{Scenario Filtering}: Load specific scenarios or
+workspace data
+}
+
+When \code{reshape = TRUE} (default), the returned data structure
+contains:
+\itemize{
+\item \code{StaticNumericData/StaticStringData}: Wide format with
+entities as rows, signals as columns
+\item \code{TimeNumericData/TimeStringData}: Long format with Date,
+Entity, and signal columns
+\item \code{DepthNumericData/DepthStringData}: Long format with Depth,
+Entity, and signal columns
+\item \code{PVTNumericData}: Long format with Pressure, Temperature,
+Entity, and signal columns
+}
+}
+
+\subsection{Returns}{
+A list containing the loaded data, structured by data type
+(StaticNumericData, TimeNumericData, etc.) when reshape = TRUE,
+or raw API response when reshape = FALSE.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Time-series data with specific time range
+  time_data <- sp$data$load(
+    entities = c("Well_A"),
+    signals = lapply(
+      c("oil production [bbl/d]", "gas production [mcf/d]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    time_increment = "Daily",
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-12-31T23:59:59",
+    reshape = TRUE
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-load_reference_table"></a>}}
@@ -324,6 +681,56 @@ define the units in which the column data will be returned.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A data frame containing the loaded reference table data.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Basic reference table loading
+  ref_data <- sp$data$load_reference_table(
+    table = "Well Properties"
+  )
+
+  # With entity filtering
+  ref_data <- sp$data$load_reference_table(
+    table = "Production History",
+    entities = c("Well_A", "Well_B")
+  )
+
+  # With time filtering
+  ref_data <- sp$data$load_reference_table(
+    table = "Monthly Reports",
+    entities = c("Field_1"),
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-12-31T23:59:59"
+  )
+
+  # With specific columns and units
+  ref_data <- sp$data$load_reference_table(
+    table = "Reservoir Properties",
+    entities = c("Reservoir_A"),
+    columns = list(
+      "porosity [fraction]",
+      "permeability [mD]",
+      "thickness [ft]"
+    ),
+    specified_columns_only = TRUE,
+    key_unit_name = "ft"
+  )
+
+  # With WHERE clause and top records
+  ref_data <- sp$data$load_reference_table(
+    table = "Well Completion Data",
+    where = "[WellType] = 'Horizontal' AND [TVD] > 5000",
+    top_records = 50
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-load_pivot_table"></a>}}
@@ -343,58 +750,28 @@ Load pivot table data from PetroVisor.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A data frame containing the loaded pivot table data.
 }
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataServices-save"></a>}}
-\if{latex}{\out{\hypertarget{method-DataServices-save}{}}}
-\subsection{Method \code{save()}}{
-Save data to PetroVisor. This function is deprecated.
-Use \code{save_signals()} or \code{save_reference_table()} instead.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$save(
-  data_type = c("StaticNumeric", "StaticString", "TimeNumeric", "TimeString",
-    "DepthNumeric", "DepthString", "PVTNumeric"),
-  data,
-  signals,
-  generate_logs = TRUE,
-  no_range_delete = TRUE,
-  values_time_increment = NULL,
-  values_depth_increment = NULL,
-  pressure_unit = NULL,
-  temperature_unit = NULL
-)}\if{html}{\out{</div>}}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+# Basic pivot table loading
+  pivot_data <- sp$data$load_pivot_table(
+    table = "Production Summary"
+  )
+
+  # With record limit
+  pivot_data <- sp$data$load_pivot_table(
+    table = "Monthly Production Report",
+    top_records = 100
+  )
 }
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data_type}}{The type of the data. One of:
-\code{StaticNumeric}, \code{StaticString}, \code{TimeNumeric},
-\code{TimeString}, \code{DepthNumeric}, \code{DepthString},
-\code{PVTNumeric}.}
-
-\item{\code{data}}{The data as data frame.}
-
-\item{\code{signals}}{List of parsed signals to save data for.}
-
-\item{\code{generate_logs}}{Whether to generate log entries. Defaults to
-\code{TRUE}.}
-
-\item{\code{no_range_delete}}{Whether to skip deleting all data in the saving
-scope before storing the new values. Defaults to \code{TRUE}.}
-
-\item{\code{values_time_increment}}{The time increment of the time-dependent
-values.}
-
-\item{\code{values_depth_increment}}{The depth increment of the depth-dependent
-values.}
-
-\item{\code{pressure_unit}}{The pressure unit of the PVT values.}
-
-\item{\code{temperature_unit}}{The temperature unit of the PVT values.}
 }
 \if{html}{\out{</div>}}
+
 }
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-save_signals"></a>}}
@@ -446,6 +823,151 @@ values.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A response object from the API indicating success or failure of
+the save operation.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Static numeric data
+  static_numeric_data <- data.frame(
+    scenario = c("", ""),
+    entity = c("Well_A", "Well_B"),
+    `initial oil reserves` = c(1000000, 750000),
+    `initial gas reserves` = c(2000000, 1500000)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "StaticNumeric",
+    data = static_numeric_data,
+    signals = lapply(
+      c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    generate_logs = TRUE,
+    no_range_delete = FALSE
+  )
+
+  # Static string data
+  static_string_data <- data.frame(
+     scenario = c(""),
+    entity = c("Well_A"),
+    `well type` = c("Horizontal"),
+    `completion type` = c("Multi-stage frac")
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "StaticString",
+    data = static_string_data,
+    signals = lapply(
+      c("well type [ ]", "completion type [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # Time numeric data
+  time_numeric_data <- data.frame(
+    scenario = c("", "", ""),
+    date = c("2024-01-01T00:00:00",
+             "2024-01-02T00:00:00",
+             "2024-01-03T00:00:00"),
+    entity = c("Well_A", "Well_A", "Well_A"),
+    `oil rate` = c(1000, 950, 900),
+    `gas rate` = c(2000, 1900, 1800)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "TimeNumeric",
+    data = time_numeric_data,
+    signals = lapply(
+      c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    values_time_increment = "Daily"
+  )
+
+  # Time string data
+  time_string_data <- data.frame(
+    scenario = c("", ""),
+    date = c("2024-01-01T00:00:00", "2024-01-02T00:00:00"),
+    entity = c("Well_A", "Well_A"),
+    `operation status` = c("Producing", "Shut-in"),
+    `maintenance notes` = c("Normal operation", "Scheduled maintenance")
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "TimeString",
+    data = time_string_data,
+    signals = lapply(
+      c("operation status [ ]", "maintenance notes [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # Depth numeric data
+  depth_numeric_data <- data.frame(
+    scenario = c("", ""),
+    depth = c(1000, 1010),
+    entity = c("Well_A", "Well_A"),
+    porosity = c(0.15, 0.18),
+    permeability = c(100, 150)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "DepthNumeric",
+    data = depth_numeric_data,
+    signals = lapply(
+      c("porosity [fraction]", "permeability [mD]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    values_depth_increment = "Meter"
+  )
+
+  # Depth string data
+  depth_string_data <- data.frame(
+    scenario = c("", ""),
+    depth = c(1000, 1010),
+    entity = c("Well_A", "Well_A"),
+    `rock type` = c("Sandstone", "Shale"),
+    `formation name` = c("Formation A", "Formation B")
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "DepthString",
+    data = depth_string_data,
+    signals = lapply(
+      c("rock type [ ]", "formation name [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # PVT numeric data
+  pvt_numeric_data <- data.frame(
+    scenario = c("", ""),
+    temperature = c(200, 250),
+    pressure = c(3000, 4000),
+    entity = c("Fluid_Sample_1", "Fluid_Sample_1"),
+    density = c(800, 820),
+    viscosity = c(1.2, 1.5)
+  )
+
+  result <- sp$data$save_signals(
+    data_type = "PVTNumeric",
+    data = pvt_numeric_data,
+    signals = lapply(
+      c("density [kg/m3]", "viscosity [cP]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    pressure_unit = "psi",
+    temperature_unit = "degF"
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-save_reference_table"></a>}}
@@ -469,6 +991,43 @@ updated.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A response object from the API indicating success or failure of
+the save operation.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Basic reference table data saving
+  ref_table_data <- data.frame(
+    Entity = c("Well_A", "Well_B", "Well_C"),
+    Timestamp = c("2024-01-01T00:00:00",
+                  "2024-01-01T00:00:00",
+                  "2024-01-01T00:00:00"),
+    KeyColumn = c(1, 2, 3),
+    WellName = c("Alpha-1", "Beta-2", "Gamma-3"),
+    TVD = c(5000, 5500, 6000),
+    Status = c("Active", "Shut-in", "Active")
+  )
+
+  result <- sp$data$save_reference_table(
+    table = "Well Master Data",
+    data = ref_table_data,
+    skip_existing = FALSE
+  )
+
+  # Skip existing records
+  result <- sp$data$save_reference_table(
+    table = "Well Master Data",
+    data = ref_table_data,
+    skip_existing = TRUE
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-save_pivot_table"></a>}}
@@ -486,49 +1045,23 @@ Generate and save the data of the specified pivot table.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A response object from the API indicating success or failure of
+the save operation.
 }
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataServices-delete"></a>}}
-\if{latex}{\out{\hypertarget{method-DataServices-delete}{}}}
-\subsection{Method \code{delete()}}{
-Remove data from PetroVisor. This function is deprecated.
-Use \code{delete_signals()} or \code{delete_reference_table()} instead.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$delete(
-  entities,
-  signal_names,
-  scenario_names = NULL,
-  include_workspace_data = TRUE,
-  time_start = NULL,
-  time_end = NULL,
-  depth_start = NULL,
-  depth_end = NULL
-)}\if{html}{\out{</div>}}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Generate and save pivot table data
+  result <- sp$data$save_pivot_table(
+    table = "Monthly Production Summary"
+  )
 }
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{entities}}{List of entities to delete data for. Either a list of
-strings or a list of items of type Entity.}
-
-\item{\code{signal_names}}{List of signal names to delete data for.}
-
-\item{\code{scenario_names}}{List of scenario names to delete data from.}
-
-\item{\code{include_workspace_data}}{Whether workspace data shall be deleted as
-well (only applies if scenarios are used). Defaults to \code{TRUE}.}
-
-\item{\code{time_start}}{The first time stamp data is deleted for.}
-
-\item{\code{time_end}}{The last time stamp data is deleted for.}
-
-\item{\code{depth_start}}{The first depth data is deleted for.}
-
-\item{\code{depth_end}}{The last depth data is deleted for.}
 }
 \if{html}{\out{</div>}}
+
 }
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-delete_signals"></a>}}
@@ -571,6 +1104,48 @@ well (only applies if scenarios are used). Defaults to \code{TRUE}.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A response object from the API indicating success or failure of
+the delete operation.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Delete all signal data for specific entities
+  result <- sp$data$delete_signals(
+    entities = c("Well_A", "Well_B"),
+    signal_names = c("oil production", "gas production")
+  )
+
+  # Delete time-range specific data
+  result <- sp$data$delete_signals(
+    entities = c("Well_C"),
+    signal_names = c("daily production"),
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-01-31T23:59:59"
+  )
+
+  # Delete depth-range specific data
+  result <- sp$data$delete_signals(
+    entities = c("Well_D"),
+    signal_names = c("porosity", "permeability"),
+    depth_start = 1000,
+    depth_end = 2000
+  )
+
+  # Delete scenario-specific data
+  result <- sp$data$delete_signals(
+    entities = c("Well_E"),
+    signal_names = c("forecast production"),
+    scenario_names = c("Pessimistic Case"),
+    include_workspace_data = FALSE
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-delete_reference_table"></a>}}
@@ -591,6 +1166,35 @@ delete. If \code{NULL} (default), all data will be deleted.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A response object from the API indicating success or failure of
+the delete operation.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Delete all data from reference table
+  result <- sp$data$delete_reference_table(
+    table = "Temporary Data"
+  )
+
+  # Delete with WHERE clause
+  result <- sp$data$delete_reference_table(
+    table = "Well Completion Data",
+    where = "[Status] = 'Abandoned'"
+  )
+
+  # Delete specific date range
+  result <- sp$data$delete_reference_table(
+    table = "Monthly Reports",
+    where = "[ReportDate] < '2023-01-01'"
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-delete_pivot_table"></a>}}
@@ -608,6 +1212,23 @@ Remove pivot table data from PetroVisor.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+A response object from the API indicating success or failure of
+the delete operation.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Delete pivot table data
+  result <- sp$data$delete_pivot_table(
+    table = "Temporary Analysis"
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataServices-clone"></a>}}
