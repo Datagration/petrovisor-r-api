@@ -89,7 +89,7 @@ Create a new LogEntry instance.
      "RWorkflowActivity",
     "CleansingScript", "ProcessTemplate", "Workflow", "WorkspaceValue", "ReferenceTable",
     "WorkspacePackage", "PythonWorkflowActivity", "DataGrid", "WebWorkflowActivity",
-    "PowerBIItem", "DataIntegrationSession", "UserSetting"),
+    "PowerBIItem", "DataIntegrationSession"),
   item_change = c("Other", "Created", "Modified", "Deleted", "Renamed"),
   schedule_name = NULL,
   workflow_name = NULL,
