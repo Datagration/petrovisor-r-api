@@ -3,8 +3,8 @@ name: Notify Microsoft Teams on PR Publish
 
 on:
   pull_request:
-    types:
-      - ready_for_review
+    branches:
+    - main
 
 jobs:
   notify:
