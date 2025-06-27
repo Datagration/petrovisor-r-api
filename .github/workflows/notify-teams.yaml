@@ -15,10 +15,10 @@ jobs:
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
           title: "[#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
-          summary: |
-            **Branch**: `${{ github.event.pull_request.head.ref }}`
-            **PR Creator**: ${{ github.event.pull_request.user.login }}
-            **PR Description**:
-            ${{ github.event.pull_request.body }}
-
-            [PR Overview](${{ github.event.pull_request.html_url }})
+          # summary: |
+          #   **Branch**: `${{ github.event.pull_request.head.ref }}`
+          #   **PR Creator**: ${{ github.event.pull_request.user.login }}
+          #   **PR Description**:
+          #   ${{ github.event.pull_request.body }}
+          #
+          #   [PR Overview](${{ github.event.pull_request.html_url }})
