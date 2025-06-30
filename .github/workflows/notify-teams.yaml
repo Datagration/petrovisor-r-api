@@ -3,6 +3,7 @@ name: Notify Microsoft Teams on PR Publish
 
 on:
   pull_request:
+    #types: [opened, reopened]
     branches:
     - main
 
@@ -24,13 +25,12 @@ jobs:
                         "content":
                         {
                             "type": "AdaptiveCard",
-                            "speak": "bla",
                             "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
                             "version": "1.5",
                             "body": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "**PR XY and info**",
+                                    "text": "**[#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}**",
                                     "wrap": true
                                 },
                                 {
@@ -40,17 +40,17 @@ jobs:
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "**Branch:** ",
+                                    "text": "**Branch:** ${{ github.event.pull_request.head.ref }}",
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "**PR Creator:** ",
+                                    "text": "**PR Creator:** ${{ github.event.pull_request.user.login }}",
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "**PR Description:** ",
+                                    "text": "**PR Description:** ${{ github.event.pull_request.body }}",
                                     "wrap": true
                                 },
                                 {
@@ -59,7 +59,7 @@ jobs:
                                         {
                                             "type": "Action.OpenUrl",
                                             "title": "PR Overview",
-                                            "url": "google.com"
+                                            "url": ${{ github.event.pull_request.html_url }}
                                         }
                                     ]
                                 }
@@ -68,11 +68,3 @@ jobs:
                     }
                 ]
             }
-          #title: "[#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
-          # summary: |
-          #   **Branch**: `${{ github.event.pull_request.head.ref }}`
-          #   **PR Creator**: ${{ github.event.pull_request.user.login }}
-          #   **PR Description**:
-          #   ${{ github.event.pull_request.body }}
-          #
-          #   [PR Overview](${{ github.event.pull_request.html_url }})
