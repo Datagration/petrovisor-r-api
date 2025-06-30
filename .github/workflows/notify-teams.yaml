@@ -50,7 +50,12 @@ jobs:
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": ${{ toJson(format('**PR Description:** {0}', github.event.pull_request.body)) }},
+                                    "text": ${{ toJson(format('**PR Description:**')) }},
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": ${{ toJson(format('{0}', github.event.pull_request.body)) }},
                                     "wrap": true
                                 },
                                 {
