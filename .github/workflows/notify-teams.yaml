@@ -3,7 +3,7 @@ name: Notify Microsoft Teams on PR Publish
 
 on:
   pull_request:
-    #types: [opened, reopened]
+    types: [opened, reopened]
     branches:
     - main
 
