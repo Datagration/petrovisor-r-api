@@ -1,4 +1,4 @@
-# .github/workflows/teams-notify.yml
+# .github/workflows/notify-teams.yml
 name: Notify Microsoft Teams on PR Publish
 
 on:
@@ -30,7 +30,7 @@ jobs:
                             "body": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "**[#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}**",
+                                    "text": ${{ toJson(format('**[#{0}] {1}**', github.event.pull_request.number, github.event.pull_request.title)) }},
                                     "wrap": true
                                 },
                                 {
@@ -40,17 +40,17 @@ jobs:
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "**Branch:** ${{ github.event.pull_request.head.ref }}",
+                                    "text": ${{ toJson(format('**Branch:** {0}', github.event.pull_request.head.ref)) }},
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "**PR Creator:** ${{ github.event.pull_request.user.login }}",
+                                    "text": ${{ toJson(format('**PR Creator:** {0}', github.event.pull_request.user.login)) }},
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "**PR Description:** ${{ github.event.pull_request.body }}",
+                                    "text": ${{ toJson(format('**PR Description:** {0}', github.event.pull_request.body)) }},
                                     "wrap": true
                                 },
                                 {
@@ -59,7 +59,7 @@ jobs:
                                         {
                                             "type": "Action.OpenUrl",
                                             "title": "PR Overview",
-                                            "url": ${{ github.event.pull_request.html_url }}
+                                            "url": "${{ github.event.pull_request.html_url }}"
                                         }
                                     ]
                                 }
