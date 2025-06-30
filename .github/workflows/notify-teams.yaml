@@ -11,10 +11,64 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify Teams
-        uses: skitionek/notify-microsoft-teams@v1.0.9
+        uses: skitionek/notify-microsoft-teams@v1.0.8
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-          title: "[#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
+          raw: >-
+            {
+                "type": "message",
+                "attachments":
+                [
+                    {
+                        "contentType": "application/vnd.microsoft.card.adaptive",
+                        "content":
+                        {
+                            "type": "AdaptiveCard",
+                            "speak": "bla",
+                            "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+                            "version": "1.5",
+                            "body": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "**PR XY and info**",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "[petrovisor-r-api](https://github.com/Datagration/petrovisor-r-api)",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "**Branch:** ",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "**PR Creator:** ",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "**PR Description:** ",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "ActionSet",
+                                    "actions": [
+                                        {
+                                            "type": "Action.OpenUrl",
+                                            "title": "PR Overview",
+                                            "url": "google.com"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+          #title: "[#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
           # summary: |
           #   **Branch**: `${{ github.event.pull_request.head.ref }}`
           #   **PR Creator**: ${{ github.event.pull_request.user.login }}
