@@ -46,25 +46,85 @@ the web API.</p>
 automatically.</p>
     </div>
     <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>When using time-based data loading, ensure time_start and time_end
+are in ISO 8601 format (e.g., "2025-01-01T00:00:00").</p>
+<p>Large data requests may take significant time to process. Consider
+using top_records parameter to limit result size.</p>
+<p>Reference table must exist in PetroVisor before loading data.
+Use <code>sp$items$load_names("ReferenceTable")</code> to list available
+tables.</p>
+<p>Pivot table data is read-only. Use <code>save_pivot_table()</code> to
+regenerate the data if source data has changed.</p>
+<p>Data frame must contain required columns: entity, scenario, and
+additional columns depending on data_type (date for time data,
+depth for depth data, etc.).</p>
+<p>When no_range_delete = FALSE, existing data in the scope will be
+deleted before saving new values.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+
+
+<dl><dt>Data Loading</dt>
+<dd><p>load_signals(),
+load_reference_table(),
+load_pivot_table()</p></dd>
+
+<dt>Data Saving</dt>
+<dd><p>save_signals(),
+save_reference_table(),
+save_pivot_table()</p></dd>
+
+<dt>Data Deletion</dt>
+<dd><p>delete_signals(),
+delete_reference_table(),
+delete_pivot_table()</p></dd>
+
+
+</dl></div>
+    <div class="section level2">
+    <h2 id="data-types-supported">Data Types Supported<a class="anchor" aria-label="anchor" href="#data-types-supported"></a></h2>
+
+
+<dl><dt>Static Data</dt>
+<dd><p>Entity-level data that doesn't change over time or
+depth.</p></dd>
+
+<dt>Time Series Data</dt>
+<dd><p>Data that varies over time (daily, monthly, etc.)</p></dd>
+
+<dt>Depth Data</dt>
+<dd><p>Data that varies with depth or measured depth.</p></dd>
+
+<dt>PVT Data</dt>
+<dd><p>Pressure-Volume-Temperature dependent data.</p></dd>
+
+<dt>Reference Tables</dt>
+<dd><p>Structured tabular data with defined schemas.</p></dd>
+
+<dt>Pivot Tables</dt>
+<dd><p>Pre-aggregated summary tables.</p></dd>
+
+
+</dl></div>
+    <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
     <p><code><a href="ApiRequests.html">Myrconn.PetroVisor.Client::ApiRequests</a></code> -&gt; <code>DataServices</code></p>
     </div>
     <div class="section level2">
-    <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
+    <h2 id="methods-1">Methods<a class="anchor" aria-label="anchor" href="#methods-1"></a></h2>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-DataServices-new"><code>DataServices$new()</code></a></p></li>
-<li><p><a href="#method-DataServices-load"><code>DataServices$load()</code></a></p></li>
 <li><p><a href="#method-DataServices-load_signals"><code>DataServices$load_signals()</code></a></p></li>
 <li><p><a href="#method-DataServices-load_reference_table"><code>DataServices$load_reference_table()</code></a></p></li>
 <li><p><a href="#method-DataServices-load_pivot_table"><code>DataServices$load_pivot_table()</code></a></p></li>
-<li><p><a href="#method-DataServices-save"><code>DataServices$save()</code></a></p></li>
 <li><p><a href="#method-DataServices-save_signals"><code>DataServices$save_signals()</code></a></p></li>
 <li><p><a href="#method-DataServices-save_reference_table"><code>DataServices$save_reference_table()</code></a></p></li>
 <li><p><a href="#method-DataServices-save_pivot_table"><code>DataServices$save_pivot_table()</code></a></p></li>
-<li><p><a href="#method-DataServices-delete"><code>DataServices$delete()</code></a></p></li>
 <li><p><a href="#method-DataServices-delete_signals"><code>DataServices$delete_signals()</code></a></p></li>
 <li><p><a href="#method-DataServices-delete_reference_table"><code>DataServices$delete_reference_table()</code></a></p></li>
 <li><p><a href="#method-DataServices-delete_pivot_table"><code>DataServices$delete_pivot_table()</code></a></p></li>
@@ -98,12 +158,11 @@ ServiceProvider automatically.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-DataServices-load"></a><div class="section">
-<h3 id="method-load-">Method <code><a href="https://rdrr.io/r/base/load.html" class="external-link">load()</a></code><a class="anchor" aria-label="anchor" href="#method-load-"></a></h3>
-<p>Load data from PetroVisor. This function is deprecated.
-Use <code>load_signals()</code> or <code>load_reference_table()</code> instead.</p><div class="section">
+</div><p></p><hr><a id="method-DataServices-load_signals"></a><div class="section">
+<h3 id="method-load-signals-">Method <code>load_signals()</code><a class="anchor" aria-label="anchor" href="#method-load-signals-"></a></h3>
+<p>Load signal data from PetroVisor.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span></span>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">load_signals</span><span class="op">(</span></span>
 <span>  <span class="va">entities</span>,</span>
 <span>  <span class="va">signals</span>,</span>
 <span>  scenario_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -130,131 +189,14 @@ Use <code>load_signals()</code> or <code>load_reference_table()</code> instead.<
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>entities</code></dt>
-<dd><p>List of entities to retrieve data for. Either a list of
-strings or a list of items of type Entity.</p></dd>
+<dd><p>List of entities to retrieve data for. Can be:</p><ul><li><p>Character vector: <code>c("Well_001", "Well_002")</code></p></li>
+<li><p>List of Entity objects: <code>list(entity1, entity2)</code></p></li>
+</ul></dd>
 
 
 <dt><code>signals</code></dt>
-<dd><p>List of parsed signals to retrieve data for.</p></dd>
-
-
-<dt><code>scenario_names</code></dt>
-<dd><p>List of scenario names to load data for.</p></dd>
-
-
-<dt><code>hierarchy_name</code></dt>
-<dd><p>Hierarchy used in the data retrieval process.</p></dd>
-
-
-<dt><code>top_records</code></dt>
-<dd><p>Number of records to return,</p></dd>
-
-
-<dt><code>include_workspace_data</code></dt>
-<dd><p>Whether workspace data shall be included in
-the output (only applies if scenarios are used). Defaults to
-<code>TRUE</code>.</p></dd>
-
-
-<dt><code>time_increment</code></dt>
-<dd><p>The time increment to load the data in.</p></dd>
-
-
-<dt><code>time_start</code></dt>
-<dd><p>The first time stamp data is loaded for.</p></dd>
-
-
-<dt><code>time_end</code></dt>
-<dd><p>The last time stamp data is loaded for.</p></dd>
-
-
-<dt><code>depth_increment</code></dt>
-<dd><p>The depth increment to load the data in.</p></dd>
-
-
-<dt><code>depth_start</code></dt>
-<dd><p>The first depth data is loaded for.</p></dd>
-
-
-<dt><code>depth_end</code></dt>
-<dd><p>The last depth data is loaded for.</p></dd>
-
-
-<dt><code>with_gaps</code></dt>
-<dd><p>Whether gaps shall be returned. Defaults to <code>TRUE</code>.</p></dd>
-
-
-<dt><code>gap_numeric_value</code></dt>
-<dd><p>Replacement value for gaps in numeric data.</p></dd>
-
-
-<dt><code>gap_string_value</code></dt>
-<dd><p>Replacement value for gaps in string data.</p></dd>
-
-
-<dt><code>depth_unit</code></dt>
-<dd><p>The depth unit for retrieving depth data.</p></dd>
-
-
-<dt><code>pressure_unit</code></dt>
-<dd><p>The pressure unit used when retrieving PVT data.</p></dd>
-
-
-<dt><code>temperature_unit</code></dt>
-<dd><p>The temperature unit used when retrieving PVT
-data.</p></dd>
-
-
-<dt><code>aggregation</code></dt>
-<dd><p>Aggregation type applied to the data.</p></dd>
-
-
-<dt><code>reshape</code></dt>
-<dd><p>Whether to return the raw output of the api call or
-reshape the data into a more user-friendly format. Defaults to
-<code>TRUE</code>.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-
-</div><p></p><hr><a id="method-DataServices-load_signals"></a><div class="section">
-<h3 id="method-load-signals-">Method <code>load_signals()</code><a class="anchor" aria-label="anchor" href="#method-load-signals-"></a></h3>
-<p>Load signal data from PetroVisor.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">load_signals</span><span class="op">(</span></span>
-<span>  <span class="va">entities</span>,</span>
-<span>  <span class="va">signals</span>,</span>
-<span>  scenario_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  hierarchy_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  top_records <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  include_workspace_data <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  time_increment <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  time_start <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  depth_increment <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  depth_start <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  depth_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  with_gaps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  gap_numeric_value <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  gap_string_value <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  depth_unit <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pressure_unit <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  temperature_unit <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  aggregation <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  reshape <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>entities</code></dt>
-<dd><p>List of entities to retrieve data for. Either a list of
-strings or a list of items of type Entity.</p></dd>
-
-
-<dt><code>signals</code></dt>
-<dd><p>List of parsed signals to retrieve data for.</p></dd>
+<dd><p>List of parsed signal objects created using
+<code>sp$parse_signal()</code>. Each signal should specify name and unit.</p></dd>
 
 
 <dt><code>scenario_names</code></dt>
@@ -336,11 +278,59 @@ reshape the data into a more user-friendly format. Defaults to
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>This method supports loading multiple data types simultaneously and
+automatically handles data reshaping for user convenience. The method
+supports various filtering options:</p><ul><li><p><strong>Entity Filtering</strong>: Specify entities as strings or
+Entity objects</p></li>
+<li><p><strong>Time Filtering</strong>: Use ISO 8601 format for
+time_start/time_end</p></li>
+<li><p><strong>Depth Filtering</strong>: Specify depth ranges with
+depth_start/depth_end</p></li>
+<li><p><strong>Scenario Filtering</strong>: Load specific scenarios or
+workspace data</p></li>
+</ul><p>When <code>reshape = TRUE</code> (default), the returned data structure
+contains:</p><ul><li><p><code>StaticNumericData/StaticStringData</code>: Wide format with
+entities as rows, signals as columns</p></li>
+<li><p><code>TimeNumericData/TimeStringData</code>: Long format with Date,
+Entity, and signal columns</p></li>
+<li><p><code>DepthNumericData/DepthStringData</code>: Long format with Depth,
+Entity, and signal columns</p></li>
+<li><p><code>PVTNumericData</code>: Long format with Pressure, Temperature,
+Entity, and signal columns</p></li>
+</ul></div>
+
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>A list containing the loaded data, structured by data type
+(StaticNumericData, TimeNumericData, etc.) when reshape = TRUE,
+or raw API response when reshape = FALSE.</p>
+</div>
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Time-series data with specific time range
+  time_data &lt;- sp$data$load(
+    entities = c("Well_A"),
+    signals = lapply(
+      c("oil production [bbl/d]", "gas production [mcf/d]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    time_increment = "Daily",
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-12-31T23:59:59",
+    reshape = TRUE
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-load_reference_table"></a><div class="section">
 <h3 id="method-load-reference-table-">Method <code>load_reference_table()</code><a class="anchor" aria-label="anchor" href="#method-load-reference-table-"></a></h3>
 <p>Load reference table data from PetroVisor.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">load_reference_table</span><span class="op">(</span></span>
 <span>  <span class="va">table</span>,</span>
 <span>  entities <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -355,7 +345,7 @@ reshape the data into a more user-friendly format. Defaults to
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>table</code></dt>
 <dd><p>The name of the reference table to load from.</p></dd>
 
@@ -400,16 +390,65 @@ define the units in which the column data will be returned.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>A data frame containing the loaded reference table data.</p>
+</div>
+<div class="section">
+<h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Basic reference table loading
+  ref_data &lt;- sp$data$load_reference_table(
+    table = "Well Properties"
+  )
+
+  # With entity filtering
+  ref_data &lt;- sp$data$load_reference_table(
+    table = "Production History",
+    entities = c("Well_A", "Well_B")
+  )
+
+  # With time filtering
+  ref_data &lt;- sp$data$load_reference_table(
+    table = "Monthly Reports",
+    entities = c("Field_1"),
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-12-31T23:59:59"
+  )
+
+  # With specific columns and units
+  ref_data &lt;- sp$data$load_reference_table(
+    table = "Reservoir Properties",
+    entities = c("Reservoir_A"),
+    columns = list(
+      "porosity [fraction]",
+      "permeability [mD]",
+      "thickness [ft]"
+    ),
+    specified_columns_only = TRUE,
+    key_unit_name = "ft"
+  )
+
+  # With WHERE clause and top records
+  ref_data &lt;- sp$data$load_reference_table(
+    table = "Well Completion Data",
+    where = "[WellType] = 'Horizontal' AND [TVD] &gt; 5000",
+    top_records = 50
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-load_pivot_table"></a><div class="section">
 <h3 id="method-load-pivot-table-">Method <code>load_pivot_table()</code><a class="anchor" aria-label="anchor" href="#method-load-pivot-table-"></a></h3>
 <p>Load pivot table data from PetroVisor.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">load_pivot_table</span><span class="op">(</span><span class="va">table</span>, top_records <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>table</code></dt>
 <dd><p>The name of the pivot table to load from.</p></dd>
 
@@ -420,78 +459,32 @@ define the units in which the column data will be returned.</p></dd>
 
 </dl><p></p></div>
 </div>
-
-</div><p></p><hr><a id="method-DataServices-save"></a><div class="section">
-<h3 id="method-save-">Method <code><a href="https://rdrr.io/r/base/save.html" class="external-link">save()</a></code><a class="anchor" aria-label="anchor" href="#method-save-"></a></h3>
-<p>Save data to PetroVisor. This function is deprecated.
-Use <code>save_signals()</code> or <code>save_reference_table()</code> instead.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">save</span><span class="op">(</span></span>
-<span>  data_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"StaticNumeric"</span>, <span class="st">"StaticString"</span>, <span class="st">"TimeNumeric"</span>, <span class="st">"TimeString"</span>,</span>
-<span>    <span class="st">"DepthNumeric"</span>, <span class="st">"DepthString"</span>, <span class="st">"PVTNumeric"</span><span class="op">)</span>,</span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">signals</span>,</span>
-<span>  generate_logs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  no_range_delete <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  values_time_increment <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  values_depth_increment <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pressure_unit <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  temperature_unit <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>data_type</code></dt>
-<dd><p>The type of the data. One of:
-<code>StaticNumeric</code>, <code>StaticString</code>, <code>TimeNumeric</code>,
-<code>TimeString</code>, <code>DepthNumeric</code>, <code>DepthString</code>,
-<code>PVTNumeric</code>.</p></dd>
-
-
-<dt><code>data</code></dt>
-<dd><p>The data as data frame.</p></dd>
-
-
-<dt><code>signals</code></dt>
-<dd><p>List of parsed signals to save data for.</p></dd>
-
-
-<dt><code>generate_logs</code></dt>
-<dd><p>Whether to generate log entries. Defaults to
-<code>TRUE</code>.</p></dd>
-
-
-<dt><code>no_range_delete</code></dt>
-<dd><p>Whether to skip deleting all data in the saving
-scope before storing the new values. Defaults to <code>TRUE</code>.</p></dd>
-
-
-<dt><code>values_time_increment</code></dt>
-<dd><p>The time increment of the time-dependent
-values.</p></dd>
-
-
-<dt><code>values_depth_increment</code></dt>
-<dd><p>The depth increment of the depth-dependent
-values.</p></dd>
-
-
-<dt><code>pressure_unit</code></dt>
-<dd><p>The pressure unit of the PVT values.</p></dd>
-
-
-<dt><code>temperature_unit</code></dt>
-<dd><p>The temperature unit of the PVT values.</p></dd>
-
-
-</dl><p></p></div>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p>A data frame containing the loaded pivot table data.</p>
 </div>
+<div class="section">
+<h4 id="examples-2">Examples<a class="anchor" aria-label="anchor" href="#examples-2"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+# Basic pivot table loading
+  pivot_data &lt;- sp$data$load_pivot_table(
+    table = "Production Summary"
+  )
+
+  # With record limit
+  pivot_data &lt;- sp$data$load_pivot_table(
+    table = "Monthly Production Report",
+    top_records = 100
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-save_signals"></a><div class="section">
 <h3 id="method-save-signals-">Method <code>save_signals()</code><a class="anchor" aria-label="anchor" href="#method-save-signals-"></a></h3>
 <p>Save signal data to PetroVisor.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span>
 <span>  data_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"StaticNumeric"</span>, <span class="st">"StaticString"</span>, <span class="st">"TimeNumeric"</span>, <span class="st">"TimeString"</span>,</span>
 <span>    <span class="st">"DepthNumeric"</span>, <span class="st">"DepthString"</span>, <span class="st">"PVTNumeric"</span><span class="op">)</span>,</span>
@@ -507,7 +500,7 @@ values.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data_type</code></dt>
 <dd><p>The type of the data. One of:
 <code>StaticNumeric</code>, <code>StaticString</code>, <code>TimeNumeric</code>,
@@ -553,16 +546,160 @@ values.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>A response object from the API indicating success or failure of
+the save operation.</p>
+</div>
+<div class="section">
+<h4 id="examples-3">Examples<a class="anchor" aria-label="anchor" href="#examples-3"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Static numeric data
+  static_numeric_data &lt;- data.frame(
+    scenario = c("", ""),
+    entity = c("Well_A", "Well_B"),
+    `initial oil reserves` = c(1000000, 750000),
+    `initial gas reserves` = c(2000000, 1500000)
+  )
+
+  result &lt;- sp$data$save_signals(
+    data_type = "StaticNumeric",
+    data = static_numeric_data,
+    signals = lapply(
+      c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    generate_logs = TRUE,
+    no_range_delete = FALSE
+  )
+
+  # Static string data
+  static_string_data &lt;- data.frame(
+     scenario = c(""),
+    entity = c("Well_A"),
+    `well type` = c("Horizontal"),
+    `completion type` = c("Multi-stage frac")
+  )
+
+  result &lt;- sp$data$save_signals(
+    data_type = "StaticString",
+    data = static_string_data,
+    signals = lapply(
+      c("well type [ ]", "completion type [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # Time numeric data
+  time_numeric_data &lt;- data.frame(
+    scenario = c("", "", ""),
+    date = c("2024-01-01T00:00:00",
+             "2024-01-02T00:00:00",
+             "2024-01-03T00:00:00"),
+    entity = c("Well_A", "Well_A", "Well_A"),
+    `oil rate` = c(1000, 950, 900),
+    `gas rate` = c(2000, 1900, 1800)
+  )
+
+  result &lt;- sp$data$save_signals(
+    data_type = "TimeNumeric",
+    data = time_numeric_data,
+    signals = lapply(
+      c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    values_time_increment = "Daily"
+  )
+
+  # Time string data
+  time_string_data &lt;- data.frame(
+    scenario = c("", ""),
+    date = c("2024-01-01T00:00:00", "2024-01-02T00:00:00"),
+    entity = c("Well_A", "Well_A"),
+    `operation status` = c("Producing", "Shut-in"),
+    `maintenance notes` = c("Normal operation", "Scheduled maintenance")
+  )
+
+  result &lt;- sp$data$save_signals(
+    data_type = "TimeString",
+    data = time_string_data,
+    signals = lapply(
+      c("operation status [ ]", "maintenance notes [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # Depth numeric data
+  depth_numeric_data &lt;- data.frame(
+    scenario = c("", ""),
+    depth = c(1000, 1010),
+    entity = c("Well_A", "Well_A"),
+    porosity = c(0.15, 0.18),
+    permeability = c(100, 150)
+  )
+
+  result &lt;- sp$data$save_signals(
+    data_type = "DepthNumeric",
+    data = depth_numeric_data,
+    signals = lapply(
+      c("porosity [fraction]", "permeability [mD]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    values_depth_increment = "Meter"
+  )
+
+  # Depth string data
+  depth_string_data &lt;- data.frame(
+    scenario = c("", ""),
+    depth = c(1000, 1010),
+    entity = c("Well_A", "Well_A"),
+    `rock type` = c("Sandstone", "Shale"),
+    `formation name` = c("Formation A", "Formation B")
+  )
+
+  result &lt;- sp$data$save_signals(
+    data_type = "DepthString",
+    data = depth_string_data,
+    signals = lapply(
+      c("rock type [ ]", "formation name [ ]"),
+      function(x) { sp$parse_signal(x) }
+    )
+  )
+
+  # PVT numeric data
+  pvt_numeric_data &lt;- data.frame(
+    scenario = c("", ""),
+    temperature = c(200, 250),
+    pressure = c(3000, 4000),
+    entity = c("Fluid_Sample_1", "Fluid_Sample_1"),
+    density = c(800, 820),
+    viscosity = c(1.2, 1.5)
+  )
+
+  result &lt;- sp$data$save_signals(
+    data_type = "PVTNumeric",
+    data = pvt_numeric_data,
+    signals = lapply(
+      c("density [kg/m3]", "viscosity [cP]"),
+      function(x) { sp$parse_signal(x) }
+    ),
+    pressure_unit = "psi",
+    temperature_unit = "degF"
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-save_reference_table"></a><div class="section">
 <h3 id="method-save-reference-table-">Method <code>save_reference_table()</code><a class="anchor" aria-label="anchor" href="#method-save-reference-table-"></a></h3>
 <p>Save reference table data to PetroVisor.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">save_reference_table</span><span class="op">(</span><span class="va">table</span>, <span class="va">data</span>, skip_existing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>table</code></dt>
 <dd><p>The name of the reference table to save to.</p></dd>
 
@@ -579,83 +716,79 @@ updated.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<p>A response object from the API indicating success or failure of
+the save operation.</p>
+</div>
+<div class="section">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Basic reference table data saving
+  ref_table_data &lt;- data.frame(
+    Entity = c("Well_A", "Well_B", "Well_C"),
+    Timestamp = c("2024-01-01T00:00:00",
+                  "2024-01-01T00:00:00",
+                  "2024-01-01T00:00:00"),
+    KeyColumn = c(1, 2, 3),
+    WellName = c("Alpha-1", "Beta-2", "Gamma-3"),
+    TVD = c(5000, 5500, 6000),
+    Status = c("Active", "Shut-in", "Active")
+  )
+
+  result &lt;- sp$data$save_reference_table(
+    table = "Well Master Data",
+    data = ref_table_data,
+    skip_existing = FALSE
+  )
+
+  # Skip existing records
+  result &lt;- sp$data$save_reference_table(
+    table = "Well Master Data",
+    data = ref_table_data,
+    skip_existing = TRUE
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-save_pivot_table"></a><div class="section">
 <h3 id="method-save-pivot-table-">Method <code>save_pivot_table()</code><a class="anchor" aria-label="anchor" href="#method-save-pivot-table-"></a></h3>
 <p>Generate and save the data of the specified pivot table.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">save_pivot_table</span><span class="op">(</span><span class="va">table</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>table</code></dt>
 <dd><p>The name of the pivot table to generate and save.</p></dd>
 
 
 </dl><p></p></div>
 </div>
-
-</div><p></p><hr><a id="method-DataServices-delete"></a><div class="section">
-<h3 id="method-delete-">Method <code>delete()</code><a class="anchor" aria-label="anchor" href="#method-delete-"></a></h3>
-<p>Remove data from PetroVisor. This function is deprecated.
-Use <code>delete_signals()</code> or <code>delete_reference_table()</code> instead.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span></span>
-<span>  <span class="va">entities</span>,</span>
-<span>  <span class="va">signal_names</span>,</span>
-<span>  scenario_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  include_workspace_data <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  time_start <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  time_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  depth_start <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  depth_end <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
 <div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>entities</code></dt>
-<dd><p>List of entities to delete data for. Either a list of
-strings or a list of items of type Entity.</p></dd>
-
-
-<dt><code>signal_names</code></dt>
-<dd><p>List of signal names to delete data for.</p></dd>
-
-
-<dt><code>scenario_names</code></dt>
-<dd><p>List of scenario names to delete data from.</p></dd>
-
-
-<dt><code>include_workspace_data</code></dt>
-<dd><p>Whether workspace data shall be deleted as
-well (only applies if scenarios are used). Defaults to <code>TRUE</code>.</p></dd>
-
-
-<dt><code>time_start</code></dt>
-<dd><p>The first time stamp data is deleted for.</p></dd>
-
-
-<dt><code>time_end</code></dt>
-<dd><p>The last time stamp data is deleted for.</p></dd>
-
-
-<dt><code>depth_start</code></dt>
-<dd><p>The first depth data is deleted for.</p></dd>
-
-
-<dt><code>depth_end</code></dt>
-<dd><p>The last depth data is deleted for.</p></dd>
-
-
-</dl><p></p></div>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p>A response object from the API indicating success or failure of
+the save operation.</p>
 </div>
+<div class="section">
+<h4 id="examples-5">Examples<a class="anchor" aria-label="anchor" href="#examples-5"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Generate and save pivot table data
+  result &lt;- sp$data$save_pivot_table(
+    table = "Monthly Production Summary"
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-delete_signals"></a><div class="section">
 <h3 id="method-delete-signals-">Method <code>delete_signals()</code><a class="anchor" aria-label="anchor" href="#method-delete-signals-"></a></h3>
 <p>Remove signal data from PetroVisor.</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">delete_signals</span><span class="op">(</span></span>
 <span>  <span class="va">entities</span>,</span>
 <span>  <span class="va">signal_names</span>,</span>
@@ -669,7 +802,7 @@ well (only applies if scenarios are used). Defaults to <code>TRUE</code>.</p></d
 </div>
 
 <div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>entities</code></dt>
 <dd><p>List of entities to delete data for. Either a list of
 strings or a list of items of type Entity.</p></dd>
@@ -706,16 +839,57 @@ well (only applies if scenarios are used). Defaults to <code>TRUE</code>.</p></d
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p>A response object from the API indicating success or failure of
+the delete operation.</p>
+</div>
+<div class="section">
+<h4 id="examples-6">Examples<a class="anchor" aria-label="anchor" href="#examples-6"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Delete all signal data for specific entities
+  result &lt;- sp$data$delete_signals(
+    entities = c("Well_A", "Well_B"),
+    signal_names = c("oil production", "gas production")
+  )
+
+  # Delete time-range specific data
+  result &lt;- sp$data$delete_signals(
+    entities = c("Well_C"),
+    signal_names = c("daily production"),
+    time_start = "2024-01-01T00:00:00",
+    time_end = "2024-01-31T23:59:59"
+  )
+
+  # Delete depth-range specific data
+  result &lt;- sp$data$delete_signals(
+    entities = c("Well_D"),
+    signal_names = c("porosity", "permeability"),
+    depth_start = 1000,
+    depth_end = 2000
+  )
+
+  # Delete scenario-specific data
+  result &lt;- sp$data$delete_signals(
+    entities = c("Well_E"),
+    signal_names = c("forecast production"),
+    scenario_names = c("Pessimistic Case"),
+    include_workspace_data = FALSE
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-delete_reference_table"></a><div class="section">
 <h3 id="method-delete-reference-table-">Method <code>delete_reference_table()</code><a class="anchor" aria-label="anchor" href="#method-delete-reference-table-"></a></h3>
 <p>Remove reference table data from PetroVisor.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">delete_reference_table</span><span class="op">(</span><span class="va">table</span>, where <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>table</code></dt>
 <dd><p>The name of the reference table to delete from.</p></dd>
 
@@ -727,32 +901,76 @@ delete. If <code>NULL</code> (default), all data will be deleted.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>A response object from the API indicating success or failure of
+the delete operation.</p>
+</div>
+<div class="section">
+<h4 id="examples-7">Examples<a class="anchor" aria-label="anchor" href="#examples-7"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Delete all data from reference table
+  result &lt;- sp$data$delete_reference_table(
+    table = "Temporary Data"
+  )
+
+  # Delete with WHERE clause
+  result &lt;- sp$data$delete_reference_table(
+    table = "Well Completion Data",
+    where = "[Status] = 'Abandoned'"
+  )
+
+  # Delete specific date range
+  result &lt;- sp$data$delete_reference_table(
+    table = "Monthly Reports",
+    where = "[ReportDate] &lt; '2023-01-01'"
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-delete_pivot_table"></a><div class="section">
 <h3 id="method-delete-pivot-table-">Method <code>delete_pivot_table()</code><a class="anchor" aria-label="anchor" href="#method-delete-pivot-table-"></a></h3>
 <p>Remove pivot table data from PetroVisor.</p><div class="section">
-<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">delete_pivot_table</span><span class="op">(</span><span class="va">table</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>table</code></dt>
 <dd><p>The name of the pivot table to delete the data for.</p></dd>
 
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p>A response object from the API indicating success or failure of
+the delete operation.</p>
+</div>
+<div class="section">
+<h4 id="examples-8">Examples<a class="anchor" aria-label="anchor" href="#examples-8"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Delete pivot table data
+  result &lt;- sp$data$delete_pivot_table(
+    table = "Temporary Analysis"
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
 
 </div><p></p><hr><a id="method-DataServices-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataServices</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-13">Arguments<a class="anchor" aria-label="anchor" href="#arguments-13"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -817,6 +1035,338 @@ delete. If <code>NULL</code> (default), all data will be deleted.</p></dd>
 <span class="r-in"><span>    <span class="op">}</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$load_signals`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Time-series data with specific time range</span></span></span>
+<span class="r-in"><span>  <span class="va">time_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oil production [bbl/d]"</span>, <span class="st">"gas production [mcf/d]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    time_increment <span class="op">=</span> <span class="st">"Daily"</span>,</span></span>
+<span class="r-in"><span>    time_start <span class="op">=</span> <span class="st">"2024-01-01T00:00:00"</span>,</span></span>
+<span class="r-in"><span>    time_end <span class="op">=</span> <span class="st">"2024-12-31T23:59:59"</span>,</span></span>
+<span class="r-in"><span>    reshape <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$load_reference_table`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Basic reference table loading</span></span></span>
+<span class="r-in"><span>  <span class="va">ref_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Well Properties"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># With entity filtering</span></span></span>
+<span class="r-in"><span>  <span class="va">ref_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Production History"</span>,</span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_B"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># With time filtering</span></span></span>
+<span class="r-in"><span>  <span class="va">ref_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Monthly Reports"</span>,</span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Field_1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    time_start <span class="op">=</span> <span class="st">"2024-01-01T00:00:00"</span>,</span></span>
+<span class="r-in"><span>    time_end <span class="op">=</span> <span class="st">"2024-12-31T23:59:59"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># With specific columns and units</span></span></span>
+<span class="r-in"><span>  <span class="va">ref_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Reservoir Properties"</span>,</span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Reservoir_A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"porosity [fraction]"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"permeability [mD]"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"thickness [ft]"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    specified_columns_only <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    key_unit_name <span class="op">=</span> <span class="st">"ft"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># With WHERE clause and top records</span></span></span>
+<span class="r-in"><span>  <span class="va">ref_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Well Completion Data"</span>,</span></span>
+<span class="r-in"><span>    where <span class="op">=</span> <span class="st">"[WellType] = 'Horizontal' AND [TVD] &gt; 5000"</span>,</span></span>
+<span class="r-in"><span>    top_records <span class="op">=</span> <span class="fl">50</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$load_pivot_table`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># Basic pivot table loading</span></span></span>
+<span class="r-in"><span>  <span class="va">pivot_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load_pivot_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Production Summary"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># With record limit</span></span></span>
+<span class="r-in"><span>  <span class="va">pivot_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load_pivot_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Monthly Production Report"</span>,</span></span>
+<span class="r-in"><span>    top_records <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$save_signals`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Static numeric data</span></span></span>
+<span class="r-in"><span>  <span class="va">static_numeric_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_B"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `initial oil reserves` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000000</span>, <span class="fl">750000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `initial gas reserves` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000000</span>, <span class="fl">1500000</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"StaticNumeric"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">static_numeric_data</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"initial oil reserves [bbl]"</span>, <span class="st">"initial gas reserves [mcf]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    generate_logs <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    no_range_delete <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Static string data</span></span></span>
+<span class="r-in"><span>  <span class="va">static_string_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>     scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `well type` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Horizontal"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `completion type` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Multi-stage frac"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"StaticString"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">static_string_data</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"well type [ ]"</span>, <span class="st">"completion type [ ]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Time numeric data</span></span></span>
+<span class="r-in"><span>  <span class="va">time_numeric_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2024-01-01T00:00:00"</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"2024-01-02T00:00:00"</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"2024-01-03T00:00:00"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_A"</span>, <span class="st">"Well_A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `oil rate` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">950</span>, <span class="fl">900</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `gas rate` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">1900</span>, <span class="fl">1800</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"TimeNumeric"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">time_numeric_data</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oil rate [bbl/d]"</span>, <span class="st">"gas rate [mcf/d]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    values_time_increment <span class="op">=</span> <span class="st">"Daily"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Time string data</span></span></span>
+<span class="r-in"><span>  <span class="va">time_string_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2024-01-01T00:00:00"</span>, <span class="st">"2024-01-02T00:00:00"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `operation status` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Producing"</span>, <span class="st">"Shut-in"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `maintenance notes` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Normal operation"</span>, <span class="st">"Scheduled maintenance"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"TimeString"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">time_string_data</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"operation status [ ]"</span>, <span class="st">"maintenance notes [ ]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Depth numeric data</span></span></span>
+<span class="r-in"><span>  <span class="va">depth_numeric_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1010</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    porosity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.18</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    permeability <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">150</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"DepthNumeric"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">depth_numeric_data</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"porosity [fraction]"</span>, <span class="st">"permeability [mD]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    values_depth_increment <span class="op">=</span> <span class="st">"Meter"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Depth string data</span></span></span>
+<span class="r-in"><span>  <span class="va">depth_string_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    depth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1010</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_A"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `rock type` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sandstone"</span>, <span class="st">"Shale"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    `formation name` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Formation A"</span>, <span class="st">"Formation B"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"DepthString"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">depth_string_data</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rock type [ ]"</span>, <span class="st">"formation name [ ]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># PVT numeric data</span></span></span>
+<span class="r-in"><span>  <span class="va">pvt_numeric_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    temperature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">250</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    pressure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3000</span>, <span class="fl">4000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Fluid_Sample_1"</span>, <span class="st">"Fluid_Sample_1"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    density <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">800</span>, <span class="fl">820</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    viscosity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.2</span>, <span class="fl">1.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"PVTNumeric"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">pvt_numeric_data</span>,</span></span>
+<span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"density [kg/m3]"</span>, <span class="st">"viscosity [cP]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    pressure_unit <span class="op">=</span> <span class="st">"psi"</span>,</span></span>
+<span class="r-in"><span>    temperature_unit <span class="op">=</span> <span class="st">"degF"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$save_reference_table`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Basic reference table data saving</span></span></span>
+<span class="r-in"><span>  <span class="va">ref_table_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    Entity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_B"</span>, <span class="st">"Well_C"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    Timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2024-01-01T00:00:00"</span>,</span></span>
+<span class="r-in"><span>                  <span class="st">"2024-01-01T00:00:00"</span>,</span></span>
+<span class="r-in"><span>                  <span class="st">"2024-01-01T00:00:00"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    KeyColumn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    WellName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Alpha-1"</span>, <span class="st">"Beta-2"</span>, <span class="st">"Gamma-3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    TVD <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5000</span>, <span class="fl">5500</span>, <span class="fl">6000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    Status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Active"</span>, <span class="st">"Shut-in"</span>, <span class="st">"Active"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Well Master Data"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">ref_table_data</span>,</span></span>
+<span class="r-in"><span>    skip_existing <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Skip existing records</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Well Master Data"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">ref_table_data</span>,</span></span>
+<span class="r-in"><span>    skip_existing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$save_pivot_table`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Generate and save pivot table data</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">save_pivot_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Monthly Production Summary"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$delete_signals`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete all signal data for specific entities</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span>, <span class="st">"Well_B"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    signal_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oil production"</span>, <span class="st">"gas production"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete time-range specific data</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_C"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    signal_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"daily production"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    time_start <span class="op">=</span> <span class="st">"2024-01-01T00:00:00"</span>,</span></span>
+<span class="r-in"><span>    time_end <span class="op">=</span> <span class="st">"2024-01-31T23:59:59"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete depth-range specific data</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_D"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    signal_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"porosity"</span>, <span class="st">"permeability"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    depth_start <span class="op">=</span> <span class="fl">1000</span>,</span></span>
+<span class="r-in"><span>    depth_end <span class="op">=</span> <span class="fl">2000</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete scenario-specific data</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_signals</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_E"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    signal_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"forecast production"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    scenario_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Pessimistic Case"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    include_workspace_data <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$delete_reference_table`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete all data from reference table</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Temporary Data"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete with WHERE clause</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Well Completion Data"</span>,</span></span>
+<span class="r-in"><span>    where <span class="op">=</span> <span class="st">"[Status] = 'Abandoned'"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete specific date range</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_reference_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Monthly Reports"</span>,</span></span>
+<span class="r-in"><span>    where <span class="op">=</span> <span class="st">"[ReportDate] &lt; '2023-01-01'"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `DataServices$delete_pivot_table`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Delete pivot table data</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">delete_pivot_table</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    table <span class="op">=</span> <span class="st">"Temporary Analysis"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
