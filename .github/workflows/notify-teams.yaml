@@ -1,24 +1,75 @@
-# .github/workflows/teams-notify.yml
+# .github/workflows/notify-teams.yml
 name: Notify Microsoft Teams on PR Publish
 
 on:
   pull_request:
-    types:
-      - ready_for_review
+    types: [opened, reopened]
+    branches:
+    - main
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
       - name: Notify Teams
-        uses: skitionek/notify-microsoft-teams@v1.0.9
+        uses: skitionek/notify-microsoft-teams@v1.0.8
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-          title: "[#${{ github.event.pull_request.number }}] ${{ github.event.pull_request.title }}"
-          summary: |
-            **Branch**: `${{ github.event.pull_request.head.ref }}`
-            **PR Creator**: ${{ github.event.pull_request.user.login }}
-            **PR Description**:
-            ${{ github.event.pull_request.body }}
-
-            [PR Overview](${{ github.event.pull_request.html_url }})
+          raw: >-
+            {
+                "type": "message",
+                "attachments":
+                [
+                    {
+                        "contentType": "application/vnd.microsoft.card.adaptive",
+                        "content":
+                        {
+                            "type": "AdaptiveCard",
+                            "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+                            "version": "1.5",
+                            "body": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": ${{ toJson(format('**[#{0}] {1}**', github.event.pull_request.number, github.event.pull_request.title)) }},
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "[petrovisor-r-api](https://github.com/Datagration/petrovisor-r-api)",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": ${{ toJson(format('**Branch:** {0}', github.event.pull_request.head.ref)) }},
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": ${{ toJson(format('**PR Creator:** {0}', github.event.pull_request.user.login)) }},
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": ${{ toJson(format('**PR Description:**')) }},
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": ${{ toJson(format('{0}', github.event.pull_request.body)) }},
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "ActionSet",
+                                    "actions": [
+                                        {
+                                            "type": "Action.OpenUrl",
+                                            "title": "PR Overview",
+                                            "url": "${{ github.event.pull_request.html_url }}"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
