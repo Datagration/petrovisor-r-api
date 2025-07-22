@@ -1,6 +1,7 @@
 # Myrconn.PetroVisor.Client (development version)
 
 * fix ServiceProvider$convert_unit to work with units containing forward slashes ("/")
+* add Myrconn.PetroVisor.Client-package.R to enable help topic for the package itself
 
 # Myrconn.PetroVisor.Client 3.5.0
 
