@@ -1,3 +1,17 @@
+# Myrconn.PetroVisor.Client (development version)
+
+* fix ServiceProvider$convert_unit to work with units containing forward slashes ("/")
+* add Myrconn.PetroVisor.Client-package.R to enable help topic for the package itself
+
+# Myrconn.PetroVisor.Client 3.5.0
+
+* update data handling in DataServices.R
+* remove obsolete methods (load, save, delete)
+* update documentation
+* update unit tests
+* remove UserSetting from the package
+* teams notification workflow trigger
+
 # Myrconn.PetroVisor.Client 3.4.2
 
 * add github action to automate R CMD check

@@ -13,6 +13,7 @@ test_that("convert_unit works (single values)", {
   expect_equal(sp$convert_unit(NA, "km", "m"), NA)
   expect_equal(sp$convert_unit(NaN, "km", "m"), NaN)
   expect_equal(sp$convert_unit(NULL, "%", " "), NULL)
+  expect_equal(sp$convert_unit(1, "kg/m3", "g/m3"), 1000)
   expect_error(sp$convert_unit("A", "%", " "))
 })
 

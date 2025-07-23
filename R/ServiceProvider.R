@@ -172,6 +172,10 @@ ServiceProvider <- R6Class(
       if (target_unit == " ") target_unit <- "_"
       if (target_unit == "%") target_unit <- "@"
 
+      # handle forward slashes in units (replace with "%2F")
+      source_unit <- gsub("/", "%2F", source_unit)
+      target_unit <- gsub("/", "%2F", target_unit)
+
       if (is.null(x) || all(is.na(x))) {
         # Input is NULL, NA or consists entirely of NA values (including NaN)
         return(x)
@@ -189,13 +193,16 @@ ServiceProvider <- R6Class(
                          private$tokenType,
                          private$token))
       } else if ((is.vector(x) || is.list(x)) &&
-                 all(sapply(x, function(el) is.numeric(el) || is.na(el)))) {
+                   all(sapply(x, function(el) is.numeric(el) || is.na(el)))) {
         # Input is a collection of numeric values (including NA)
         # replace NA with NaN
         x[is.na(x)] <- NaN
         return(super$post(x,
                           self$workspace_data_url,
-                          paste0("Units/",source_unit,"/Convert/",target_unit),
+                          paste0("Units/",
+                                 source_unit,
+                                 "/Convert/",
+                                 target_unit),
                           private$tokenType,
                           private$token,
                           expect_data = TRUE))
