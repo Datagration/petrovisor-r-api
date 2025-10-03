@@ -25,22 +25,14 @@ library("R6")
 #' # save file
 #' result <- sp$files$save("Test_File.csv")
 #' }
-FileService <- R6Class(
+FileService <- R6Class( # nolint: object_name_linter
   "FileService",
   inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
 
     #' @description Create a new FileService instance. This is done by the
     #'  ServiceProvider automatically.
-    #'
-    #' @param url the URL for the API calls.
-    #' @param token_type the type of the issued token.
-    #' @param token the issued token.
-    initialize = function(url, token_type, token) {
-      private$url <- url
-      private$token_type <- token_type
-      private$token <- token
-    },
+    initialize = function() {},
 
     #' @description Retrieve the names of the files in the workspace's blob
     #'  storage.
@@ -54,11 +46,8 @@ FileService <- R6Class(
       # Build query string
       query <- if (!is.null(prefix)) list(Prefix = prefix) else NULL
 
-      file_names <- private$get(private$url,
-                                "Files",
-                                private$token_type,
-                                private$token,
-                                query)
+      file_names <- super$get(route = "Files",
+                              query = query)
       return(file_names)
     },
 
@@ -70,18 +59,15 @@ FileService <- R6Class(
     #'
     #' @returns The content of the file as string.
     load = function(name, target_path = "") {
-      response <- private$download_file(name,
-                                    private$url,
-                          "Files/",
-                          private$token_type,
-                          private$token)
+      response <- super$download_file(name = name,
+                                      route = "Files/")
 
       # If a path is given, detect the operating system and convert path as
       # needed. Also make sure that the path ends with "/" or "\\".
       if (target_path != "") {
         os <- private$get_os()
 
-        if (os == "windows"){
+        if (os == "windows") {
           target_path <- gsub("/", "\\\\", target_path)
           if (!endsWith("\\", target_path)) {
             target_path <- paste0(target_path, "\\")
@@ -107,11 +93,8 @@ FileService <- R6Class(
     #'
     #' @param file The file to upload (path incl. file name).
     save = function(file) {
-      return(private$upload_file(file,
-                                 private$url,
-                                 "Files/Upload",
-                                 private$token_type,
-                                 private$token))
+      return(super$upload_file(file = file,
+                               route = "Files/Upload"))
     },
 
     #' @description Delete the file with the specified name from the
@@ -119,21 +102,14 @@ FileService <- R6Class(
     #'
     #' @param name The name of the file to delete.
     delete = function(name) {
-      return(private$delete(name,
-                            private$url,
-                            "Files/",
-                            private$token_type,
-                            private$token))
+      return(super$delete(name = name,
+                          route = "Files/"))
     }
   ),
   private = list(
-    url = NULL,
-    token_type = NULL,
-    token = NULL,
-
-    get_os = function(){
+    get_os = function() {
       sysinf <- Sys.info()
-      if (!is.null(sysinf)){
+      if (!is.null(sysinf)) {
         os <- sysinf['sysname']
         if (os == 'Darwin')
           os <- "osx"

@@ -1,6 +1,9 @@
 library("R6")
 library("jsonlite")
 
+# Define %||% operator for null coalescing
+`%||%` <- function(x, y) if (is.null(x)) y else x
+
 #' @title ServiceProvider
 #'
 #' @description Provides access to all services provided through the web API.
@@ -35,6 +38,8 @@ library("jsonlite")
 #'   functionality related to tag entries.
 #' @field files Instance of class \code{FileService} wrapping all functionality
 #'   related to files.
+#' @field ml Instance of class \code{MlTrainingService} wrapping
+#'   all functionality related to ML model training and prediction.
 #'
 #' @examples
 #' \dontrun{
@@ -52,7 +57,7 @@ library("jsonlite")
 #'   password = "your_password"
 #' )
 #' }
-ServiceProvider <- R6Class(
+ServiceProvider <- R6Class( # nolint: object_name_linter
   "ServiceProvider",
   inherit = ApiRequests,
   public = list(
@@ -66,6 +71,7 @@ ServiceProvider <- R6Class(
     data = NULL,
     tag_entries = NULL,
     files = NULL,
+    ml = NULL,
     workspace_data_url = NULL, # Define as a public field
 
     #' @description Create a new ServiceProvider instance.
@@ -96,33 +102,24 @@ ServiceProvider <- R6Class(
       if (!is.null(user) && !is.null(password)) {
         private$getToken()
       }
+
+      # Set the authentication context
+      auth_context <- get_auth_context()
+      auth_context$set_auth(
+        token = private$token,
+        token_type = private$tokenType,
+        workspace_data_url = self$workspace_data_url,
+        user = self$user,
+        workspace = self$workspace
+      )
+
       # Initialize services
-      self$items <- RepositoryService$new(
-        self$workspace_data_url,
-        private$tokenType,
-        private$token
-      )
-      self$data <- DataServices$new(
-        self$workspace_data_url,
-        private$tokenType,
-        private$token,
-        self
-      )
-      self$tag_entries <- TagEntriesService$new(
-        self$workspace_data_url,
-        private$tokenType,
-        private$token
-      )
-      self$logs <- LoggingService$new(
-        self$workspace_data_url,
-        private$tokenType,
-        private$token
-      )
-      self$files <- FileService$new(
-        self$workspace_data_url,
-        private$tokenType,
-        private$token
-      )
+      self$items <- RepositoryService$new()
+      self$data <- DataServices$new(self)
+      self$tag_entries <- TagEntriesService$new()
+      self$logs <- LoggingService$new()
+      self$files <- FileService$new()
+      self$ml <- MlTrainingService$new()
     },
 
     #' @description Parse the mapped signal received from PetroVisor to a list

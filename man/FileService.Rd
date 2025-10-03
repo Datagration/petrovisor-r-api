@@ -55,20 +55,9 @@ result <- sp$files$save("Test_File.csv")
 Create a new FileService instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{FileService$new(url, token_type, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{FileService$new()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{url}}{the URL for the API calls.}
-
-\item{\code{token_type}}{the type of the issued token.}
-
-\item{\code{token}}{the issued token.}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-FileService-load_names"></a>}}

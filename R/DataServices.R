@@ -94,14 +94,8 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #' @description Create a new DataServices instance. This is done by the
     #' ServiceProvider automatically.
     #'
-    #' @param url the URL for the API calls.
-    #' @param token_type the type of the issued token.
-    #' @param token the issued token.
     #' @param sp instance of the service provider
-    initialize = function(url, token_type, token, sp) {
-      private$url <- url
-      private$token_type <- token_type
-      private$token <- token
+    initialize = function(sp) {
       private$sp <- sp
     },
 
@@ -273,12 +267,9 @@ DataServices <- R6Class(  # nolint: object_name_linter
 
 
       # Retrieve data (returns named list)
-      data <- private$post(request,
-                           private$url,
-                           "Data/Retrieve",
-                           private$token_type,
-                           private$token,
-                           expect_data = TRUE)
+      data <- super$post(body = request,
+                         route = "Data/Retrieve",
+                         expect_data = TRUE)
 
       # Return as is, if reshape is FALSE
       if (!reshape)
@@ -468,12 +459,9 @@ DataServices <- R6Class(  # nolint: object_name_linter
       request$WhereExpression <- where
 
       # Retrieve data (data does not contain the column names)
-      data <- private$post(request,
-                           private$url,
-                           paste0("RefTables/", table, "/Data"),
-                           private$token_type,
-                           private$token,
-                           expect_data = TRUE)
+      data <- super$post(body = request,
+                         route = paste0("RefTables/", table, "/Data"),
+                         expect_data = TRUE)
 
       if (length(data) == 0)
         return(data.frame())
@@ -567,11 +555,8 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #'   regenerate the data if source data has changed.
     #' @family data loading functions
     load_pivot_table = function(table, top_records = NULL) {
-      data <- private$get(private$url,
-                          paste0("PivotTables/", table, "/Saved"),
-                          private$token_type,
-                          private$token,
-                          query = list(RowCount = top_records))
+      data <- super$get(route = paste0("PivotTables/", table, "/Saved"),
+                        query = list(RowCount = top_records))
       # restructure data
       # promote first row to colnames
       df <- data.frame(data[-1, ])
@@ -1220,11 +1205,8 @@ DataServices <- R6Class(  # nolint: object_name_linter
       }
 
       # Save data
-      return(private$post(requests,
-                          private$url,
-                          "Data/Save",
-                          private$token_type,
-                          private$token))
+      return(super$post(body = requests,
+                        route = "Data/Save"))
     },
 
     #' @description Save reference table data to PetroVisor.
@@ -1266,12 +1248,9 @@ DataServices <- R6Class(  # nolint: object_name_linter
       data <- as.matrix(data)
       body <- split(data, seq_len(nrow(data)))
       names(body) <- NULL
-      return(private$put(body,
-                         private$url,
-                         paste0("RefTables/", table, "/Data/String"),
-                         private$token_type,
-                         private$token,
-                         query = list(SkipExistingData = skip_existing)))
+      return(super$put(body = body,
+                       route = paste0("RefTables/", table, "/Data/String"),
+                       query = list(SkipExistingData = skip_existing)))
     },
 
     #' @description Generate and save the data of the specified pivot table.
@@ -1286,11 +1265,8 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #' }
     #' @family data saving functions
     save_pivot_table = function(table) {
-      return(private$get(private$url,
-                         paste0("PivotTables/", table, "/Save"),
-                         private$token_type,
-                         private$token,
-                         parse_json = FALSE))
+      return(super$get(route = paste0("PivotTables/", table, "/Save"),
+                       parse_json = FALSE))
     },
 
     #' @description Remove signal data from PetroVisor.
@@ -1374,11 +1350,8 @@ DataServices <- R6Class(  # nolint: object_name_linter
       if (!is.null(depth_end))
         request$DepthEnd <- depth_end
 
-      return(private$post(request,
-                          private$url,
-                          "Data/Delete",
-                          private$token_type,
-                          private$token))
+      return(super$post(body = request,
+                        route = "Data/Delete"))
     },
 
     #' @description Remove reference table data from PetroVisor.
@@ -1408,12 +1381,9 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #' @family data deletion functions
     delete_reference_table = function(table, where = NULL) {
       # set name NULL, because it is appended to the route in ApiRequests.R
-      return(private$delete(name = NULL,
-                            private$url,
-                            paste0("RefTables/", table, "/Data"),
-                            private$token_type,
-                            private$token,
-                            query = list(WhereExpression = where)))
+      return(super$delete(name = NULL,
+                          route = paste0("RefTables/", table, "/Data"),
+                          query = list(WhereExpression = where)))
     },
 
     #' @description Remove pivot table data from PetroVisor.
@@ -1428,17 +1398,11 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #' }
     #' @family data deletion functions
     delete_pivot_table = function(table) {
-      return(private$get(private$url,
-                         paste0("PivotTables/", table, "/Delete"),
-                         private$token_type,
-                         private$token,
-                         parse_json = FALSE))
+      return(super$get(route = paste0("PivotTables/", table, "/Delete"),
+                       parse_json = FALSE))
     }
   ),
   private = list(
-    url = NULL,
-    token_type = NULL,
-    token = NULL,
     sp = NULL,
 
     get_entity_names = function(entities) {

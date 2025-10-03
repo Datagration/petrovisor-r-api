@@ -475,18 +475,12 @@ result <- sp$data$save(
 Create a new DataServices instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataServices$new(url, token_type, token, sp)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataServices$new(sp)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{url}}{the URL for the API calls.}
-
-\item{\code{token_type}}{the type of the issued token.}
-
-\item{\code{token}}{the issued token.}
-
 \item{\code{sp}}{instance of the service provider}
 }
 \if{html}{\out{</div>}}

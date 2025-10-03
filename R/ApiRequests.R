@@ -8,7 +8,7 @@ library("jsonlite")
 #'
 #' @export ApiRequests
 #'
-ApiRequests <- R6Class("ApiRequests",
+ApiRequests <- R6Class("ApiRequests", # nolint: object_name_linter
   public = list(
     #' @description Create a new ApiRequests instance.
     initialize = function() { }
@@ -24,12 +24,18 @@ ApiRequests <- R6Class("ApiRequests",
     #' param expect_data Whether to expect data being returned from the request.
     #' param query Named list of additional query parameters.
     post = function(body,
-                    url,
+                    url = NULL,
                     route,
-                    token_type,
-                    token,
+                    token_type = NULL,
+                    token = NULL,
                     expect_data = FALSE,
                     query = NULL) {
+      # get auth
+      auth <- get_auth_context()$get_auth()
+      url <- auth$workspace_data_url
+      token_type <- auth$token_type
+      token <- auth$token
+
       ret <- httr::POST(
         url = gsub(" ", "%20", paste0(url, route)),
         body = jsonlite::toJSON(body, auto_unbox = TRUE),
@@ -56,7 +62,18 @@ ApiRequests <- R6Class("ApiRequests",
     #' param route The route to use. E.g. Signal, Files, etc.
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
-    upload_file = function(file, url, route, token_type, token) {
+    upload_file = function(file,
+                           url = NULL,
+                           route,
+                           token_type = NULL,
+                           token = NULL) {
+
+      # get auth
+      auth <- get_auth_context()$get_auth()
+      url <- auth$workspace_data_url
+      token_type <- auth$token_type
+      token <- auth$token
+
       headers <- c(
         accept = "application/json",
         Authorization = paste(token_type, token),
@@ -77,7 +94,17 @@ ApiRequests <- R6Class("ApiRequests",
       httr::stop_for_status(ret, task = paste("POST with result:", ret))
     },
 
-    download_file = function(name, url, route, token_type, token) {
+    download_file = function(name,
+                             url = NULL,
+                             route,
+                             token_type = NULL,
+                             token = NULL) {
+      # get auth
+      auth <- get_auth_context()$get_auth()
+      url <- auth$workspace_data_url
+      token_type <- auth$token_type
+      token <- auth$token
+
       ret <- httr::GET(
         url = gsub(" ", "%20", paste0(url, route, name)),
         httr::add_headers(
@@ -102,13 +129,18 @@ ApiRequests <- R6Class("ApiRequests",
     #'
     #' returns The result of the GET request. Either as received, or parsed to
     #'  an object using \code{jsonlite::fromJSON}.
-    get = function(url,
+    get = function(url = NULL,
                    route,
-                   token_type,
-                   token,
+                   token_type = NULL,
+                   token = NULL,
                    query = NULL,
                    parse_json = TRUE) {
 
+      # get auth
+      auth <- get_auth_context()$get_auth()
+      url <- auth$workspace_data_url
+      token_type <- auth$token_type
+      token <- auth$token
       # build url
       url <- httr::parse_url(url)
       url$path <- paste0(url$path, route)
@@ -121,13 +153,6 @@ ApiRequests <- R6Class("ApiRequests",
           Authorization = paste(token_type, token)
         )
       )
-
-      # ret <- httr::GET(
-      #   url = gsub(" ", "%20", paste0(url, route, query)),
-      #   httr::add_headers(
-      #     Authorization = paste(token_type, token)
-      #   )
-      # )
 
       httr::stop_for_status(ret, task = paste("GET with result:", ret))
 
@@ -148,7 +173,18 @@ ApiRequests <- R6Class("ApiRequests",
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
     #' param query named list of query parameters.
-    delete = function(name, url, route, token_type, token, query = NULL) {
+    delete = function(name,
+                      url = NULL,
+                      route,
+                      token_type = NULL,
+                      token = NULL,
+                      query = NULL) {
+      # get auth
+      auth <- get_auth_context()$get_auth()
+      url <- auth$workspace_data_url
+      token_type <- auth$token_type
+      token <- auth$token
+
       # build url
       url <- httr::parse_url(url)
       url$path <- paste0(url$path, route, name)
@@ -174,7 +210,18 @@ ApiRequests <- R6Class("ApiRequests",
     #' param token_type The type of the used token.
     #' param token The token used for authenticating the request.
     #' param query named list of query parameters.
-    put = function(body, url, route, token_type, token, query = NULL) {
+    put = function(body,
+                   url = NULL,
+                   route,
+                   token_type = NULL,
+                   token = NULL,
+                   query = NULL) {
+      # get auth
+      auth <- get_auth_context()$get_auth()
+      url <- auth$workspace_data_url
+      token_type <- auth$token_type
+      token <- auth$token
+
       # build url
       url <- httr::parse_url(url)
       url$path <- paste0(url$path, route)

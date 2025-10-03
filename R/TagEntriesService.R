@@ -26,7 +26,7 @@ library("R6")
 #'   start = "2020-01-01T00:00:00.000Z"
 #' )
 #' }
-TagEntriesService <- R6Class(
+TagEntriesService <- R6Class( # nolint: object_name_linter
   "TagEntriesService",
   inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
@@ -37,11 +37,7 @@ TagEntriesService <- R6Class(
     #' @param url the URL for the API calls.
     #' @param token_type the type of the issued token.
     #' @param token the issued token.
-    initialize = function(url, token_type, token) {
-      private$url <- url
-      private$token_type <- token_type
-      private$token <- token
-    },
+    initialize = function() {},
 
     #' @description Add new or update single or multiple tag entries at once.
     #'
@@ -71,11 +67,8 @@ TagEntriesService <- R6Class(
       )
       names(body) <- NULL
 
-      private$post(body,
-                   private$url,
-                   "TagEntries/Add",
-                   private$token_type,
-                   private$token)
+      super$post(body = body,
+                 route = "TagEntries/Add")
     },
 
     #' @description Delete all tag entries with a start date in the specified
@@ -96,12 +89,9 @@ TagEntriesService <- R6Class(
       if (!is.null(tag_name)) query$Tag <- tag_name
       if (!is.null(end)) query$End <- end
 
-      private$delete(NULL,
-                     private$url,
-                     "TagEntries/Range",
-                     private$token_type,
-                     private$token,
-                     query = query)
+      super$delete(name = NULL,
+                   route = "TagEntries/Range",
+                   query = query)
     },
 
     #' @description Delete the specified tag entries.
@@ -131,11 +121,8 @@ TagEntriesService <- R6Class(
       )
       names(body) <- NULL
 
-      private$post(body,
-                   private$url,
-                   "TagEntries/Delete",
-                   private$token_type,
-                   private$token)
+      super$post(body = body,
+                 route = "TagEntries/Delete")
     },
 
     #' @description Get tag entries according to the given filter.
@@ -204,12 +191,9 @@ TagEntriesService <- R6Class(
       if (!is.null(end_date_ends)) filter$EndDateEnds <- end_date_ends
       if (!is.null(is_end_date_set)) filter$EndDateSet <- is_end_date_set
 
-      tag_entries <- private$post(filter,
-                                  private$url,
-                                  "TagEntries/Filtered",
-                                  private$token_type,
-                                  private$token,
-                                  expect_data = TRUE)
+      tag_entries <- super$post(body = filter,
+                                route = "TagEntries/Filtered",
+                                expect_data = TRUE)
 
       # If no tag entries available, return empty list
       if (length(tag_entries) == 0) return(tag_entries)
@@ -222,10 +206,5 @@ TagEntriesService <- R6Class(
 
       return(tag_entries)
     }
-  ),
-  private = list(
-    url = NULL,
-    token_type = NULL,
-    token = NULL
   )
 )
