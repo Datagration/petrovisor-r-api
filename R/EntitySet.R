@@ -15,12 +15,12 @@ library("R6")
 #' \dontrun{
 #' EntitySet$new(name = "MyEntities",
 #'               entities = c(Entity$new(name = "Well1",
-#'                                       entityTypeName = "Well",
+#'                                       entity_type_name = "Well",
 #'                                       alias = "WellAlias1"),
 #'                            Entity$new(name = "Well2",
-#'                                       entityTypeName = "Well",
+#'                                       entity_type_name = "Well",
 #'                                       alias = "WellAlias2"))
-#'}
+#' }
 EntitySet <- R6Class("EntitySet",
   public = list(
     name = NULL,
