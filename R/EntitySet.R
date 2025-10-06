@@ -19,7 +19,7 @@ library("R6")
 #'                                       alias = "WellAlias1"),
 #'                            Entity$new(name = "Well2",
 #'                                       entity_type_name = "Well",
-#'                                       alias = "WellAlias2"))
+#'                                       alias = "WellAlias2")))
 #' }
 EntitySet <- R6Class("EntitySet",
   public = list(
