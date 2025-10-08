@@ -1,5 +1,15 @@
 # Myrconn.PetroVisor.Client (development version)
 
+* implement singleton authentication pattern via `AuthContext` class for centralized auth management
+  * add authentication utility functions: `get_auth_context()`, `require_authentication()`, `with_auth_context()`
+  * enhance `AuthenticationService` with comprehensive token management and API key authentication
+  * update all services to use singleton authentication context
+* add Machine Learning support with model training capabilities
+  * add `MLModel` class with support for multiple model types (Regression, BinaryClassification, MultipleClassification, Clustering, NaiveBayes, SurvivalAnalysis)
+  * add `MlTrainingService` class providing model training, status checking, and prediction functionality
+  * add extensive ML data structures including training options, features, outcomes, results, and transformer configurations
+  * add comprehensive unit tests for machine learning and authentication functionality
+* improve API documentation with detailed examples and usage patterns
 * fix ServiceProvider$convert_unit to work with units containing forward slashes ("/")
 * add Myrconn.PetroVisor.Client-package.R to enable help topic for the package itself
 

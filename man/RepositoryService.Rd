@@ -54,20 +54,9 @@ sp$items$save("Entity", entity)
 Create a new RepositoryService instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$new(url, token_type, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{RepositoryService$new()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{url}}{the URL for the API calls.}
-
-\item{\code{token_type}}{the type of the issued token.}
-
-\item{\code{token}}{the issued token.}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-RepositoryService-load_names"></a>}}

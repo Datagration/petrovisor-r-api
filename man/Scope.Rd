@@ -24,7 +24,7 @@ Scope$new(name = "MyScope",
 \item{\code{end}}{The scope's end date.}
 
 \item{\code{time_increment}}{The scope's time increment. Allowed values are:
-\code{"EveryMinute"}, \code{"EveryFiveMinutes"},
+\code{"EverySecond"}, \code{"EveryMinute"}, \code{"EveryFiveMinutes"},
 \code{"EveryFifteenMinutes"}, \code{"Hourly"}, \code{"Daily"},
 \code{"Monthly"}, \code{"Quarterly"}, \code{"Yearly"}}
 
@@ -62,8 +62,8 @@ Create a new Scope instance.
   name = NULL,
   start = NULL,
   end = NULL,
-  time_increment = c("", "EveryMinute", "EveryFiveMinutes", "EveryFifteenMinutes",
-    "Hourly", "Daily", "Monthly", "Quarterly", "Yearly"),
+  time_increment = c("", "EverySecond", "EveryMinute", "EveryFiveMinutes",
+    "EveryFifteenMinutes", "Hourly", "Daily", "Monthly", "Quarterly", "Yearly"),
   depth_increment = c("", "Meter", "HalfMeter", "EighthMeter", "TenthMeter", "Foot",
     "HalfFoot"),
   start_depth = NULL,
@@ -84,7 +84,7 @@ Create a new Scope instance.
 \item{\code{end}}{The scope's end date.}
 
 \item{\code{time_increment}}{The scope's time increment. Allowed values are:
-\code{"EveryMinute"}, \code{"EveryFiveMinutes"},
+\code{"EverySecond"}, \code{"EveryMinute"}, \code{"EveryFiveMinutes"},
 \code{"EveryFifteenMinutes"}, \code{"Hourly"}, \code{"Daily"},
 \code{"Monthly"}, \code{"Quarterly"}, \code{"Yearly"}}
 

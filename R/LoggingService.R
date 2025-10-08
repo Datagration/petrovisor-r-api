@@ -40,7 +40,7 @@ library("R6")
 #' # remove all log entries
 #' sp$logs$CleanUpLogEntries()
 #' }
-LoggingService <- R6Class(
+LoggingService <- R6Class( # nolint: object_name_linter
   "LoggingService",
   inherit = ApiRequests, # inherit methods from ApiRequests class
   public = list(
@@ -51,21 +51,14 @@ LoggingService <- R6Class(
     #' @param url the URL for the API calls.
     #' @param token_type the type of the issued token.
     #' @param token the issued token.
-    initialize = function(url, token_type, token) {
-      private$url <- url
-      private$token_type <- token_type
-      private$token <- token
-    },
+    initialize = function() {},
 
     #' @description Get all available categories from the existing log
     #'  entries.
     #'
     #' @return A character vector containing all available categories.
     load_categories = function() {
-      categories <- private$get(private$url,
-                                "LogEntries/Categories",
-                                private$token_type,
-                                private$token)
+      categories <- super$get(route = "LogEntries/Categories")
 
       return(categories)
     },
@@ -112,12 +105,9 @@ LoggingService <- R6Class(
       if (!is.null(schedule)) body$schedule <- schedule
 
       # get return data
-      log_entries <- private$post(body,
-                                  private$url,
-                                  "LogEntries/Filtered",
-                                  private$token_type,
-                                  private$token,
-                                  expect_data = TRUE)
+      log_entries <- super$post(body = body,
+                                route = "LogEntries/Filtered",
+                                expect_data = TRUE)
       return(log_entries)
     },
 
@@ -132,11 +122,8 @@ LoggingService <- R6Class(
       }
 
       # add entries to database
-      private$post(dl,
-                   private$url,
-                   "LogEntries/AddMultiple",
-                   private$token_type,
-                   private$token)
+      super$post(body = dl,
+                 route = "LogEntries/AddMultiple")
     },
 
     #' @description Remove log entries from the database.
@@ -156,18 +143,10 @@ LoggingService <- R6Class(
         route <- "LogEntries/CleanCategory"
       }
 
-      private$post(NULL,
-                   private$url,
-                   route,
-                   private$token_type,
-                   private$token,
-                   expect_data = FALSE,
-                   query = query)
+      super$post(body = NULL,
+                 route = route,
+                 expect_data = FALSE,
+                 query = query)
     }
-  ),
-  private = list(
-    url = NULL,
-    token_type = NULL,
-    token = NULL
   )
 )

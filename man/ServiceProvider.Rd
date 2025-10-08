@@ -64,6 +64,9 @@ functionality related to tag entries.}
 
 \item{\code{files}}{Instance of class \code{FileService} wrapping all functionality
 related to files.}
+
+\item{\code{ml}}{Instance of class \code{MlTrainingService} wrapping
+all functionality related to ML model training and prediction.}
 }
 \if{html}{\out{</div>}}
 }

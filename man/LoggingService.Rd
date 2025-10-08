@@ -64,7 +64,7 @@ sp$logs$CleanUpLogEntries()
 Create a new LoggingService instance. This is done by
 the ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$new(url, token_type, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{LoggingService$new()}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

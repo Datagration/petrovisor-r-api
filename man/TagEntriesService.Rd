@@ -58,7 +58,7 @@ tagEntries <- sp$tag_entries$load(tag_group_names = c("Info"))
 Create a new TagEntriesService instance. This is done by the
 ServiceProvider automatically.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$new(url, token_type, token)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$new()}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

@@ -4,39 +4,152 @@
 \alias{MLModel}
 \title{MLModel}
 \description{
-Class representing a PetroVisor ml model object.
+Class representing a PetroVisor ML model with minimal
+required inputs and comprehensive API field handling.
 }
 \examples{
 \dontrun{
-MLModel$new()
+# Create a minimal ML model (Regression)
+table_formula <- 'Table "WellData"
+  Column "feature1" in "m"
+    "Production Feature" in "m"
+  End Column
+  Column "target" in "bbl"
+    "Production Target" in "bbl"
+  End Column
+End Table'
+
+model <- MLModel$new(
+  name = "My Production Model",
+  table_formula = table_formula,
+  label_column_name = "target",
+  description = "Production prediction model"
+)
+
+# Create scope and entity set
+scope <- Scope$new(
+  name = "TestScope",
+  start = "2023-01-01T00:00:00.000Z",
+  end = "2023-12-31T00:00:00.000Z",
+  time_increment = "Daily",
+  depth_increment = "Meter",
+  start_depth = 0,
+  end_depth = 0,
+  formula = 'Scope "TestScope"
+    Between #01/01/2023#
+    And #31/12/2023#
+    Step Daily
+  End Scope'
+)
+
+entity_set <- EntitySet$new(
+  name = "TestEntities",
+  entities = list(),
+  formula = 'Entity Set "TestEntities"
+  End Set'
+)
+
+# Set training options with scope and entity_set (required)
+model$set_training_options(scope, entity_set,
+                          test_fraction = 0.2,
+                          validation_fraction = 0.2,
+                          time_to_train = 300)
+
+# Configure preprocessing
+model$set_preprocessing(c("MinMax", "MeanVariance", "RobustScaling"))
+
+# Configure outlier filtering
+model$set_outlier_filtering("CooksDistance")
+
+# Configure neural network (optional)
+model$set_neural_network_options(
+  library = "TensorFlow",
+  optimizer = "Adam",
+  learning_rate = 0.001,
+  epochs = 100,
+  batch_size = 64,
+  dense_layers = 3,
+  neurons = 128
+)
+
+# Convert to list for API submission
+api_data <- model$toList()
+
+# Save model using service provider
+sp$items$save("MLModel", model)
+
+# Load model from API
+retrieved_model <- sp$items$load("MLModel", "My Production Model")
+
+# Configure custom training (alternative to neural network)
+model$set_custom_training(
+  training_type = "Gam",
+  enable_pruning = TRUE,
+  learning_rate = 0.05,
+  max_iterations = 1500
+)
 }
+}
+\section{Super class}{
+\code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{MLModel}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{The name of the ml model.}
+\item{\code{name}}{The name of the ML model (required).}
 
-\item{\code{modelType}}{The model's type.}
+\item{\code{type}}{The model's type (defaults to "Regression").}
 
-\item{\code{trainedModel}}{This field holds the string representation of the
-trained ML model.}
+\item{\code{table_formula}}{The model's table formula in P# language (required).}
 
-\item{\code{tableFormula}}{The model's table formula as string.}
+\item{\code{context_formula}}{The model's context formula in P# language
+(optional - can be reconstructed from scope and entity_set).}
 
-\item{\code{contextFormula}}{The model's context formula as string.}
+\item{\code{description}}{Optional description of the model.}
 
-\item{\code{labelColumnName}}{The model's label column name.}
+\item{\code{label_column_name}}{The label/target column name.
+Required for: "Regression", "BinaryClassification",
+"MultipleClassification", "NaiveBayes", "NaiveBayesCategorical".
+Not used for: "Clustering". Not required for: "SurvivalAnalysis".}
 
-\item{\code{isLocked}}{This flag specifies whether the model is locked.
-Defaults to \code{FALSE}.}
+\item{\code{survival_data}}{Survival data configuration
+(required for SurvivalAnalysis).}
 
-\item{\code{user}}{The user the model belongs to.}
+\item{\code{labels}}{List of string labels for the model.}
 
-\item{\code{isFavorite}}{This flag specifies whether the model is marked as favorite
-item, and thus shown in the favorites tab on the home module in PetroVisor.
-Defaults to \code{FALSE}.}
+\item{\code{is_model_per_entity}}{Whether to create model per entity
+(default FALSE).}
 
-\item{\code{labels}}{A list of strings holding the labels of the model.}
+\item{\code{test_data_mode}}{Test data mode (default "Union").}
+
+\item{\code{validation_data_mode}}{Validation data mode (default "Union").}
+
+\item{\code{outlier_filters}}{Outlier filtering method (default "None").}
+
+\item{\code{trained_models}}{List of trained models.}
+
+\item{\code{is_depth_data}}{Whether model uses depth data.}
+
+\item{\code{is_automatic}}{Whether model was trained automatically.}
+
+\item{\code{trained}}{Training timestamp.}
+
+\item{\code{is_reviewed}}{Whether model has been reviewed.}
+
+\item{\code{include_incomplete_cases}}{Whether to include incomplete cases.}
+
+\item{\code{data_provider_config}}{Data provider configuration.}
+
+\item{\code{training_options}}{Complete training options configuration with all
+sub-fields.}
+
+\item{\code{validation_scope_formula}}{Validation scope formula.}
+
+\item{\code{validation_entity_set_formula}}{Validation entity set formula.}
+
+\item{\code{test_scope_formula}}{Test scope formula.}
+
+\item{\code{test_entity_set_formula}}{Test entity set formula.}
 }
 \if{html}{\out{</div>}}
 }
@@ -45,6 +158,13 @@ Defaults to \code{FALSE}.}
 \itemize{
 \item \href{#method-MLModel-new}{\code{MLModel$new()}}
 \item \href{#method-MLModel-toList}{\code{MLModel$toList()}}
+\item \href{#method-MLModel-set_training_options}{\code{MLModel$set_training_options()}}
+\item \href{#method-MLModel-set_preprocessing}{\code{MLModel$set_preprocessing()}}
+\item \href{#method-MLModel-set_outlier_filtering}{\code{MLModel$set_outlier_filtering()}}
+\item \href{#method-MLModel-set_neural_network_options}{\code{MLModel$set_neural_network_options()}}
+\item \href{#method-MLModel-set_custom_training}{\code{MLModel$set_custom_training()}}
+\item \href{#method-MLModel-set_trainer_hyperparameters}{\code{MLModel$set_trainer_hyperparameters()}}
+\item \href{#method-MLModel-get_summary}{\code{MLModel$get_summary()}}
 \item \href{#method-MLModel-clone}{\code{MLModel$clone()}}
 }
 }
@@ -52,48 +172,45 @@ Defaults to \code{FALSE}.}
 \if{html}{\out{<a id="method-MLModel-new"></a>}}
 \if{latex}{\out{\hypertarget{method-MLModel-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new ML model instance.
+Create a new MLModel instance with minimal required
+parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MLModel$new(
-  name = NULL,
-  modelType = NULL,
-  trainedModel = NULL,
-  tableFormula = NULL,
-  contextFormula = NULL,
-  labelColumnName = NULL,
-  isLocked = FALSE,
-  user = NULL,
-  isFavorite = FALSE,
-  labels = NULL
+  name,
+  table_formula,
+  type = "Regression",
+  context_formula = NULL,
+  description = NULL,
+  label_column_name = NULL,
+  survival_data = NULL,
+  labels = list()
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{The name of the ml model.}
+\item{\code{name}}{The name of the ML model (required).}
 
-\item{\code{modelType}}{The model's type.}
+\item{\code{table_formula}}{The model's table formula in P# language (required).}
 
-\item{\code{trainedModel}}{This field holds the string representation of the
-trained ML model.}
+\item{\code{type}}{The model's type. One of "Regression",
+"BinaryClassification", "MultipleClassification", "Clustering",
+"NaiveBayes", "NaiveBayesCategorical", "SurvivalAnalysis".
+Defaults to "Regression".}
 
-\item{\code{tableFormula}}{The model's table formula as string.}
+\item{\code{context_formula}}{The model's context formula in P# language
+(optional - can be reconstructed from scope and entity_set).}
 
-\item{\code{contextFormula}}{The model's context formula as string.}
+\item{\code{description}}{Optional description of the model.}
 
-\item{\code{labelColumnName}}{The model's label column name.}
+\item{\code{label_column_name}}{The label/target column name. Required for most
+model types except Clustering.}
 
-\item{\code{isLocked}}{This flag specifies whether the model is locked.
-Defaults to \code{FALSE}.}
+\item{\code{survival_data}}{Survival data configuration. Required for
+SurvivalAnalysis.}
 
-\item{\code{user}}{The user the model belongs to.}
-
-\item{\code{isFavorite}}{This flag specifies whether the model is marked as favorite
-item, and thus shown in the favorites tab on the home module in PetroVisor.
-Defaults to \code{FALSE}.}
-
-\item{\code{labels}}{A list of strings holding the labels of the model.}
+\item{\code{labels}}{List of string labels for the model (default empty list).}
 }
 \if{html}{\out{</div>}}
 }
@@ -102,16 +219,286 @@ Defaults to \code{FALSE}.}
 \if{html}{\out{<a id="method-MLModel-toList"></a>}}
 \if{latex}{\out{\hypertarget{method-MLModel-toList}{}}}
 \subsection{Method \code{toList()}}{
+Convert the MLModel instance to a list suitable for
+API submission.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MLModel$toList()}\if{html}{\out{</div>}}
 }
 
-\subsection{Details}{
-Convert the object to a list. This function is mainly used
-by the RepositoryService to convert the objects to lists and then
-call the web API.
+\subsection{Returns}{
+A list representation of the MLModel object compatible
+with the PetroVisor API.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MLModel-set_training_options"></a>}}
+\if{latex}{\out{\hypertarget{method-MLModel-set_training_options}{}}}
+\subsection{Method \code{set_training_options()}}{
+Configure training options for model validation and testing
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MLModel$set_training_options(
+  scope,
+  entity_set,
+  test_fraction = 0,
+  validation_fraction = 0,
+  time_to_train = 60,
+  max_models = 1000
+)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{scope}}{The training scope (Scope object, required)}
+
+\item{\code{entity_set}}{The training entity set (EntitySet object, required)}
+
+\item{\code{test_fraction}}{Fraction of data to use for testing (0.0-1.0)}
+
+\item{\code{validation_fraction}}{Fraction of data to use for validation
+(0.0-1.0)}
+
+\item{\code{time_to_train}}{Maximum time to train in seconds (default 60)}
+
+\item{\code{max_models}}{Maximum number of models to train (default 1000)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MLModel-set_preprocessing"></a>}}
+\if{latex}{\out{\hypertarget{method-MLModel-set_preprocessing}{}}}
+\subsection{Method \code{set_preprocessing()}}{
+Enable specific data preprocessing methods
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MLModel$set_preprocessing(
+  methods = c(),
+  apply_pre_processors_before_training = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{methods}}{Vector of preprocessing method names to enable.
+Options: "MinMax", "MeanVariance", "LogMeanVariance", "Binning",
+"SupervisedBinning", "RobustScaling", "LpNorm", "GlobalContrast",
+"ProjectToPrincipalComponents", "ApproximatedKernelMap", "BoxCox",
+"BoxTidwell"}
+
+\item{\code{apply_pre_processors_before_training}}{Whether to apply
+preprocessors before training (default TRUE)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MLModel-set_outlier_filtering"></a>}}
+\if{latex}{\out{\hypertarget{method-MLModel-set_outlier_filtering}{}}}
+\subsection{Method \code{set_outlier_filtering()}}{
+Set outlier filtering method
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MLModel$set_outlier_filtering(method = c("None", "IQR", "CooksDistance"))}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{method}}{Outlier filtering method. Options: "None", "IQR",
+"CooksDistance"}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MLModel-set_neural_network_options"></a>}}
+\if{latex}{\out{\hypertarget{method-MLModel-set_neural_network_options}{}}}
+\subsection{Method \code{set_neural_network_options()}}{
+Configure neural network training options
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MLModel$set_neural_network_options(
+  library = "TensorFlow",
+  model_path = NULL,
+  transfer_learning = FALSE,
+  hyperparameter_tuning = FALSE,
+  features_mapping = NULL,
+  optimizer = "Adam",
+  learning_rate = 0.001,
+  epochs = 100,
+  batch_size = 32,
+  sequence_window_size = NULL,
+  activation_function = "ReLU",
+  dense_layers = 2,
+  neurons = 64,
+  conv1d_layers = NULL,
+  conv1d_filters = NULL,
+  conv1d_kernel_size = NULL,
+  lstm_layers = NULL,
+  lstm_neurons = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{library}}{Neural network library name (e.g., "TensorFlow")}
+
+\item{\code{model_path}}{Path to the neural network model file}
+
+\item{\code{transfer_learning}}{Whether to use transfer learning}
+
+\item{\code{hyperparameter_tuning}}{Whether to enable hyperparameter tuning}
+
+\item{\code{features_mapping}}{Features and label names mapping from internal
+names to trained model names}
+
+\item{\code{optimizer}}{Optimizer to use (e.g. "Adam", "SGD")}
+
+\item{\code{learning_rate}}{Learning rate (0-1)}
+
+\item{\code{epochs}}{Number of training epochs}
+
+\item{\code{batch_size}}{Batch size for training}
+
+\item{\code{sequence_window_size}}{Series sequence window size}
+
+\item{\code{activation_function}}{Activation function}
+
+\item{\code{dense_layers}}{Number of dense layers}
+
+\item{\code{neurons}}{Number of neurons per layer}
+
+\item{\code{conv1d_layers}}{Number of Conv1D layers (for time series)}
+
+\item{\code{conv1d_filters}}{Number of Conv1D filters}
+
+\item{\code{conv1d_kernel_size}}{Conv1D kernel size}
+
+\item{\code{lstm_layers}}{Number of LSTM layers}
+
+\item{\code{lstm_neurons}}{Number of LSTM neurons}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MLModel-set_custom_training"></a>}}
+\if{latex}{\out{\hypertarget{method-MLModel-set_custom_training}{}}}
+\subsection{Method \code{set_custom_training()}}{
+Set custom training options for specific algorithms
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MLModel$set_custom_training(
+  training_type = "Auto",
+  l2_regularization = NULL,
+  enable_pruning = NULL,
+  entropy_coefficient = NULL,
+  learning_rate = NULL,
+  maximum_bin_count_per_feature = NULL,
+  minimum_example_count_per_leaf = NULL,
+  max_iterations = NULL,
+  pruning_metrics = NULL,
+  rank = NULL,
+  oversampling = NULL,
+  ensure_zero_mean = TRUE,
+  onnx_model = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{training_type}}{Training type: "Auto", "Ols", "Gam",
+"RandomizedPca", "NeuralNetwork", "OnnxModel"}
+
+\item{\code{l2_regularization}}{OLS: L2 regularization weight (0-1) for ridge
+regression}
+
+\item{\code{enable_pruning}}{GAM: Enable post-training tree pruning to avoid
+overfitting}
+
+\item{\code{entropy_coefficient}}{GAM: The entropy (regularization)
+coefficient (0-1)}
+
+\item{\code{learning_rate}}{GAM: The learning rate (0-1)}
+
+\item{\code{maximum_bin_count_per_feature}}{GAM: Maximum number of distinct
+values (bins) per feature (2-500)}
+
+\item{\code{minimum_example_count_per_leaf}}{GAM: Minimal number of data points
+required to form a new tree leaf (1-100)}
+
+\item{\code{max_iterations}}{GAM: Total number of passes over the training data
+(100-20000)}
+
+\item{\code{pruning_metrics}}{GAM: Metric to use for pruning
+("LeastAbsoluteDeviation" or "LeastSquares")}
+
+\item{\code{rank}}{Randomized PCA: The number of components in the PCA}
+
+\item{\code{oversampling}}{Randomized PCA: Oversampling parameter for randomized
+PCA training (1-200)}
+
+\item{\code{ensure_zero_mean}}{Randomized PCA: If TRUE, data is centered to
+have zero mean (defaults to TRUE)}
+
+\item{\code{onnx_model}}{ONNX model string (for ONNX models)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MLModel-set_trainer_hyperparameters"></a>}}
+\if{latex}{\out{\hypertarget{method-MLModel-set_trainer_hyperparameters}{}}}
+\subsection{Method \code{set_trainer_hyperparameters()}}{
+Configure hyperparameters for specific trainers
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MLModel$set_trainer_hyperparameters(trainer_name, hyperparameters)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{trainer_name}}{Name of the trainer (e.g. "FastForest", "LightGbm")}
+
+\item{\code{hyperparameters}}{Named list of hyperparameter values}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MLModel-get_summary"></a>}}
+\if{latex}{\out{\hypertarget{method-MLModel-get_summary}{}}}
+\subsection{Method \code{get_summary()}}{
+Get a summary of the model configuration
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MLModel$get_summary()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+List containing key model configuration details
+description Create default training options with comprehensive field
+structure using MLTrainingOptions R6 class
+param scope The training scope (required)
+param entity_set The training entity set (required)
+return MLTrainingOptions instance representing default training options
+description Generate context formula from scope and entity_set
+param scope The training scope
+param entity_set The training entity set
+return Context formula string
+description Create default preprocessors structure
+return List of MLPreProcessor instances
+description Update optimization metric based on model type
+param type Model type
+description Merge API training options with default structure
+param default_options Default training options structure
+param api_options Training options from API
+return Merged training options list
+description Create default trainer hyperparameters structure
+return List of default trainer hyperparameters
+description Get trainers for a given type
+param type Model type
+return List of trainers for the given type
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MLModel-clone"></a>}}
