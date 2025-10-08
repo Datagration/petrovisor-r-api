@@ -176,7 +176,7 @@ AuthContext <- R6Class("AuthContext", # nolint: object_name_linter
       if (!private$is_auth_set || is.null(private$user)) {
         return(FALSE)
       }
-      private$user == username
+      identical(private$user, username)
     },
 
     #' @description Check if authentication context has specific workspace
@@ -186,7 +186,7 @@ AuthContext <- R6Class("AuthContext", # nolint: object_name_linter
       if (!private$is_auth_set || is.null(private$workspace)) {
         return(FALSE)
       }
-      private$workspace == workspace_name
+      identical(private$workspace, workspace_name)
     }
   ),
 
