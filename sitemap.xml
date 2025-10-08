@@ -8,6 +8,7 @@
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/ActivityArgument.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/ActivityMappedArgument.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/ApiRequests.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/AuthContext.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/AuthenticationService.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/Axis.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/Chart.html</loc></url>
@@ -38,7 +39,21 @@
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/Hierarchy.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/LogEntry.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/LoggingService.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLCustomTrainingOptions.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLDataProviderConfig.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLModel.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLNetModel.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLNeuralNetworkTrainingOptions.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLPreProcessor.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTrainingContext.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTrainingFeature.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTrainingNumericOutcome.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTrainingOptions.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTrainingOutcome.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTrainingResult.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTrainingResults.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MLTransformerOptions.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/MlTrainingService.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/Myrconn.PetroVisor.Client-package.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/NamedPoint.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/PSharpScript.html</loc></url>
@@ -71,6 +86,9 @@
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/Workflow.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/WorkflowActivity.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/WorkflowSchedule.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/get_auth_context.html</loc></url>
 <url><loc>https://datagration.github.io/petrovisor-r-api/reference/index.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/require_authentication.html</loc></url>
+<url><loc>https://datagration.github.io/petrovisor-r-api/reference/with_auth_context.html</loc></url>
 </urlset>
 

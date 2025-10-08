@@ -33,7 +33,20 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="myrconnpetrovisorclient-development-version">Myrconn.PetroVisor.Client (development version)<a class="anchor" aria-label="anchor" href="#myrconnpetrovisorclient-development-version"></a></h2>
-<ul><li>fix ServiceProvider$convert_unit to work with units containing forward slashes (“/”)</li>
+<ul><li>implement singleton authentication pattern via <code>AuthContext</code> class for centralized auth management
+<ul><li>add authentication utility functions: <code><a href="../reference/get_auth_context.html">get_auth_context()</a></code>, <code><a href="../reference/require_authentication.html">require_authentication()</a></code>, <code><a href="../reference/with_auth_context.html">with_auth_context()</a></code>
+</li>
+<li>enhance <code>AuthenticationService</code> with comprehensive token management and API key authentication</li>
+<li>update all services to use singleton authentication context</li>
+</ul></li>
+<li>add Machine Learning support with model training capabilities
+<ul><li>add <code>MLModel</code> class with support for multiple model types (Regression, BinaryClassification, MultipleClassification, Clustering, NaiveBayes, SurvivalAnalysis)</li>
+<li>add <code>MlTrainingService</code> class providing model training, status checking, and prediction functionality</li>
+<li>add extensive ML data structures including training options, features, outcomes, results, and transformer configurations</li>
+<li>add comprehensive unit tests for machine learning and authentication functionality</li>
+</ul></li>
+<li>improve API documentation with detailed examples and usage patterns</li>
+<li>fix ServiceProvider$convert_unit to work with units containing forward slashes (“/”)</li>
 <li>add Myrconn.PetroVisor.Client-package.R to enable help topic for the package itself</li>
 </ul></div>
     <div class="section level2">
