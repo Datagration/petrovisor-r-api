@@ -11,15 +11,15 @@ Class representing a PetroVisor context object.
 Context$new(name = "MyContext",
           entity_set = EntitySet$new(name = "MyEntities",
               entities = c(Entity$new(name = "Well1",
-                                      entityTypeName = "Well",
+                                      entity_type_name = "Well",
                                       alias = "WellAlias1"),
                            Entity$new(name = "Well2",
-                                      entityTypeName = "Well",
-                                      alias = "WellAlias2")),
+                                      entity_type_name = "Well",
+                                      alias = "WellAlias2"))),
           scope = Scope$new(name = "MyScope",
                             start = "2020-01-01T00:00:00.000Z",
                             end = "2020-03-01T00:00:00.000Z",
-                            timeIncrement = "Daily"))
+                            time_increment = "Daily"))
 }
 }
 \section{Public fields}{

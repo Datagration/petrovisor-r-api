@@ -1,4 +1,4 @@
-# Myrconn.PetroVisor.Client (development version)
+# Myrconn.PetroVisor.Client 3.6.0
 
 * implement singleton authentication pattern via `AuthContext` class for centralized auth management
   * add authentication utility functions: `get_auth_context()`, `require_authentication()`, `with_auth_context()`
