@@ -30,6 +30,19 @@ sp <- ServiceProvider$new(
   password = "your_password"
 )
 }
+
+## ------------------------------------------------
+## Method `ServiceProvider$send_mail`
+## ------------------------------------------------
+
+\dontrun{
+  # Send a simple email
+  sp$send_mail(
+    address = "example@domain.com",
+    subject = "Test Subject",
+    body = "This is a test email from PetroVisor R client."
+  )
+}
 }
 \section{Super class}{
 \code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{ServiceProvider}
@@ -78,6 +91,7 @@ all functionality related to ML model training and prediction.}
 \item \href{#method-ServiceProvider-set_workspace_data_url}{\code{ServiceProvider$set_workspace_data_url()}}
 \item \href{#method-ServiceProvider-getDataUrl}{\code{ServiceProvider$getDataUrl()}}
 \item \href{#method-ServiceProvider-convert_unit}{\code{ServiceProvider$convert_unit()}}
+\item \href{#method-ServiceProvider-send_mail}{\code{ServiceProvider$send_mail()}}
 \item \href{#method-ServiceProvider-clone}{\code{ServiceProvider$clone()}}
 }
 }
@@ -181,6 +195,42 @@ values.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ServiceProvider-send_mail"></a>}}
+\if{latex}{\out{\hypertarget{method-ServiceProvider-send_mail}{}}}
+\subsection{Method \code{send_mail()}}{
+Send an email using the PetroVisor email configuration.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ServiceProvider$send_mail(address, subject, body)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{address}}{The recipient email address (single string).}
+
+\item{\code{subject}}{The subject of the email.}
+
+\item{\code{body}}{The body content of the email.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Send a simple email
+  sp$send_mail(
+    address = "example@domain.com",
+    subject = "Test Subject",
+    body = "This is a test email from PetroVisor R client."
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ServiceProvider-clone"></a>}}

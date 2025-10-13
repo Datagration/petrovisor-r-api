@@ -207,6 +207,34 @@ ServiceProvider <- R6Class( # nolint: object_name_linter
         stop(paste0("Error: Input must be a numeric value or a ",
                     "list/vector of numeric values (including NA)."))
       }
+    },
+
+    #' @description Send an email using the PetroVisor email configuration.
+    #'
+    #' @param address The recipient email address (single string).
+    #' @param subject The subject of the email.
+    #' @param body The body content of the email.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'   # Send a simple email
+    #'   sp$send_mail(
+    #'     address = "example@domain.com",
+    #'     subject = "Test Subject",
+    #'     body = "This is a test email from PetroVisor R client."
+    #'   )
+    #' }
+    send_mail = function(address, subject, body) {
+      query <- list(
+        Address = address,
+        Subject = subject,
+        Body = body
+      )
+
+      super$get(url = paste0(self$data_url, "/"),
+                route = "Configuration/Send/Mail",
+                query = query,
+                parse_json = FALSE)
     }
   ),
   private = list(

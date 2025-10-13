@@ -1,3 +1,7 @@
+# Myrconn.PetroVisor.Client (development version)
+
+* add `send_mail()` method to `ServiceProvider` class for sending emails using PetroVisor email configuration
+
 # Myrconn.PetroVisor.Client 3.6.0
 
 * implement singleton authentication pattern via `AuthContext` class for centralized auth management
