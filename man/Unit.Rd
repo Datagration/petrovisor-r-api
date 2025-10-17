@@ -14,6 +14,14 @@ Unit$new(name = "hyper m",
          summand = 0)
 }
 }
+\seealso{
+\itemize{
+\item \link{UnitMeasurement} for measurement definitions
+\item \link{Signal} for signal definitions using units
+\item \link{RepositoryService} for loading and saving units
+\item \link{DataServices} for data operations with units
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

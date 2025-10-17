@@ -8,6 +8,22 @@ library("R6")
 #'   publish trained models, and make predictions. It uses the singleton
 #'   AuthContext for authentication instead of requiring auth parameters.
 #'
+#' @seealso
+#' Related classes:
+#' * [ServiceProvider] for accessing the ML service via `sp$ml`
+#' * [MLModel] for model configuration
+#' * [MLTrainingOptions] for training configuration
+#' * [MLTrainingContext] for training context definitions
+#' * [MLTrainingFeature] for feature definitions
+#' * [MLTrainingOutcome] for outcome metric definitions
+#' * [MLTrainingResult] and [MLTrainingResults] for training results
+#' * [DataServices] for loading training data
+#' * [RepositoryService] for managing ML models
+#'
+#' Vignettes:
+#' * `vignette("machine-learning")` for comprehensive ML guide
+#' * `vignette("getting-started")` for basic usage
+#'
 #' @export MlTrainingService
 #'
 #' @examples
@@ -49,13 +65,13 @@ MlTrainingService <- R6Class( # nolint: object_name_linter
   public = list(
 
     #' @description Create a new MlTrainingService instance. This is done by
-    #'   the ServiceProvider automatically. The service uses the singleton
-    #'   AuthContext for authentication.
+    #'   the [ServiceProvider] automatically. The service uses the singleton
+    #'   [AuthContext] for authentication.
     initialize = function() {},
 
     #' @description Train machine learning models.
     #'
-    #' @param model An MLModel object with configured training options.
+    #' @param model An [MLModel] object with configured training options.
     #'
     #' @return Training response from the API containing request ID.
     train = function(model) {
@@ -103,8 +119,7 @@ MlTrainingService <- R6Class( # nolint: object_name_linter
 
     #' @description Save the selected model.
     #'
-    #' @param model The MLModel object to update and save. This should be an
-    #'   instance of MLModel.
+    #' @param model The [MLModel] object to update and save.
     #' @param best_models A list of best model results, typically from
     #'  MLTrainingResults$get_best_models().
     #'  Each item should contain model outcome, features, trainer name,

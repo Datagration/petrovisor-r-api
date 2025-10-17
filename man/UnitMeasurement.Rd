@@ -11,6 +11,13 @@ Class representing a PetroVisor unit measurement object.
 UnitMeasurement$new(name = "Length", canonical_unit_name = "m")
 }
 }
+\seealso{
+\itemize{
+\item \link{Unit} for unit definitions
+\item \link{Signal} for signal definitions using measurements
+\item \link{RepositoryService} for loading unit measurements
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

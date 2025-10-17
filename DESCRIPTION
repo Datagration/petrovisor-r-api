@@ -22,5 +22,8 @@ Imports:
   lifecycle
 Suggests:
   testthat,
-  withr
+  withr,
+  knitr,
+  rmarkdown
+VignetteBuilder: knitr
 URL: https://datagration.github.io/petrovisor-r-api/

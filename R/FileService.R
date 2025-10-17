@@ -8,6 +8,10 @@ library("R6")
 #' @details A new instance of this class will be created by the ServiceProvider
 #'  automatically.
 #'
+#' @seealso
+#' * [ServiceProvider] for accessing the file service via `sp$files`
+#' * `vignette("getting-started")` for basic usage
+#'
 #' @export FileService
 #'
 #' @examples \dontrun{
@@ -31,7 +35,7 @@ FileService <- R6Class( # nolint: object_name_linter
   public = list(
 
     #' @description Create a new FileService instance. This is done by the
-    #'  ServiceProvider automatically.
+    #'  [ServiceProvider] automatically.
     initialize = function() {},
 
     #' @description Retrieve the names of the files in the workspace's blob
@@ -110,8 +114,8 @@ FileService <- R6Class( # nolint: object_name_linter
     get_os = function() {
       sysinf <- Sys.info()
       if (!is.null(sysinf)) {
-        os <- sysinf['sysname']
-        if (os == 'Darwin')
+        os <- sysinf["sysname"]
+        if (os == "Darwin")
           os <- "osx"
       } else { ## mystery machine
         os <- .Platform$OS.type

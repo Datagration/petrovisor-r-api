@@ -1,6 +1,8 @@
 # Myrconn.PetroVisor.Client (development version)
 
 * add `send_mail()` method to `ServiceProvider` class for sending emails using PetroVisor email configuration
+* deprecate `DataSetRequest` class - never integrated into DataServices, use DataServices methods directly instead
+* add comprehensive documentation with @seealso cross-references and vignette integration across all major classes
 
 # Myrconn.PetroVisor.Client 3.6.0
 

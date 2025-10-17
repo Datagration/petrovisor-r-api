@@ -45,6 +45,26 @@ sp$ml$save_best_model(model, best_models, request$id)
 predictions <- sp$ml$predict(model$name, predictor_values)
 }
 }
+\seealso{
+Related classes:
+\itemize{
+\item \link{ServiceProvider} for accessing the ML service via \code{sp$ml}
+\item \link{MLModel} for model configuration
+\item \link{MLTrainingOptions} for training configuration
+\item \link{MLTrainingContext} for training context definitions
+\item \link{MLTrainingFeature} for feature definitions
+\item \link{MLTrainingOutcome} for outcome metric definitions
+\item \link{MLTrainingResult} and \link{MLTrainingResults} for training results
+\item \link{DataServices} for loading training data
+\item \link{RepositoryService} for managing ML models
+}
+
+Vignettes:
+\itemize{
+\item \code{vignette("machine-learning")} for comprehensive ML guide
+\item \code{vignette("getting-started")} for basic usage
+}
+}
 \section{Super class}{
 \code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{MlTrainingService}
 }
@@ -65,8 +85,8 @@ predictions <- sp$ml$predict(model$name, predictor_values)
 \if{latex}{\out{\hypertarget{method-MlTrainingService-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new MlTrainingService instance. This is done by
-the ServiceProvider automatically. The service uses the singleton
-AuthContext for authentication.
+the \link{ServiceProvider} automatically. The service uses the singleton
+\link{AuthContext} for authentication.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MlTrainingService$new()}\if{html}{\out{</div>}}
 }
@@ -84,7 +104,7 @@ Train machine learning models.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{model}}{An MLModel object with configured training options.}
+\item{\code{model}}{An \link{MLModel} object with configured training options.}
 }
 \if{html}{\out{</div>}}
 }
@@ -144,8 +164,7 @@ Save the selected model.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{model}}{The MLModel object to update and save. This should be an
-instance of MLModel.}
+\item{\code{model}}{The \link{MLModel} object to update and save.}
 
 \item{\code{best_models}}{A list of best model results, typically from
 MLTrainingResults$get_best_models().

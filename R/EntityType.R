@@ -9,11 +9,16 @@ library("R6")
 #' @field name The name of the entity type.
 #' @field image The image of the entity type represented as string.
 #'
+#' @seealso
+#' * [Entity] for entity definitions
+#' * [RepositoryService] for loading entity types
+#' * `vignette("repository-service")` for examples
+#'
 #' @examples
 #' \dontrun{
 #' EntityType$new(name = "Section")
 #'}
-EntityType <- R6Class("EntityType",
+EntityType <- R6Class("EntityType", # nolint: object_name_linter
   public = list(
     name = NULL,
     image = NULL,

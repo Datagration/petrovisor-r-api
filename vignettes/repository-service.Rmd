@@ -1,0 +1,678 @@
+---
+title: "Managing Items with Repository Service"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Managing Items with Repository Service}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(Myrconn.PetroVisor.Client)
+```
+
+# Overview
+
+The `RepositoryService` provides access to PetroVisor's repository of items, including entities, signals, units, hierarchies, and more. This service allows you to list, load, create, update, and delete these items.
+
+# Setup
+
+Create a service provider to access the repository service:
+
+```{r service-provider}
+sp <- ServiceProvider$new(
+  url = "https://identity.us1.petrovisor.com",
+  workspace = "YourWorkspace",
+  user = "your_username",
+  password = "your_password"
+)
+
+# The repository service is accessible via sp$items
+```
+
+# Core Operations
+
+The repository service provides four main operations for all item types:
+
+1. **`load_names(type)`**: Get a list of all item names
+2. **`load(type, name)`**: Retrieve a specific item by name
+3. **`save(type, object)`**: Create or update an item
+4. **`delete(type, name)`**: Remove an item by name
+
+These are the **only** methods available - there are no filtering or search methods.
+
+## Loading Item Names
+
+Get all names for a specific item type:
+
+```{r load-names}
+# Load all entity names
+entity_names <- sp$items$load_names("Entity")
+
+# Load all signal names
+signal_names <- sp$items$load_names("Signal")
+
+# Load all unit names
+unit_names <- sp$items$load_names("Unit")
+
+# Load all hierarchy names
+hierarchy_names <- sp$items$load_names("Hierarchy")
+```
+
+## Loading Specific Items
+
+Load a specific item by name:
+
+```{r load-item}
+# Load a specific entity
+well <- sp$items$load("Entity", "Well-001")
+
+# Load a specific signal
+oil_rate_signal <- sp$items$load("Signal", "Oil Rate")
+
+# Load a specific unit
+unit <- sp$items$load("Unit", "bbl/d")
+```
+
+## Saving Items
+
+Create or update items:
+
+```{r save-item}
+# Create a new entity
+new_well <- Entity$new(
+  name = "Well-123",
+  entity_type_name = "Well",
+  alias = "Production Well 123",
+  is_opportunity = FALSE
+)
+
+# Save the entity (creates or updates)
+result <- sp$items$save("Entity", new_well)
+
+# Check result
+if (result$status_code == 201) {
+  cat("Entity created successfully\n")
+}
+```
+
+## Deleting Items
+
+Remove items by name:
+
+```{r delete-item}
+# Delete an entity
+result <- sp$items$delete("Entity", "Well-123")
+
+# Check result
+if (result$status_code == 200) {
+  cat("Entity deleted successfully\n")
+}
+
+# Trying to load deleted item will error
+# sp$items$load("Entity", "Well-123")  # This will throw an error
+```
+
+# Working with Entities
+
+Entities are the primary objects in PetroVisor (wells, fields, reservoirs, etc.).
+
+## Creating Entities
+
+```{r create-entity}
+# Create a new well entity
+well <- Entity$new(
+  name = "Well-456",
+  entity_type_name = "Well",
+  alias = "Injection Well 456",
+  is_opportunity = FALSE
+)
+
+# Save to PetroVisor
+result <- sp$items$save("Entity", well)
+```
+
+## Loading Entities
+
+```{r load-entities}
+# Get all entity names
+all_entities <- sp$items$load_names("Entity")
+
+# Load a specific entity
+well <- sp$items$load("Entity", "Well-001")
+
+# Access entity properties
+cat("Name:", well$name, "\n")
+cat("Type:", well$entity_type_name, "\n")
+cat("Alias:", well$alias, "\n")
+```
+
+## Updating Entities
+
+```{r update-entity}
+# Load existing entity
+well <- sp$items$load("Entity", "Well-456")
+
+# Modify properties
+well$alias <- "Updated Alias"
+
+# Save changes (same save method)
+result <- sp$items$save("Entity", well)
+```
+
+## Filtering Entities (Manual)
+
+Since there's no `load_by_filter()` method, you need to filter manually:
+
+```{r filter-entities}
+# Get all entity names
+all_entities <- sp$items$load_names("Entity")
+
+# Filter by pattern (e.g., wells starting with "PROD-")
+production_wells <- all_entities[grepl("^PROD-", all_entities)]
+
+# Filter to specific names
+specific_wells <-
+  all_entities[all_entities %in% c("Well-001", "Well-002", "Well-003")]
+
+# Load filtered entities
+well_objects <- lapply(production_wells, function(name) {
+  sp$items$load("Entity", name)
+})
+```
+
+# Working with Entity Types
+
+Entity types define categories of entities (Well, Field, Reservoir, etc.).
+
+## Loading Entity Types
+
+```{r entity-types}
+# Get all entity type names
+entity_type_names <- sp$items$load_names("EntityType")
+
+# Load a specific entity type
+well_type <- sp$items$load("EntityType", "Well")
+
+# Access properties
+cat("Name:", well_type$name, "\n")
+```
+
+## Creating Custom Entity Types
+
+```{r create-entity-type}
+# Create a new entity type
+custom_type <- EntityType$new(
+  name = "CustomAsset",
+  image = "default"  # Or base64 encoded image
+)
+
+# Save entity type
+result <- sp$items$save("EntityType", custom_type)
+```
+
+# Working with Signals
+
+Signals represent measured or calculated values in PetroVisor. **Creating signals requires ALL fields.**
+
+## Loading Signals
+
+```{r load-signals}
+# Get all signal names
+all_signals <- sp$items$load_names("Signal")
+
+# Load a specific signal
+oil_rate <- sp$items$load("Signal", "Oil Rate")
+
+# Access signal properties
+cat("Name:", oil_rate$name, "\n")
+cat("Storage Unit:", oil_rate$storage_unit_name, "\n")
+cat("Signal Type:", oil_rate$signal_type, "\n")
+```
+
+## Creating Signals
+
+Signals require **all** of these fields:
+
+```{r create-signal}
+# Create a comprehensive signal definition
+new_signal <- Signal$new(
+  name = "Custom Production Rate",
+  short_name = "cpr",
+  measurement_name = "VolumetricFlowRate",
+  storage_unit_name = "bbl/d",
+  aggregation_type = "Sum",
+  container_aggregation_type = "Sum",
+  signal_type = "TimeDependent",
+  default_color = 0,
+  default_line_type = "Solid",
+  setting_name = NULL,
+  labels = list(),
+  description = "Custom calculated production rate"
+)
+
+# Save signal
+result <- sp$items$save("Signal", new_signal)
+```
+
+## Signal Types
+
+Different signal types for different data:
+
+- `"Static"`: Entity-level data that doesn't change
+- `"TimeDependent"`: Numeric data varying over time
+- `"StringTimeDependent"`: Text data varying over time
+- `"DepthDependent"`: Numeric data varying with depth
+- `"StringDepthDependent"`: Text data varying with depth
+- `"PVT"`: Pressure-Volume-Temperature dependent data
+
+## Signal Properties Reference
+
+- **name**: Signal identifier (required)
+- **short_name**: Abbreviated name (required)
+- **measurement_name**: Type of measurement (e.g., "Length", "Volume", "Dimensionless") (required)
+- **storage_unit_name**: Unit for storage (e.g., "m", "m3", " ") (required)
+- **aggregation_type**: How to aggregate (e.g., "Sum", "Average") (required)
+- **container_aggregation_type**: Container aggregation (required)
+- **signal_type**: Type of signal (see above) (required)
+- **default_color**: Numeric color code (required)
+- **default_line_type**: Line style (e.g., "Solid", "Dash") (required)
+- **setting_name**: Optional setting reference (can be NULL)
+- **labels**: List of labels (can be empty list)
+- **description**: Description text (required)
+
+# Working with Units
+
+Units define measurement systems in PetroVisor.
+
+## Loading Units
+
+```{r load-units}
+# Get all unit names
+all_units <- sp$items$load_names("Unit")
+
+# Load a specific unit
+bbl_d <- sp$items$load("Unit", "bbl/d")
+
+# Access unit properties
+cat("Name:", bbl_d$name, "\n")
+cat("Measurement:", bbl_d$unit_measurement_name, "\n")
+```
+
+## Unit Measurements
+
+Units belong to unit measurements:
+
+```{r unit-measurements}
+# Load all unit measurement names
+measurements <- sp$items$load_names("UnitMeasurement")
+
+# Load a specific measurement
+flow_rate <- sp$items$load("UnitMeasurement", "VolumetricFlowRate")
+
+# See all units in this measurement
+cat("Units:", paste(flow_rate$unit_names, collapse = ", "), "\n")
+```
+
+# Working with Reference Tables
+
+Reference tables define structured data schemas.
+
+## Creating Reference Tables
+
+```{r create-ref-table}
+# Define columns
+key_column <- ReferenceTableColumn$new(
+  name = "ID",
+  column_type = "Numeric",
+  unit_name = " "
+)
+
+name_column <- ReferenceTableColumn$new(
+  name = "Name",
+  column_type = "String",
+  unit_name = " "
+)
+
+value_column <- ReferenceTableColumn$new(
+  name = "Value",
+  column_type = "Numeric",
+  unit_name = "m3"
+)
+
+# Create reference table
+ref_table <- ReferenceTable$new(
+  name = "Parameters",
+  description = "Parameter lookup table",
+  key = key_column,
+  values = list(name_column, value_column)
+)
+
+# Save reference table definition
+result <- sp$items$save("ReferenceTable", ref_table)
+```
+
+## Loading Reference Tables
+
+```{r load-ref-tables}
+# Get all reference table names
+ref_table_names <- sp$items$load_names("ReferenceTable")
+
+# Load a specific reference table definition
+ref_table <- sp$items$load("ReferenceTable", "Parameters")
+```
+
+# Working with Pivot Tables
+
+Pivot tables define pre-aggregated summary tables.
+
+## Creating Pivot Tables
+
+```{r create-pivot}
+# Create a pivot table definition
+pivot_table <- PivotTable$new(
+  name = "Monthly Production Summary",
+  add_entity_alias_column = TRUE,
+  add_entity_type_column = TRUE,
+  scope_formula = 'Scope "Monthly"
+\tBetween #01/01/2024#
+\tAnd #12/31/2024#
+\tStep Monthly
+End Scope',
+  entity_set_formula = 'Entity Set "Production Wells"
+\t"Well-001"
+\t"Well-002"
+End Set',
+  table_formula = 'Table "Production"
+\tColumn "Oil" in "bbl/d"
+\t\t"Oil Rate" in "bbl/d"
+\tEnd Column
+End Table',
+  skip_empty_rows = TRUE,
+  add_is_opportunity_column = FALSE,
+  append_data = FALSE,
+  description = "Monthly production summary"
+)
+
+# Save pivot table definition
+result <- sp$items$save("PivotTable", pivot_table)
+```
+
+## Loading Pivot Tables
+
+```{r load-pivot}
+# Get all pivot table names
+pivot_names <- sp$items$load_names("PivotTable")
+
+# Load a specific pivot table definition
+pivot <- sp$items$load("PivotTable", "Monthly Production Summary")
+```
+
+# Advanced Operations
+
+## Batch Loading
+
+Load multiple items efficiently:
+
+```{r batch-load}
+# Get all entity names
+entity_names <- sp$items$load_names("Entity")
+
+# Load first 10 entities
+entities <- lapply(entity_names[1:10], function(name) {
+  sp$items$load("Entity", name)
+})
+
+# Extract information
+entity_info <- do.call(rbind, lapply(entities, function(e) {
+  data.frame(
+    name = e$name,
+    type = e$entity_type_name,
+    alias = if (is.null(e$alias)) NA else e$alias,
+    stringsAsFactors = FALSE
+  )
+}))
+
+print(entity_info)
+```
+
+## Searching and Filtering
+
+Manual filtering using R:
+
+```{r filtering}
+# Load all entity names
+all_entities <- sp$items$load_names("Entity")
+
+# Filter by pattern
+wells <- all_entities[grepl("^Well-", all_entities)]
+fields <- all_entities[grepl("Field", all_entities)]
+
+# Filter by multiple patterns
+production_assets <- all_entities[grepl("PROD|Well", all_entities)]
+
+# Case-insensitive search
+search_term <- "test"
+matching_entities <-
+  all_entities[grepl(search_term, all_entities, ignore.case = TRUE)]
+```
+
+## Exporting Repository Structure
+
+```{r export-structure}
+# Function to export entity structure
+export_entities <- function(sp) {
+  # Get all entities
+  entity_names <- sp$items$load_names("Entity")
+
+  # Load all entities
+  entities <- lapply(entity_names, function(name) {
+    tryCatch({
+      sp$items$load("Entity", name)
+    }, error = function(e) {
+      NULL
+    })
+  })
+
+  # Remove NULLs (failed loads)
+  entities <- entities[!sapply(entities, is.null)]
+
+  # Convert to data frame
+  entity_df <- do.call(rbind, lapply(entities, function(e) {
+    data.frame(
+      name = e$name,
+      type = e$entity_type_name,
+      alias = if (is.null(e$alias)) "" else e$alias,
+      is_opportunity = e$is_opportunity,
+      stringsAsFactors = FALSE
+    )
+  }))
+
+  return(entity_df)
+}
+
+# Export to CSV
+entity_export <- export_entities(sp)
+write.csv(entity_export, "entities.csv", row.names = FALSE)
+```
+
+## Bulk Creation
+
+```{r bulk-create}
+# Create multiple entities from a data frame
+entity_data <- data.frame(
+  name = c("Well-201", "Well-202", "Well-203"),
+  type = c("Well", "Well", "Well"),
+  alias = c("Producer 201", "Producer 202", "Injector 203"),
+  stringsAsFactors = FALSE
+)
+
+# Create and save entities
+for (i in 1:nrow(entity_data)) {
+  entity <- Entity$new(
+    name = entity_data$name[i],
+    entity_type_name = entity_data$type[i],
+    alias = entity_data$alias[i],
+    is_opportunity = FALSE
+  )
+
+  result <- sp$items$save("Entity", entity)
+
+  if (result$status_code == 201) {
+    cat("Created:", entity_data$name[i], "\n")
+  }
+}
+```
+
+# Best Practices
+
+## 1. Check Before Deleting
+
+```{r best-delete}
+# Check if item exists before deleting
+item_names <- sp$items$load_names("Entity")
+
+if ("Well-123" %in% item_names) {
+  sp$items$delete("Entity", "Well-123")
+  cat("Deleted Well-123\n")
+} else {
+  cat("Well-123 not found\n")
+}
+```
+
+## 2. Handle Errors Gracefully
+
+```{r best-errors}
+# Wrap operations in tryCatch
+result <- tryCatch({
+  entity <- sp$items$load("Entity", "NonExistent")
+  entity
+}, error = function(e) {
+  cat("Error loading entity:", e$message, "\n")
+  return(NULL)
+})
+
+if (!is.null(result)) {
+  # Process entity
+  cat("Loaded:", result$name, "\n")
+}
+```
+
+## 3. Validate Before Saving
+
+```{r best-validate}
+# Validate entity before saving
+create_validated_entity <- function(name, type, alias) {
+  # Check name
+  if (is.null(name) || name == "") {
+    stop("Entity name cannot be empty")
+  }
+
+  # Check type exists
+  types <- sp$items$load_names("EntityType")
+  if (!(type %in% types)) {
+    stop("Invalid entity type: ", type)
+  }
+
+  # Create entity
+  entity <- Entity$new(
+    name = name,
+    entity_type_name = type,
+    alias = alias,
+    is_opportunity = FALSE
+  )
+
+  return(entity)
+}
+
+# Use validation
+entity <- create_validated_entity("Well-999", "Well", "Test Well")
+result <- sp$items$save("Entity", entity)
+```
+
+## 4. Use Consistent Naming
+
+```{r best-naming}
+# Follow naming conventions
+# Good examples:
+# - "Well-001", "Well-002" (consistent numbering)
+# - "Field-North", "Field-South" (descriptive)
+
+# Create with naming function
+create_well_entity <- function(number, area) {
+  name <- sprintf("Well-%s-%03d", area, number)
+  alias <- sprintf("%s Area Well %d", area, number)
+
+  Entity$new(
+    name = name,
+    entity_type_name = "Well",
+    alias = alias,
+    is_opportunity = FALSE
+  )
+}
+
+# Use consistent naming
+well <- create_well_entity(1, "North")
+result <- sp$items$save("Entity", well)
+```
+
+# Item Type Reference
+
+Common item types you can work with:
+
+- **Entity**: Wells, fields, reservoirs, etc.
+- **EntityType**: Categories of entities
+- **Signal**: Measured or calculated values
+- **Unit**: Measurement units
+- **UnitMeasurement**: Unit categories
+- **Hierarchy**: Tree structures
+- **ReferenceTable**: Structured tables
+- **PivotTable**: Pre-aggregated tables
+- **Scenario**: Data versions
+- **Scope**: Entity and signal selections
+- **Tag**: Metadata tags
+- **MLModel**: Machine learning models
+- **RScript**: R scripts
+- **Workflow**: Automated processes
+
+# Important Notes
+
+## No Search or Filter Methods
+
+The repository service does **NOT** have these methods:
+- ❌ `load_by_filter()`
+- ❌ `load_by_name()` (use `load()` instead)
+- ❌ `search()`
+- ❌ `find()`
+
+You must use `load_names()` to get all names, then filter in R.
+
+## Signal Requirements
+
+When creating signals, you **must** provide all 13 required fields. Missing any field will cause an error.
+
+## Case Sensitivity
+
+Item names are case-sensitive. "Well-001" and "well-001" are different items.
+
+# Next Steps
+
+- **[Working with Data](working-with-data.html)**: Load and save data using repository items
+- **[Machine Learning](machine-learning.html)**: Use entities and signals in ML models
+- **[Getting Started](getting-started.html)**: Package overview
+
+# See Also
+
+- `?RepositoryService`: Complete repository service documentation
+- `?Entity`: Entity class documentation
+- `?Signal`: Signal class documentation
+- `?ServiceProvider`: Service provider documentation
+- Test files in `tests/testthat/test_entity.R` and `tests/testthat/test_signal.R` for examples

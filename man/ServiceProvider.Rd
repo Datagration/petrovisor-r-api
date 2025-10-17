@@ -44,6 +44,32 @@ sp <- ServiceProvider$new(
   )
 }
 }
+\seealso{
+Service classes for interacting with PetroVisor:
+\itemize{
+\item \link{AuthenticationService} for authentication methods
+\item \link{DataServices} for loading and saving data
+\item \link{RepositoryService} for managing items (entities, signals, units, etc.)
+\item \link{LoggingService} for logging operations
+\item \link{FileService} for file operations
+\item \link{MlTrainingService} for machine learning
+\item \link{TagEntriesService} for tag entry operations
+}
+
+Authentication helpers:
+\itemize{
+\item \code{\link[=get_auth_context]{get_auth_context()}} for accessing the authentication context
+\item \code{\link[=with_auth_context]{with_auth_context()}} for executing code with specific auth context
+\item \code{\link[=require_authentication]{require_authentication()}} for ensuring authentication
+}
+
+Vignettes:
+\itemize{
+\item \code{vignette("getting-started")} for an introduction to the package
+\item \code{vignette("authentication")} for authentication details
+\item \code{vignette("working-with-data")} for data operations
+}
+}
 \section{Super class}{
 \code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{ServiceProvider}
 }

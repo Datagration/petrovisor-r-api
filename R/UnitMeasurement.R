@@ -9,11 +9,16 @@ library("R6")
 #' @field name The name of the unit measurement.
 #' @field canonical_unit_name The name of the unit measurement's canonical unit.
 #'
+#' @seealso
+#' * [Unit] for unit definitions
+#' * [Signal] for signal definitions using measurements
+#' * [RepositoryService] for loading unit measurements
+#'
 #' @examples
 #' \dontrun{
 #' UnitMeasurement$new(name = "Length", canonical_unit_name = "m")
 #'}
-UnitMeasurement <- R6Class("UnitMeasurement",
+UnitMeasurement <- R6Class("UnitMeasurement", # nolint: object_name_linter
   public = list(
     name = NULL,
     canonical_unit_name = NULL,

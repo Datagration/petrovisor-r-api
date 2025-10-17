@@ -8,7 +8,8 @@ Provides methods for authenticating with the PetroVisor API.
 }
 \details{
 This class includes methods to obtain access tokens using various
-authentication mechanisms such as API keys, user credentials, and refresh tokens.
+authentication mechanisms such as API keys, user credentials, and refresh
+tokens.
 }
 \examples{
 \dontrun{
@@ -33,5 +34,25 @@ token <- auth_service$get_access_token(
   refresh_token = "your_refresh_token",
   discovery_url = "https://example.com"
 )
+}
+}
+\seealso{
+Related classes:
+\itemize{
+\item \link{ServiceProvider} for using tokens with the service provider
+\item \link{AuthContext} for managing authentication context
+}
+
+Authentication helpers:
+\itemize{
+\item \code{\link[=get_auth_context]{get_auth_context()}} for accessing the global authentication context
+\item \code{\link[=with_auth_context]{with_auth_context()}} for executing code with specific authentication
+\item \code{\link[=require_authentication]{require_authentication()}} for ensuring authentication is present
+}
+
+Vignettes:
+\itemize{
+\item \code{vignette("authentication")} for comprehensive authentication guide
+\item \code{vignette("getting-started")} for basic setup and usage
 }
 }

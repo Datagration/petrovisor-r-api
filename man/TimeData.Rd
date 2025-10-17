@@ -8,7 +8,7 @@ Class representing time-dependent data.
 }
 \examples{
 \dontrun{
-TimeData$new(singal_name = "produced oil per time increment",
+TimeData$new(signal_name = "produced oil per time increment",
              entity_name = "Well01",
              unit_name = "m3",
              data = list(list(Date = "2020-01-01T00:00:00.000Z",

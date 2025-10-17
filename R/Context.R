@@ -7,10 +7,10 @@ library("R6")
 #' @export Context
 #'
 #' @field name The name of the context.
-#' @field entity_set The context's entity set (object of class EntitySet).
-#' @field scope The context's scope (object of class Scope).
-#' @field hierarchy (Optional) The hierarchy used for automatic aggregation
-#'   (Object of type Hierarchy).
+#' @field entity_set The context's [EntitySet] defining which entities to
+#'   include.
+#' @field scope The context's [Scope] defining the time or depth range.
+#' @field hierarchy (Optional) The [Hierarchy] used for automatic aggregation.
 #' @field loading_scenario_name (Optional) The name of the loading scenario.
 #' @field saving_scenario_name (Optional) The name of the saving scenario.
 #' @field scenario_data_only (Optional) Whether to load data from the specified
@@ -19,6 +19,15 @@ library("R6")
 #' @field formula The context's definition as string (P# syntax).
 #' @field description The description of the item.
 #' @field labels A list of strings holding the labels of the context.
+#'
+#' @seealso
+#' * [Scope] for scope definitions
+#' * [EntitySet] for entity set definitions
+#' * [Hierarchy] for hierarchy definitions
+#' * [RepositoryService] for loading and saving contexts
+#' * [DataServices] for using contexts in data queries
+#' * `vignette("working-with-data")` for data examples
+#'
 #' @examples
 #' \dontrun{
 #' Context$new(name = "MyContext",
@@ -34,7 +43,7 @@ library("R6")
 #'                             end = "2020-03-01T00:00:00.000Z",
 #'                             time_increment = "Daily"))
 #' }
-Context <- R6Class("Context",
+Context <- R6Class("Context", # nolint: object_name_linter
   public = list(
     name = NULL,
     entity_set = NULL,
@@ -50,10 +59,11 @@ Context <- R6Class("Context",
     #' @description Create a new Context instance.
     #'
     #' @param name The name of the context.
-    #' @param entity_set The context's entity set (object of class EntitySet).
-    #' @param scope The context's scope (object of class Scope).
-    #' @param hierarchy (Optional) The hierarchy used for automatic aggregation
-    #'   (Object of type Hierarchy).
+    #' @param entity_set The context's [EntitySet] defining which entities to
+    #'   include.
+    #' @param scope The context's [Scope] defining the time or depth range.
+    #' @param hierarchy (Optional) The [Hierarchy] used for automatic
+    #'   aggregation.
     #' @param loading_scenario_name (Optional) The name of the loading scenario.
     #' @param saving_scenario_name (Optional) The name of the saving scenario.
     #' @param scenario_data_only (Optional) Whether to load data from the
@@ -85,7 +95,7 @@ Context <- R6Class("Context",
     },
 
     #' @details Convert the object to a list. This function is mainly used
-    #' by the RepositoryService to convert the objects to lists and then
+    #' by the [RepositoryService] to convert the objects to lists and then
     #' call the web API.
     toList = function() {
       dl <- list(

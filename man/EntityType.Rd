@@ -11,6 +11,13 @@ Class representing a PetroVisor entityType object.
 EntityType$new(name = "Section")
 }
 }
+\seealso{
+\itemize{
+\item \link{Entity} for entity definitions
+\item \link{RepositoryService} for loading entity types
+\item \code{vignette("repository-service")} for examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

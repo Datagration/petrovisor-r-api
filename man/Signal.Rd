@@ -14,12 +14,21 @@ Signal$new(name = "my signal",
            storage_unit_name = "m",
            aggregation_type = "Average",
            container_aggregation_type = "Sum",
-           signal_type = "Time-dependent",
+           signal_type = "TimeDependent",
            default_color = 0,
            default_line_type = "Solid",
            setting_name = NULL,
            labels = list(),
            description = NULL)
+}
+}
+\seealso{
+\itemize{
+\item \link{DataServices} for loading and saving signal data
+\item \link{RepositoryService} for managing signal definitions
+\item \link{Unit} for working with measurement units
+\item \link{UnitMeasurement} for unit measurements
+\item \code{vignette("working-with-data")} for data examples
 }
 }
 \section{Public fields}{
@@ -31,7 +40,7 @@ Signal$new(name = "my signal",
 
 \item{\code{measurement_name}}{The signal's measurement name.}
 
-\item{\code{storage_unit_name}}{The name of the signal's storage unit.}
+\item{\code{storage_unit_name}}{The name of the signal's storage \link{Unit}.}
 
 \item{\code{aggregation_type}}{The signal's aggregation type.}
 

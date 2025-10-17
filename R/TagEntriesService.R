@@ -8,6 +8,14 @@ library("R6")
 #' @details A new instance of this class will be created by the ServiceProvider
 #' automatically.
 #'
+#' @seealso
+#' * [ServiceProvider] for accessing the tag entries service via
+#' `sp$tag_entries`
+#' * [Tag] for tag definitions
+#' * [TagEntry] for tag entry structure
+#' * [RepositoryService] for managing tags
+#' * `vignette("getting-started")` for basic usage
+#'
 #' @export TagEntriesService
 #'
 #' @examples \dontrun{
@@ -15,14 +23,14 @@ library("R6")
 #' sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 #'
 #' # get tag entries of group "Info"
-#' tagEntries <- sp$tag_entries$GetTagEntries(
-#'   TagEntriesFilter$new(TagGroup = "Info")
+#' tagEntries <- sp$tag_entries$load(
+#'   tag_group_names = list("Info")
 #' )
 #'
 #' # delete tag entries
-#' sp$tag_entries$DeleteTagEntry(
-#'   entityName = "Well01",
-#'   tagName = "Active",
+#' sp$tag_entries$delete_range(
+#'   entity_name = "Well01",
+#'   tag_name = "Active",
 #'   start = "2020-01-01T00:00:00.000Z"
 #' )
 #' }
@@ -32,7 +40,7 @@ TagEntriesService <- R6Class( # nolint: object_name_linter
   public = list(
 
     #' @description Create a new TagEntriesService instance. This is done by the
-    #' ServiceProvider automatically.
+    #' [ServiceProvider] automatically.
     #'
     #' @param url the URL for the API calls.
     #' @param token_type the type of the issued token.

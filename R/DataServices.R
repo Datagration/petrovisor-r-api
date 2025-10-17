@@ -32,6 +32,28 @@ library("R6")
 #'   \item{Pivot Tables}{Pre-aggregated summary tables.}
 #' }
 #'
+#' @seealso
+#' Related classes:
+#' * [ServiceProvider] for creating a service provider instance
+#' * [RepositoryService] for managing entities and signals
+#'
+#' Data type classes:
+#' * [StaticData] for static data structure
+#' * [TimeData] for time series data structure
+#' * [DepthData] for depth data structure
+#' * [PVTData] for PVT data structure
+#' * [ReferenceTable] for reference table structure
+#' * [PivotTable] for pivot table structure
+#'
+#' Related objects:
+#' * [Signal] for signal definitions
+#' * [Entity] for entity definitions
+#' * [Unit] for unit definitions
+#'
+#' Vignettes:
+#' * `vignette("working-with-data")` for comprehensive data operations guide
+#' * `vignette("getting-started")` for basic usage
+#'
 #' @export DataServices
 #'
 #' @examples \dontrun{
@@ -92,9 +114,9 @@ DataServices <- R6Class(  # nolint: object_name_linter
   public = list(
 
     #' @description Create a new DataServices instance. This is done by the
-    #' ServiceProvider automatically.
+    #' [ServiceProvider] automatically.
     #'
-    #' @param sp instance of the service provider
+    #' @param sp Instance of the [ServiceProvider]
     initialize = function(sp) {
       private$sp <- sp
     },
@@ -103,12 +125,12 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #' @param entities List of entities to retrieve data for. Can be:
     #'   \itemize{
     #'     \item Character vector: \code{c("Well_001", "Well_002")}
-    #'     \item List of Entity objects: \code{list(entity1, entity2)}
+    #'     \item List of [Entity] objects: \code{list(entity1, entity2)}
     #'   }
-    #' @param signals List of parsed signal objects created using
+    #' @param signals List of parsed [Signal] objects created using
     #'   \code{sp$parse_signal()}. Each signal should specify name and unit.
     #' @param scenario_names List of scenario names to load data for.
-    #' @param hierarchy_name Hierarchy used in the data retrieval process.
+    #' @param hierarchy_name [Hierarchy] used in the data retrieval process.
     #' @param top_records Number of records to return.
     #' @param include_workspace_data Whether workspace data shall be included in
     #'   the output (only applies if scenarios are used). Defaults to
@@ -138,7 +160,7 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #'   time_data <- sp$data$load(
     #'     entities = c("Well_A"),
     #'     signals = lapply(
-    #'       c("oil production [bbl/d]", "gas production [mcf/d]"),
+    #'       c("oil production [bbl/d]", "gas production [MSCF/d]"),
     #'       function(x) { sp$parse_signal(x) }
     #'     ),
     #'     time_increment = "Daily",
@@ -597,7 +619,7 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #'     data_type = "StaticNumeric",
     #'     data = static_numeric_data,
     #'     signals = lapply(
-    #'       c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+    #'       c("initial oil reserves [bbl]", "initial gas reserves [MSCF]"),
     #'       function(x) { sp$parse_signal(x) }
     #'     ),
     #'     generate_logs = TRUE,
@@ -636,7 +658,7 @@ DataServices <- R6Class(  # nolint: object_name_linter
     #'     data_type = "TimeNumeric",
     #'     data = time_numeric_data,
     #'     signals = lapply(
-    #'       c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+    #'       c("oil rate [bbl/d]", "gas rate [MSCF/d]"),
     #'       function(x) { sp$parse_signal(x) }
     #'     ),
     #'     values_time_increment = "Daily"

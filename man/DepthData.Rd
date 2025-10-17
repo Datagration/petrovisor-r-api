@@ -8,7 +8,7 @@ Class representing depth-dependent data.
 }
 \examples{
 \dontrun{
-TimeData$new(singal_name = "produced oil per depth increment",
+TimeData$new(signal_name = "produced oil per depth increment",
              entity_name = "Well01",
              unit_name = "m3",
              data = list(list(Depth = 100,

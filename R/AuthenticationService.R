@@ -4,7 +4,22 @@
 #' @description Provides methods for authenticating with the PetroVisor API.
 #'
 #' @details This class includes methods to obtain access tokens using various
-#' authentication mechanisms such as API keys, user credentials, and refresh tokens.
+#' authentication mechanisms such as API keys, user credentials, and refresh
+#' tokens.
+#'
+#' @seealso
+#' Related classes:
+#' * [ServiceProvider] for using tokens with the service provider
+#' * [AuthContext] for managing authentication context
+#'
+#' Authentication helpers:
+#' * [get_auth_context()] for accessing the global authentication context
+#' * [with_auth_context()] for executing code with specific authentication
+#' * [require_authentication()] for ensuring authentication is present
+#'
+#' Vignettes:
+#' * `vignette("authentication")` for comprehensive authentication guide
+#' * `vignette("getting-started")` for basic setup and usage
 #'
 #' @export
 #'
@@ -37,7 +52,7 @@ library(httr)
 library(jsonlite)
 library(base64enc)
 
-AuthenticationService <- R6::R6Class("AuthenticationService",
+AuthenticationService <- R6::R6Class("AuthenticationService", # nolint: object_name_linter
   public = list(
 
     # Method to get access token

@@ -13,6 +13,15 @@ library("R6")
 #'
 #' @export AuthContext
 #'
+#' @seealso
+#' * [ServiceProvider] for creating authenticated sessions
+#' * [AuthenticationService] for authentication methods
+#' * [get_auth_context()] for accessing the singleton instance
+#' * [with_auth_context()] for executing code with authentication
+#' * [require_authentication()] for checking authentication status
+#' * `vignette("authentication")` for authentication examples
+#' * `vignette("getting-started")` for setup guide
+#'
 #' @examples
 #' \dontrun{
 #' # Get the singleton instance

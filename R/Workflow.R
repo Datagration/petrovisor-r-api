@@ -16,6 +16,15 @@ library("R6")
 #'   favorite item, and thus shown in the favorites tab on the home module in
 #'   PetroVisor. Defaults to \code{FALSE}.
 #' @field labels A list of strings holding the labels of the workflow.
+#'
+#' @seealso
+#' * [RepositoryService] for loading and saving workflows
+#' * [WorkflowActivity] for workflow activity definitions
+#' * [RWorkflowActivity] for R-based workflow activities
+#' * [CustomWorkflowActivity] for custom activities
+#' * [WorkflowSchedule] for scheduling workflows
+#' * `vignette("repository-service")` for workflow examples
+#'
 #' @examples
 #' \dontrun{
 #' Workflow$new()

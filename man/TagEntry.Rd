@@ -17,12 +17,20 @@ TagEntry$new(entity_name = "Well 01" ,
              start = "2020-02-01T00:00:00.000Z")
 }
 }
+\seealso{
+\itemize{
+\item \link{Tag} for tag definitions
+\item \link{TagEntriesService} for loading and saving tag entries
+\item \link{Entity} for entity definitions
+\item \link{RepositoryService} for repository operations
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{tag_name}}{The name of the tag.}
+\item{\code{tag_name}}{The name of the \link{Tag}.}
 
-\item{\code{entity_name}}{The name of the tagged entity.}
+\item{\code{entity_name}}{The name of the tagged \link{Entity}.}
 
 \item{\code{start}}{The start date of the tag entry.}
 
@@ -50,9 +58,9 @@ Create a new TagEntry instance.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tag_name}}{The name of the tag.}
+\item{\code{tag_name}}{The name of the \link{Tag}.}
 
-\item{\code{entity_name}}{The name of the tagged entity.}
+\item{\code{entity_name}}{The name of the tagged \link{Entity}.}
 
 \item{\code{start}}{The start date of the tag entry.}
 

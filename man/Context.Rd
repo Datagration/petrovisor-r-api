@@ -22,17 +22,27 @@ Context$new(name = "MyContext",
                             time_increment = "Daily"))
 }
 }
+\seealso{
+\itemize{
+\item \link{Scope} for scope definitions
+\item \link{EntitySet} for entity set definitions
+\item \link{Hierarchy} for hierarchy definitions
+\item \link{RepositoryService} for loading and saving contexts
+\item \link{DataServices} for using contexts in data queries
+\item \code{vignette("working-with-data")} for data examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{name}}{The name of the context.}
 
-\item{\code{entity_set}}{The context's entity set (object of class EntitySet).}
+\item{\code{entity_set}}{The context's \link{EntitySet} defining which entities to
+include.}
 
-\item{\code{scope}}{The context's scope (object of class Scope).}
+\item{\code{scope}}{The context's \link{Scope} defining the time or depth range.}
 
-\item{\code{hierarchy}}{(Optional) The hierarchy used for automatic aggregation
-(Object of type Hierarchy).}
+\item{\code{hierarchy}}{(Optional) The \link{Hierarchy} used for automatic aggregation.}
 
 \item{\code{loading_scenario_name}}{(Optional) The name of the loading scenario.}
 
@@ -83,12 +93,13 @@ Create a new Context instance.
 \describe{
 \item{\code{name}}{The name of the context.}
 
-\item{\code{entity_set}}{The context's entity set (object of class EntitySet).}
+\item{\code{entity_set}}{The context's \link{EntitySet} defining which entities to
+include.}
 
-\item{\code{scope}}{The context's scope (object of class Scope).}
+\item{\code{scope}}{The context's \link{Scope} defining the time or depth range.}
 
-\item{\code{hierarchy}}{(Optional) The hierarchy used for automatic aggregation
-(Object of type Hierarchy).}
+\item{\code{hierarchy}}{(Optional) The \link{Hierarchy} used for automatic
+aggregation.}
 
 \item{\code{loading_scenario_name}}{(Optional) The name of the loading scenario.}
 
@@ -117,7 +128,7 @@ with workspace data.}
 
 \subsection{Details}{
 Convert the object to a list. This function is mainly used
-by the RepositoryService to convert the objects to lists and then
+by the \link{RepositoryService} to convert the objects to lists and then
 call the web API.
 }
 

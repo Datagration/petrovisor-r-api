@@ -21,6 +21,15 @@ library("R6")
 #' @field formula The scope's definition as string (P# syntax).
 #' @field description The description of the item.
 #' @field labels A list of strings holding the labels of the scope.
+#'
+#' @seealso
+#' * [RepositoryService] for managing scopes
+#' * [DataServices] for using scopes in data queries
+#' * [EntitySet] for entity filtering
+#' * [MLModel] for ML training context
+#' * `vignette("working-with-data")` for data examples
+#' * `vignette("machine-learning")` for ML examples
+#'
 #' @examples
 #' \dontrun{
 #' Scope$new(name = "MyScope",

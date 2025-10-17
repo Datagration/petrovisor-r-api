@@ -41,6 +41,26 @@ library("jsonlite")
 #' @field ml Instance of class \code{MlTrainingService} wrapping
 #'   all functionality related to ML model training and prediction.
 #'
+#' @seealso
+#' Service classes for interacting with PetroVisor:
+#' * [AuthenticationService] for authentication methods
+#' * [DataServices] for loading and saving data
+#' * [RepositoryService] for managing items (entities, signals, units, etc.)
+#' * [LoggingService] for logging operations
+#' * [FileService] for file operations
+#' * [MlTrainingService] for machine learning
+#' * [TagEntriesService] for tag entry operations
+#'
+#' Authentication helpers:
+#' * [get_auth_context()] for accessing the authentication context
+#' * [with_auth_context()] for executing code with specific auth context
+#' * [require_authentication()] for ensuring authentication
+#'
+#' Vignettes:
+#' * `vignette("getting-started")` for an introduction to the package
+#' * `vignette("authentication")` for authentication details
+#' * `vignette("working-with-data")` for data operations
+#'
 #' @examples
 #' \dontrun{
 #' # Create a new instance of the service provider using token

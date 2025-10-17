@@ -17,18 +17,18 @@ automatically.
 sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 
 # get available categories
-availableCategories <- sp$logs$GetAvailableCategories()
+availableCategories <- sp$logs$load_categories()
 
 # get log entries
-allLogEntries <- sp$logs$GetLogEntries()
-warnings <- sp$logs$GetLogEntries(severity = "Warning")
-signIns <- sp$logs$GetLogEntries(category = "SignIn")
+allLogEntries <- sp$logs$load()
+warnings <- sp$logs$load(severities = "Warning")
+signIns <- sp$logs$load(categories = "SignIn")
 
 # add log entry
 entry <- LogEntry$new(message = "Test",
                       category = "Tag",
                       severity = "Information")
-sp$logs$AddLogEntry(entry)
+sp$logs$save(list(entry))
 
 # add several log entries at once
 entry1 <- LogEntry$new(message = "Test1",
@@ -37,10 +37,17 @@ entry1 <- LogEntry$new(message = "Test1",
 entry2 <- LogEntry$new(message = "Test2",
                        category = "Tag",
                        severity = "Information")
-sp$logs$AddLogEntries(list(entry1, entry2))
+sp$logs$save(list(entry1, entry2))
 
 # remove all log entries
-sp$logs$CleanUpLogEntries()
+sp$logs$delete(days_to_keep = 0)
+}
+}
+\seealso{
+\itemize{
+\item \link{ServiceProvider} for accessing the logging service via \code{sp$logs}
+\item \link{LogEntry} for log entry structure
+\item \code{vignette("getting-started")} for basic usage
 }
 }
 \section{Super class}{
@@ -62,7 +69,7 @@ sp$logs$CleanUpLogEntries()
 \if{latex}{\out{\hypertarget{method-LoggingService-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new LoggingService instance. This is done by
-the ServiceProvider automatically.
+the \link{ServiceProvider} automatically.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LoggingService$new()}\if{html}{\out{</div>}}
 }

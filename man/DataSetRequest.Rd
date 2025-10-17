@@ -4,23 +4,42 @@
 \alias{DataSetRequest}
 \title{DataSetRequest}
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Class representing a PetroVisor dataset request object.
+
+\strong{This class is deprecated and no longer used.} It was originally designed
+for use with DataServices but was never integrated into the actual
+implementation. DataServices uses direct parameter passing instead.
+
+This class is retained only for backwards compatibility and may be removed
+in a future version.
 }
 \examples{
 \dontrun{
+# DEPRECATED: This class is not used by DataServices
 DataSetRequest$new(entityName = "Well01",
                    signalName = "surface x-coordinate",
                    unitName = "m")
 }
 }
+\seealso{
+\itemize{
+\item \link{DataServices} for loading data (does not use DataSetRequest)
+\item \link{Entity} for entity definitions
+\item \link{Signal} for signal definitions
+\item \link{Unit} for unit definitions
+\item \code{vignette("working-with-data")} for data loading examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{entityName}}{The name of the entity for which data is requested.}
+\item{\code{entityName}}{The name of the \link{Entity} for which data is requested.}
 
-\item{\code{signalName}}{The name of the requested signal.}
+\item{\code{signalName}}{The name of the requested \link{Signal}.}
 
-\item{\code{unitName}}{The name of the unit the data is requested in.}
+\item{\code{unitName}}{The name of the \link{Unit} the data is requested in.}
 }
 \if{html}{\out{</div>}}
 }
@@ -36,7 +55,12 @@ DataSetRequest$new(entityName = "Well01",
 \if{html}{\out{<a id="method-DataSetRequest-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DataSetRequest-new}{}}}
 \subsection{Method \code{new()}}{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Create a new DataSetRequest instance.
+
+\strong{Deprecated:} This class is not used by DataServices and will be
+removed in a future version.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataSetRequest$new(entityName = NULL, signalName = NULL, unitName = NULL)}\if{html}{\out{</div>}}
 }
@@ -44,11 +68,11 @@ Create a new DataSetRequest instance.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{entityName}}{The name of the entity for which data is requested.}
+\item{\code{entityName}}{The name of the \link{Entity} for which data is requested.}
 
-\item{\code{signalName}}{The name of the requested signal.}
+\item{\code{signalName}}{The name of the requested \link{Signal}.}
 
-\item{\code{unitName}}{The name of the unit the data is requested in.}
+\item{\code{unitName}}{The name of the \link{Unit} the data is requested in.}
 }
 \if{html}{\out{</div>}}
 }
@@ -57,9 +81,13 @@ Create a new DataSetRequest instance.
 \if{html}{\out{<a id="method-DataSetRequest-toList"></a>}}
 \if{latex}{\out{\hypertarget{method-DataSetRequest-toList}{}}}
 \subsection{Method \code{toList()}}{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
 Convert the object to a list. This function is mainly used
-by the DataServices to convert the objects to lists and then
+by \link{DataServices} to convert the objects to lists and then
 call the web API.
+
+\strong{Deprecated:} This method is not used by DataServices.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataSetRequest$toList()}\if{html}{\out{</div>}}
 }
