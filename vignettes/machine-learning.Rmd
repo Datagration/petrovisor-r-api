@@ -1,0 +1,698 @@
+---
+title: "Machine Learning with PetroVisor"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Machine Learning with PetroVisor}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(Myrconn.PetroVisor.Client)
+```
+
+# Overview
+
+The `MlTrainingService` provides machine learning capabilities within PetroVisor. You can train models, make predictions, and manage ML workflows directly from R. This guide covers the complete ML workflow with tested examples.
+
+# Setup
+
+Create a service provider to access the ML service:
+
+```{r service-provider}
+sp <- ServiceProvider$new(
+  url = "https://identity.us1.petrovisor.com",
+  workspace = "YourWorkspace",
+  user = "your_username",
+  password = "your_password"
+)
+
+# The ML service is accessible via sp$ml
+```
+
+# Machine Learning Workflow
+
+The typical ML workflow in PetroVisor:
+
+1. **Prepare Data**: Create entities and save signal data
+2. **Create Model**: Define model with table formula and label
+3. **Configure Training**: Set training options with scope and entity set
+4. **Train**: Submit training request
+5. **Monitor**: Check training status
+6. **Evaluate**: Review training results
+7. **Save**: Save the best trained model
+8. **Predict**: Use the model for predictions
+
+# Data Preparation
+
+Before training, you need entities and signals with data.
+
+## Creating Test Entities and Signals
+
+```{r prepare-data}
+# Create entities for training
+entity_names <- c()
+for (i in 1:50) {
+  entity_name <- paste0("MLTestEntity_", sprintf("%02d", i))
+  entity_names <- c(entity_names, entity_name)
+
+  entity <- Entity$new(
+    name = entity_name,
+    entity_type_name = "Well",
+    alias = paste0("MLE", sprintf("%02d", i)),
+    is_opportunity = FALSE
+  )
+
+  sp$items$save("Entity", entity)
+}
+
+# Create predictor signal (input feature)
+predictor_signal <- Signal$new(
+  name = "ml test predictor signal",
+  short_name = "mlpred",
+  measurement_name = "Length",
+  storage_unit_name = "m",
+  aggregation_type = "Sum",
+  container_aggregation_type = "Sum",
+  signal_type = "Static",
+  default_color = 3711337,
+  default_line_type = "Solid",
+  setting_name = NULL,
+  labels = list(),
+  description = "ML test predictor feature"
+)
+
+sp$items$save("Signal", predictor_signal)
+
+# Create target signal (output to predict)
+target_signal <- Signal$new(
+  name = "ml test target signal",
+  short_name = "mltarget",
+  measurement_name = "Volume",
+  storage_unit_name = "m3",
+  aggregation_type = "Sum",
+  container_aggregation_type = "Sum",
+  signal_type = "Static",
+  default_color = 16711680,
+  default_line_type = "Solid",
+  setting_name = NULL,
+  labels = list(),
+  description = "ML test target to predict"
+)
+
+sp$items$save("Signal", target_signal)
+
+# Generate correlated data
+set.seed(42)
+predictor_values <- runif(50, min = 10, max = 100)
+noise <- rnorm(50, mean = 0, sd = 5)
+target_values <- 2.5 * predictor_values + 50 + noise
+
+# Save data
+static_data <- data.frame(
+  scenario = rep("", 50),
+  entity = entity_names,
+  stringsAsFactors = FALSE
+)
+static_data[[predictor_signal$name]] <- predictor_values
+static_data[[target_signal$name]] <- target_values
+
+result <- sp$data$save_signals(
+  "StaticNumeric",
+  static_data,
+  signals = lapply(
+    c(
+      paste0(predictor_signal$name,
+             " [",
+             predictor_signal$storage_unit_name,
+             "]"),
+      paste0(target_signal$name,
+             " [",
+             target_signal$storage_unit_name,
+             "]")
+    ),
+    function(x) {
+      sp$parse_signal(x)
+    }
+  )
+)
+```
+
+# Creating and Configuring Models
+
+## Basic Model Creation
+
+```{r basic-model}
+# Create table formula - defines features and target
+table_formula <- paste0('Table "ML Training Data"
+  Column "predictor" in "', predictor_signal$storage_unit_name, '"
+    "', predictor_signal$name, '" in "', predictor_signal$storage_unit_name, '"
+  End Column
+  Column "target" in "', target_signal$storage_unit_name, '"
+    "', target_signal$name, '" in "', target_signal$storage_unit_name, '"
+  End Column
+End Table')
+
+# Create model
+model <- MLModel$new(
+  name = "Oil Rate Predictor",
+  type = "Regression",
+  table_formula = table_formula,
+  label_column_name = "target"
+)
+
+# Model is not ready to train yet - need to set training options
+```
+
+## Creating Scope and Entity Set
+
+Before setting training options, create scope and entity set:
+
+```{r create-scope-entity-set}
+# Create entity set
+entity_set <- EntitySet$new(
+  name = "ML Training Entities",
+  entities = list(),  # Can provide entity objects or leave empty
+  formula = paste0('Entity Set "ML Training Entities"
+\t"MLTestEntity_01"
+\t"MLTestEntity_02"
+\t"MLTestEntity_03"
+End Set')
+)
+
+# Create scope
+scope <- Scope$new(
+  name = "ML Training Scope",
+  start = "2024-01-01T00:00:00.000Z",
+  end = "2024-01-01T00:00:00.000Z",
+  time_increment = "Daily",
+  depth_increment = "Meter",
+  start_depth = 0,
+  end_depth = 5000,
+  formula = 'Scope "At Date"
+\tBetween #01/01/2024#
+\tAnd #01/01/2024#
+\tStep Daily
+End Scope'
+)
+```
+
+## Setting Training Options
+
+Training options must be set before other configurations:
+
+```{r set-training-options}
+# Set training options (required before other model configurations)
+model$set_training_options(
+  scope = scope,
+  entity_set = entity_set,
+  test_fraction = 0.2,           # 20% for testing
+  validation_fraction = 0.2,      # 20% for validation
+  time_to_train = 60              # Training time in seconds
+)
+```
+
+## Configuring Preprocessing
+
+After setting training options, you can configure preprocessing:
+
+```{r preprocessing}
+# Enable specific preprocessing methods
+model$set_preprocessing(
+  c("MinMax", "BoxCox", "RobustScaling"),
+  apply_pre_processors_before_training = FALSE
+)
+```
+
+## Configuring Outlier Filtering
+
+```{r outlier-filtering}
+# Set outlier filtering method
+model$set_outlier_filtering("CooksDistance")
+
+# Options: "CooksDistance", "IQR", etc.
+```
+
+## Advanced: Neural Network Options
+
+```{r neural-network}
+# Configure neural network (after setting training options)
+model$set_neural_network_options(
+  library = "TensorFlow",
+  optimizer = "Adam",
+  learning_rate = 0.001,
+  epochs = 100,
+  batch_size = 64,
+  dense_layers = 3,
+  neurons = 128
+)
+```
+
+## Advanced: Custom Training Options
+
+```{r custom-training}
+# Set custom training (e.g., GAM)
+model$set_custom_training(
+  training_type = "Gam",
+  enable_pruning = TRUE,
+  learning_rate = 0.05,
+  maximum_bin_count_per_feature = 200,
+  minimum_example_count_per_leaf = 10,
+  max_iterations = 1500
+)
+```
+
+## Saving Model Configuration
+
+```{r save-model-config}
+# Save the model configuration
+result <- sp$items$save("MLModel", model)
+
+if (result$status_code == 201) {
+  cat("Model configuration saved successfully\n")
+}
+```
+
+# Training Models
+
+## Starting Training
+
+```{r start-training}
+# Train the model
+training_request <- sp$ml$train(model)
+
+# Get request ID for monitoring
+request_id <- training_request$id
+cat("Training started with request ID:", request_id, "\n")
+```
+
+## Monitoring Training Progress
+
+```{r monitor-training}
+# Check training status
+status <- sp$ml$get_training_status(request_id)
+cat("Status:", status$status, "\n")
+
+# Status values: "Unknown", "Waiting", "Training", "Starting",
+#                "Ready", "Completed", "Failed", "Canceled", "Canceling"
+
+# Poll for completion
+wait_for_training <- function(sp, request_id, max_wait = 600, interval = 30) {
+  start_time <- Sys.time()
+
+  repeat {
+    status <- sp$ml$get_training_status(request_id)
+    cat("Status:", status$status, "\n")
+
+    if (status$status == "Ready") {
+      cat("Training completed successfully!\n")
+      break
+    }
+
+    if (status$status %in% c("Failed", "Canceled")) {
+      stop("Training failed or was canceled")
+    }
+
+    elapsed <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
+    if (elapsed > max_wait) {
+      stop("Training timed out")
+    }
+
+    Sys.sleep(interval)
+  }
+}
+
+# Wait for training to complete
+wait_for_training(sp, request_id)
+```
+
+## Getting Training Results
+
+```{r training-results}
+# Get detailed training results (after training completes)
+results <- sp$ml$get_training_results(request_id)
+
+# results is an MLTrainingResults object
+cat("Training results retrieved\n")
+```
+
+## Evaluating Results
+
+```{r evaluate-results}
+# Get best performing models
+best_models <- results$get_best_models()
+
+# Check if we have any best models
+if (length(best_models) > 0) {
+  best <- best_models[[1]]
+
+  cat("Best Model:\n")
+  cat("  Trainer:", best$trainer_name, "\n")
+
+  # Metrics are in the outcome$values list
+  if (!is.null(best$outcome) && length(best$outcome$values) > 0) {
+    cat("  Validation Metrics:\n")
+    for (metric in best$outcome$values) {
+      cat("    ", metric$name, ":", metric$value, "\n")
+    }
+  }
+
+  # Test metrics are in outcome$test_values
+  if (!is.null(best$outcome) && length(best$outcome$test_values) > 0) {
+    cat("  Test Metrics:\n")
+    for (metric in best$outcome$test_values) {
+      cat("    ", metric$name, ":", metric$value, "\n")
+    }
+  }
+}
+```
+
+## Saving the Best Model
+
+```{r save-best-model}
+# Save the best model to PetroVisor
+save_result <- sp$ml$save_best_model(
+  model = model,
+  best_models = best_models,
+  request_id = request_id,
+  rank = 1  # Save the top-ranked model
+)
+
+cat("Best model saved\n")
+```
+
+# Making Predictions
+
+## Preparing Prediction Data
+
+```{r prep-prediction}
+# Prepare input values for prediction
+# Must match the features used in training
+prediction_values <- c(15, 25, 35, 45, 55)
+```
+
+## Making Predictions
+
+```{r make-predictions}
+# Make predictions using trained model
+predictions <- sp$ml$predict(
+  model_name = model$name,
+  data = prediction_values
+)
+
+# predictions is a list where each element has:
+# - Value: predicted value
+# - Score: confidence score
+# - Probability: probability (for classification)
+
+# Extract predicted values
+predicted_values <- sapply(predictions, function(p) p$Value)
+cat("Predictions:", predicted_values, "\n")
+```
+
+## Batch Predictions
+
+```{r batch-predictions}
+# Load historical data
+historical_data <- sp$data$load_signals(
+  entities = c("MLTestEntity_01", "MLTestEntity_02"),
+  signals = list(sp$parse_signal(paste0(predictor_signal$name, " [m]"))),
+  reshape = TRUE
+)
+
+# Extract predictor values
+predictor_vals <- historical_data$StaticNumericData[[predictor_signal$name]]
+
+# Make predictions
+batch_predictions <- sp$ml$predict(
+  model_name = model$name,
+  data = predictor_vals
+)
+
+# Extract values
+predicted <- sapply(batch_predictions, function(p) p$Value)
+```
+
+# Model Management
+
+## Loading Trained Models
+
+```{r load-model}
+# Load a saved model from repository
+trained_model <- sp$items$load("MLModel", "Oil Rate Predictor")
+
+# Check if model is trained
+if (!is.null(trained_model$trained_models) &&
+      length(trained_model$trained_models) > 0) {
+  cat("Model is trained and ready for predictions\n")
+}
+```
+
+## Listing Models
+
+```{r list-models}
+# Get all ML model names
+model_names <- sp$items$load_names("MLModel")
+
+# Load and summarize models
+for (name in model_names) {
+  model <- sp$items$load("MLModel", name)
+  cat("Model:", model$name, "\n")
+  cat("  Type:", model$type, "\n")
+  cat("  Trained:", !is.null(model$trained_models) &&
+        length(model$trained_models) > 0, "\n\n")
+}
+```
+
+## Deleting Models
+
+```{r delete-model}
+# Delete a model
+sp$items$delete("MLModel", "Old Model Name")
+```
+
+# Model Types
+
+PetroVisor supports different model types:
+
+```{r model-types}
+# Regression (default)
+regression_model <- MLModel$new(
+  name = "Regression Model",
+  type = "Regression",
+  table_formula = table_formula,
+  label_column_name = "target"
+)
+
+# Binary Classification
+binary_model <- MLModel$new(
+  name = "Binary Classification Model",
+  type = "BinaryClassification",
+  table_formula = table_formula,
+  label_column_name = "category"
+)
+
+# Multiple Classification
+multi_model <- MLModel$new(
+  name = "Multi-Class Model",
+  type = "MultipleClassification",
+  table_formula = table_formula,
+  label_column_name = "class"
+)
+
+# Clustering (no label needed)
+cluster_model <- MLModel$new(
+  name = "Clustering Model",
+  type = "Clustering",
+  table_formula = table_formula
+)
+```
+
+# Complete Example
+
+Here's a complete end-to-end example:
+
+```{r complete-example}
+# 1. Create and save model configuration
+model <- MLModel$new(
+  name = "Complete Example Model",
+  type = "Regression",
+  table_formula = table_formula,
+  label_column_name = "target"
+)
+
+# 2. Configure model
+model$set_training_options(scope, entity_set,
+                           test_fraction = 0.2,
+                           validation_fraction = 0.2,
+                           time_to_train = 60)
+
+model$set_preprocessing(
+  methods = c("MinMax", "BoxCox", "RobustScaling"),
+  apply_pre_processors_before_training = FALSE
+)
+model$set_outlier_filtering("CooksDistance")
+
+# 3. Save configuration
+sp$items$save("MLModel", model)
+
+# 4. Train model
+request <- sp$ml$train(model)
+cat("Training request ID:", request$id, "\n")
+
+# 5. Wait for training
+wait_for_training(sp, request$id)
+
+# 6. Get results
+results <- sp$ml$get_training_results(request$id)
+best_models <- results$get_best_models()
+
+# 7. Save best model
+sp$ml$save_best_model(model, best_models, request$id)
+
+# 8. Make predictions
+test_values <- c(20, 40, 60, 80)
+predictions <- sp$ml$predict(model$name, test_values)
+
+# 9. Extract and use predictions
+predicted_values <- sapply(predictions, function(p) p$Value)
+cat("Predictions:", predicted_values, "\n")
+```
+
+# Best Practices
+
+## 1. Use Sufficient Training Data
+
+```{r best-data}
+# Ensure you have enough data points
+# Rule of thumb: at least 10x the number of features
+# For 5 features, aim for 50+ training examples
+```
+
+## 2. Split Data Appropriately
+
+```{r best-split}
+# Use typical splits:
+model$set_training_options(
+  scope, entity_set,
+  test_fraction = 0.2,        # 20% for testing
+  validation_fraction = 0.2,  # 20% for validation
+  time_to_train = 300         # Adequate training time
+)
+```
+
+## 3. Handle Training Errors
+
+```{r best-errors}
+# Wrap training in error handling
+training_result <- tryCatch({
+  request <- sp$ml$train(model)
+  wait_for_training(sp, request$id)
+  sp$ml$get_training_results(request$id)
+}, error = function(e) {
+  cat("Training failed:", e$message, "\n")
+  return(NULL)
+})
+
+if (!is.null(training_result)) {
+  # Process results
+  best_models <- training_result$get_best_models()
+}
+```
+
+## 4. Version Your Models
+
+```{r best-versioning}
+# Use naming conventions for model versions
+model_name <- paste0("OilRatePredictor_v", format(Sys.Date(), "%Y%m%d"))
+
+model <- MLModel$new(
+  name = model_name,
+  type = "Regression",
+  table_formula = table_formula,
+  label_column_name = "target",
+  description = paste("Trained on", Sys.Date())
+)
+```
+
+## 5. Document Models
+
+```{r best-documentation}
+# Include comprehensive descriptions
+model <- MLModel$new(
+  name = "Production Predictor v1",
+  type = "Regression",
+  table_formula = table_formula,
+  label_column_name = "target",
+  description = paste(
+    "Predicts oil production rate from pressure and temperature.",
+    "Features: Pressure, Temperature.",
+    "Training data: 2024, 50 wells.",
+    "Created:", Sys.Date()
+  )
+)
+```
+
+# Troubleshooting
+
+## Issue: "You must call set_training_options first"
+
+**Cause**: Trying to set preprocessing/custom training before training options
+
+**Solution**: Always call `set_training_options()` before other configurations
+
+```{r fix-order}
+# Correct order:
+model$set_training_options(scope, entity_set)  # First
+model$set_preprocessing(...)                    # Then other configs
+```
+
+## Issue: Training fails with insufficient data
+
+**Cause**: Not enough training examples
+
+**Solution**: Ensure sufficient data points and check data quality
+
+```{r fix-data}
+# Check data availability
+data <- sp$data$load_signals(entities, signals, reshape = TRUE)
+cat("Data points:", nrow(data$StaticNumericData), "\n")
+```
+
+## Issue: Predictions are unrealistic
+
+**Cause**: Input values outside training range
+
+**Solution**: Validate prediction inputs
+
+```{r fix-predictions}
+# Check that prediction inputs are within training data range
+training_range <- range(predictor_values, na.rm = TRUE)
+prediction_range <- range(test_values, na.rm = TRUE)
+
+if (prediction_range[1] < training_range[1] ||
+      prediction_range[2] > training_range[2]) {
+  warning("Prediction inputs outside training data range")
+}
+```
+
+# Next Steps
+
+- **[Working with Data](working-with-data.html)**: Learn about loading training data
+- **[Repository Service](repository-service.html)**: Manage ML models and related items
+- **[Getting Started](getting-started.html)**: Package overview
+
+# See Also
+
+- `?MlTrainingService`: ML training service documentation
+- `?MLModel`: ML model class documentation
+- Test files in `tests/testthat/test_machine_learning.R` and 
+  `tests/testthat/test_ml_training_service.R` for working examples

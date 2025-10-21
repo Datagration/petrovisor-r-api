@@ -14,6 +14,14 @@ Hierarchy$new(name = "MyHierarchy",
                                   Parent1 = NA))
 }
 }
+\seealso{
+\itemize{
+\item \link{RepositoryService} for loading and saving hierarchies
+\item \link{Context} for using hierarchies in data contexts
+\item \link{Entity} for entity definitions
+\item \code{vignette("repository-service")} for hierarchy examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

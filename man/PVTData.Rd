@@ -8,7 +8,7 @@ Class representing pvt data.
 }
 \examples{
 \dontrun{
-PVTData$new(singal_name = "produced oil per time increment pvt",
+PVTData$new(signal_name = "produced oil per time increment pvt",
             entity_name = "Well01",
             unit_name = "m3",
             data = list(list(Pressure = 300,

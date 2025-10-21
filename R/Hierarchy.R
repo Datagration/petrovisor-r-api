@@ -15,6 +15,13 @@ library("R6")
 #' @field time_stamp The (first) time stamp of the time dependent hierarchy.
 #' @field description The description of the item.
 #' @field labels A list of strings holding the labels of the scope.
+#'
+#' @seealso
+#' * [RepositoryService] for loading and saving hierarchies
+#' * [Context] for using hierarchies in data contexts
+#' * [Entity] for entity definitions
+#' * `vignette("repository-service")` for hierarchy examples
+#'
 #' @examples
 #' \dontrun{
 #' Hierarchy$new(name = "MyHierarchy",
@@ -22,7 +29,7 @@ library("R6")
 #'                                   Well2 = "Parent1",
 #'                                   Parent1 = NA))
 #'}
-Hierarchy <- R6Class("Hierarchy",
+Hierarchy <- R6Class("Hierarchy", # nolint: object_name_linter
   public = list(
     name = NULL,
     relationship = NULL,

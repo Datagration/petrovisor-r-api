@@ -9,7 +9,7 @@ library("R6")
 #' @field name The name of the signal.
 #' @field short_name The signal's short name.
 #' @field measurement_name The signal's measurement name.
-#' @field storage_unit_name The name of the signal's storage unit.
+#' @field storage_unit_name The name of the signal's storage [Unit].
 #' @field aggregation_type The signal's aggregation type.
 #' @field container_aggregation_type The signal's container aggregation type.
 #' @field signal_type The signal's type.
@@ -20,6 +20,13 @@ library("R6")
 #' @field labels A list of strings holding the labels of the signal.
 #' @field description The description of the signal.
 #'
+#' @seealso
+#' * [DataServices] for loading and saving signal data
+#' * [RepositoryService] for managing signal definitions
+#' * [Unit] for working with measurement units
+#' * [UnitMeasurement] for unit measurements
+#' * `vignette("working-with-data")` for data examples
+#'
 #' @examples
 #' \dontrun{
 #' Signal$new(name = "my signal",
@@ -28,14 +35,14 @@ library("R6")
 #'            storage_unit_name = "m",
 #'            aggregation_type = "Average",
 #'            container_aggregation_type = "Sum",
-#'            signal_type = "Time-dependent",
+#'            signal_type = "TimeDependent",
 #'            default_color = 0,
 #'            default_line_type = "Solid",
 #'            setting_name = NULL,
 #'            labels = list(),
 #'            description = NULL)
 #'}
-Signal <- R6Class("Signal",
+Signal <- R6Class("Signal", # nolint: object_name_linter
   public = list(
     name = NULL,
     short_name = NULL,

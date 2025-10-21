@@ -22,15 +22,44 @@ entityNames <- sp$items$load_names("Entity")
 sp$items$delete("Hierarchy", "test")
 
 # get an item by name
-well01 <- sp$items$load("Well", "Well01")
+well01 <- sp$items$load("Entity", "Well01")
 
 # add or edit an item
 entity <- Entity$new(
   name = "TestWell01",
-  entityTypeName = "Well",
+  entity_type_name = "Well",
   alias = "TestAlias01"
 )
 sp$items$save("Entity", entity)
+}
+}
+\seealso{
+Related classes:
+\itemize{
+\item \link{ServiceProvider} for creating a service provider instance
+\item \link{DataServices} for loading and saving data using repository items
+}
+
+Item classes that can be managed:
+\itemize{
+\item \link{Entity} for well, field, reservoir entities
+\item \link{EntityType} for entity type definitions
+\item \link{EntitySet} for entity collections
+\item \link{Signal} for signal definitions
+\item \link{Unit} and \link{UnitMeasurement} for unit definitions
+\item \link{Hierarchy} for organizational structures
+\item \link{Scope} for entity and signal selections
+\item \link{Scenario} for data versions
+\item \link{Tag} and \link{TagEntry} for metadata
+\item \link{Workflow} for automated processes
+\item \link{RScript} and \link{PSharpScript} for scripts
+\item \link{MLModel} for machine learning models
+}
+
+Vignettes:
+\itemize{
+\item \code{vignette("repository-service")} for comprehensive repository operations
+\item \code{vignette("getting-started")} for basic usage
 }
 }
 \section{Super class}{
@@ -52,7 +81,7 @@ sp$items$save("Entity", entity)
 \if{latex}{\out{\hypertarget{method-RepositoryService-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new RepositoryService instance. This is done by the
-ServiceProvider automatically.
+\link{ServiceProvider} automatically.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{RepositoryService$new()}\if{html}{\out{</div>}}
 }

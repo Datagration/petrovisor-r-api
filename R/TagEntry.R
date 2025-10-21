@@ -6,10 +6,16 @@ library("R6")
 #'
 #' @export TagEntry
 #'
-#' @field tag_name The name of the tag.
-#' @field entity_name The name of the tagged entity.
+#' @field tag_name The name of the [Tag].
+#' @field entity_name The name of the tagged [Entity].
 #' @field start The start date of the tag entry.
 #' @field end The end date of the tag entry.
+#'
+#' @seealso
+#' * [Tag] for tag definitions
+#' * [TagEntriesService] for loading and saving tag entries
+#' * [Entity] for entity definitions
+#' * [RepositoryService] for repository operations
 #'
 #' @examples
 #' \dontrun{
@@ -21,7 +27,7 @@ library("R6")
 #'              tag_name = "Active",
 #'              start = "2020-02-01T00:00:00.000Z")
 #' }
-TagEntry <- R6Class("TagEntry",
+TagEntry <- R6Class("TagEntry", # nolint: object_name_linter
   public = list(
     tag_name = NULL,
     entity_name = NULL,
@@ -30,8 +36,8 @@ TagEntry <- R6Class("TagEntry",
 
     #' @description Create a new TagEntry instance.
     #'
-    #' @param tag_name The name of the tag.
-    #' @param entity_name The name of the tagged entity.
+    #' @param tag_name The name of the [Tag].
+    #' @param entity_name The name of the tagged [Entity].
     #' @param start The start date of the tag entry.
     #' @param end (Optional) The end date of the tag entry.
     initialize = function(tag_name = NULL,

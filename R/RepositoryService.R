@@ -7,6 +7,29 @@ library("R6")
 #' @details A new instance of this class will be created by the ServiceProvider
 #' automatically.
 #'
+#' @seealso
+#' Related classes:
+#' * [ServiceProvider] for creating a service provider instance
+#' * [DataServices] for loading and saving data using repository items
+#'
+#' Item classes that can be managed:
+#' * [Entity] for well, field, reservoir entities
+#' * [EntityType] for entity type definitions
+#' * [EntitySet] for entity collections
+#' * [Signal] for signal definitions
+#' * [Unit] and [UnitMeasurement] for unit definitions
+#' * [Hierarchy] for organizational structures
+#' * [Scope] for entity and signal selections
+#' * [Scenario] for data versions
+#' * [Tag] and [TagEntry] for metadata
+#' * [Workflow] for automated processes
+#' * [RScript] and [PSharpScript] for scripts
+#' * [MLModel] for machine learning models
+#'
+#' Vignettes:
+#' * `vignette("repository-service")` for comprehensive repository operations
+#' * `vignette("getting-started")` for basic usage
+#'
 #' @export RepositoryService
 #'
 #' @examples \dontrun{
@@ -20,12 +43,12 @@ library("R6")
 #' sp$items$delete("Hierarchy", "test")
 #'
 #' # get an item by name
-#' well01 <- sp$items$load("Well", "Well01")
+#' well01 <- sp$items$load("Entity", "Well01")
 #'
 #' # add or edit an item
 #' entity <- Entity$new(
 #'   name = "TestWell01",
-#'   entityTypeName = "Well",
+#'   entity_type_name = "Well",
 #'   alias = "TestAlias01"
 #' )
 #' sp$items$save("Entity", entity)
@@ -36,7 +59,7 @@ RepositoryService <- R6Class( # nolint: object_name_linter
   public = list(
 
     #' @description Create a new RepositoryService instance. This is done by the
-    #' ServiceProvider automatically.
+    #' [ServiceProvider] automatically.
     initialize = function() {},
 
     #' @description Get the names of all items of the given type available in

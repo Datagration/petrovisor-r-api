@@ -41,6 +41,17 @@ if (auth$is_authenticated()) {
 auth$clear_auth()
 }
 }
+\seealso{
+\itemize{
+\item \link{ServiceProvider} for creating authenticated sessions
+\item \link{AuthenticationService} for authentication methods
+\item \code{\link[=get_auth_context]{get_auth_context()}} for accessing the singleton instance
+\item \code{\link[=with_auth_context]{with_auth_context()}} for executing code with authentication
+\item \code{\link[=require_authentication]{require_authentication()}} for checking authentication status
+\item \code{vignette("authentication")} for authentication examples
+\item \code{vignette("getting-started")} for setup guide
+}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

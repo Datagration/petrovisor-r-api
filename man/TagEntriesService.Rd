@@ -17,14 +17,14 @@ automatically.
 sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 
 # get tag entries of group "Info"
-tagEntries <- sp$tag_entries$GetTagEntries(
-  TagEntriesFilter$new(TagGroup = "Info")
+tagEntries <- sp$tag_entries$load(
+  tag_group_names = list("Info")
 )
 
 # delete tag entries
-sp$tag_entries$DeleteTagEntry(
-  entityName = "Well01",
-  tagName = "Active",
+sp$tag_entries$delete_range(
+  entity_name = "Well01",
+  tag_name = "Active",
   start = "2020-01-01T00:00:00.000Z"
 )
 }
@@ -35,6 +35,16 @@ sp$tag_entries$DeleteTagEntry(
 
 \dontrun{
 tagEntries <- sp$tag_entries$load(tag_group_names = c("Info"))
+}
+}
+\seealso{
+\itemize{
+\item \link{ServiceProvider} for accessing the tag entries service via
+\code{sp$tag_entries}
+\item \link{Tag} for tag definitions
+\item \link{TagEntry} for tag entry structure
+\item \link{RepositoryService} for managing tags
+\item \code{vignette("getting-started")} for basic usage
 }
 }
 \section{Super class}{
@@ -56,7 +66,7 @@ tagEntries <- sp$tag_entries$load(tag_group_names = c("Info"))
 \if{latex}{\out{\hypertarget{method-TagEntriesService-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new TagEntriesService instance. This is done by the
-ServiceProvider automatically.
+\link{ServiceProvider} automatically.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TagEntriesService$new()}\if{html}{\out{</div>}}
 }

@@ -11,6 +11,13 @@ library("R6")
 #' @field alias The alias of the entity.
 #' @field is_opportunity Whether the entity is an opportunity or not.
 #'
+#' @seealso
+#' * [RepositoryService] for loading and saving entities
+#' * [EntitySet] for grouping entities
+#' * [EntityType] for entity type definitions
+#' * [DataServices] for working with entity data
+#' * `vignette("repository-service")` for repository examples
+#'
 #' @examples
 #' \dontrun{
 #' Entity$new(
@@ -19,7 +26,7 @@ library("R6")
 #'   alias = "NewWellAlias",
 #'   is_opportunity = FALSE)
 #' }
-Entity <- R6Class("Entity",
+Entity <- R6Class("Entity", # nolint: object_name_linter
   public = list(
     name = NULL,
     entity_type_name = NULL,
@@ -44,7 +51,7 @@ Entity <- R6Class("Entity",
     },
 
     #' @details Convert the object to a list. This function is mainly used
-    #' by the RepositoryService to convert the objects to lists and then
+    #' by the [RepositoryService] to convert the objects to lists and then
     #' call the web API.
     toList = function() {
       dl <- list(

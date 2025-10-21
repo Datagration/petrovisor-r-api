@@ -9,11 +9,17 @@ library("R6")
 #' @field name The name of the tag.
 #' @field tag_group The tag's tag group.
 #'
+#' @seealso
+#' * [TagEntry] for tag entry definitions
+#' * [TagEntriesService] for managing tag entries
+#' * [RepositoryService] for loading and saving tags
+#' * [Entity] for entity definitions that can be tagged
+#'
 #' @examples
 #' \dontrun{
 #' Tag$new(name = "NewTag", tag_group = "Group 1")
 #'}
-Tag <- R6Class("Tag",
+Tag <- R6Class("Tag", # nolint: object_name_linter
   public = list(
     name = NULL,
     tag_group = NULL,

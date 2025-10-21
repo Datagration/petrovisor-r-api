@@ -11,6 +11,14 @@ Class representing a PetroVisor tag object.
 Tag$new(name = "NewTag", tag_group = "Group 1")
 }
 }
+\seealso{
+\itemize{
+\item \link{TagEntry} for tag entry definitions
+\item \link{TagEntriesService} for managing tag entries
+\item \link{RepositoryService} for loading and saving tags
+\item \link{Entity} for entity definitions that can be tagged
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

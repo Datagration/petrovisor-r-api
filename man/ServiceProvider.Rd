@@ -30,6 +30,45 @@ sp <- ServiceProvider$new(
   password = "your_password"
 )
 }
+
+## ------------------------------------------------
+## Method `ServiceProvider$send_mail`
+## ------------------------------------------------
+
+\dontrun{
+  # Send a simple email
+  sp$send_mail(
+    address = "example@domain.com",
+    subject = "Test Subject",
+    body = "This is a test email from PetroVisor R client."
+  )
+}
+}
+\seealso{
+Service classes for interacting with PetroVisor:
+\itemize{
+\item \link{AuthenticationService} for authentication methods
+\item \link{DataServices} for loading and saving data
+\item \link{RepositoryService} for managing items (entities, signals, units, etc.)
+\item \link{LoggingService} for logging operations
+\item \link{FileService} for file operations
+\item \link{MlTrainingService} for machine learning
+\item \link{TagEntriesService} for tag entry operations
+}
+
+Authentication helpers:
+\itemize{
+\item \code{\link[=get_auth_context]{get_auth_context()}} for accessing the authentication context
+\item \code{\link[=with_auth_context]{with_auth_context()}} for executing code with specific auth context
+\item \code{\link[=require_authentication]{require_authentication()}} for ensuring authentication
+}
+
+Vignettes:
+\itemize{
+\item \code{vignette("getting-started")} for an introduction to the package
+\item \code{vignette("authentication")} for authentication details
+\item \code{vignette("working-with-data")} for data operations
+}
 }
 \section{Super class}{
 \code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{ServiceProvider}
@@ -78,6 +117,7 @@ all functionality related to ML model training and prediction.}
 \item \href{#method-ServiceProvider-set_workspace_data_url}{\code{ServiceProvider$set_workspace_data_url()}}
 \item \href{#method-ServiceProvider-getDataUrl}{\code{ServiceProvider$getDataUrl()}}
 \item \href{#method-ServiceProvider-convert_unit}{\code{ServiceProvider$convert_unit()}}
+\item \href{#method-ServiceProvider-send_mail}{\code{ServiceProvider$send_mail()}}
 \item \href{#method-ServiceProvider-clone}{\code{ServiceProvider$clone()}}
 }
 }
@@ -181,6 +221,42 @@ values.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ServiceProvider-send_mail"></a>}}
+\if{latex}{\out{\hypertarget{method-ServiceProvider-send_mail}{}}}
+\subsection{Method \code{send_mail()}}{
+Send an email using the PetroVisor email configuration.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ServiceProvider$send_mail(address, subject, body)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{address}}{The recipient email address (single string).}
+
+\item{\code{subject}}{The subject of the email.}
+
+\item{\code{body}}{The body content of the email.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+  # Send a simple email
+  sp$send_mail(
+    address = "example@domain.com",
+    subject = "Test Subject",
+    body = "This is a test email from PetroVisor R client."
+  )
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ServiceProvider-clone"></a>}}

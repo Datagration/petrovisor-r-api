@@ -41,6 +41,26 @@ library("jsonlite")
 #' @field ml Instance of class \code{MlTrainingService} wrapping
 #'   all functionality related to ML model training and prediction.
 #'
+#' @seealso
+#' Service classes for interacting with PetroVisor:
+#' * [AuthenticationService] for authentication methods
+#' * [DataServices] for loading and saving data
+#' * [RepositoryService] for managing items (entities, signals, units, etc.)
+#' * [LoggingService] for logging operations
+#' * [FileService] for file operations
+#' * [MlTrainingService] for machine learning
+#' * [TagEntriesService] for tag entry operations
+#'
+#' Authentication helpers:
+#' * [get_auth_context()] for accessing the authentication context
+#' * [with_auth_context()] for executing code with specific auth context
+#' * [require_authentication()] for ensuring authentication
+#'
+#' Vignettes:
+#' * `vignette("getting-started")` for an introduction to the package
+#' * `vignette("authentication")` for authentication details
+#' * `vignette("working-with-data")` for data operations
+#'
 #' @examples
 #' \dontrun{
 #' # Create a new instance of the service provider using token
@@ -207,6 +227,45 @@ ServiceProvider <- R6Class( # nolint: object_name_linter
         stop(paste0("Error: Input must be a numeric value or a ",
                     "list/vector of numeric values (including NA)."))
       }
+    },
+
+    #' @description Send an email using the PetroVisor email configuration.
+    #'
+    #' @param address The recipient email address (single string).
+    #' @param subject The subject of the email.
+    #' @param body The body content of the email.
+    #'
+    #' @examples
+    #' \dontrun{
+    #'   # Send a simple email
+    #'   sp$send_mail(
+    #'     address = "example@domain.com",
+    #'     subject = "Test Subject",
+    #'     body = "This is a test email from PetroVisor R client."
+    #'   )
+    #' }
+    send_mail = function(address, subject, body) {
+      # Validate email address
+      if (is.null(address) || !is.character(address) || length(address) != 1) {
+        stop("Error: 'address' must be a single character string.")
+      }
+
+      # Check email format using regex
+      email_pattern <- "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+      if (!grepl(email_pattern, address, perl = TRUE)) {
+        stop("Error: '", address, "' is not a valid email address format.")
+      }
+
+      query <- list(
+        Address = address,
+        Subject = subject,
+        Body = body
+      )
+
+      super$get(url = paste0(self$data_url, "/"),
+                route = "Configuration/Send/Mail",
+                query = query,
+                parse_json = FALSE)
     }
   ),
   private = list(

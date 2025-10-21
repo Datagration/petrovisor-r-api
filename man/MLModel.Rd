@@ -90,6 +90,18 @@ model$set_custom_training(
 )
 }
 }
+\seealso{
+\itemize{
+\item \link{MlTrainingService} for training and managing ML models
+\item \link{MLTrainingResult} for training results
+\item \link{MLTrainingResults} for multiple training results
+\item \link{MLTrainingOptions} for training configuration
+\item \link{MLPreProcessor} for preprocessing methods
+\item \link{Scope} for defining training context
+\item \link{EntitySet} for entity filtering
+\item \code{vignette("machine-learning")} for ML workflow examples
+}
+}
 \section{Super class}{
 \code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{MLModel}
 }

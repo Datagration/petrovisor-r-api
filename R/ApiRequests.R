@@ -138,7 +138,7 @@ ApiRequests <- R6Class("ApiRequests", # nolint: object_name_linter
 
       # get auth
       auth <- get_auth_context()$get_auth()
-      url <- auth$workspace_data_url
+      url <- if (is.null(url)) auth$workspace_data_url else url
       token_type <- auth$token_type
       token <- auth$token
       # build url
@@ -156,7 +156,7 @@ ApiRequests <- R6Class("ApiRequests", # nolint: object_name_linter
 
       httr::stop_for_status(ret, task = paste("GET with result:", ret))
 
-      cont <- httr::content(ret, as = "text")
+      cont <- httr::content(ret, as = "text", encoding = "UTF-8")
 
       if (parse_json) {
         return(jsonlite::fromJSON(cont))

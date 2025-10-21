@@ -29,6 +29,11 @@ library("R6")
 #' @field message_details Optional details of the message.
 #' @field directory User directory (tenant).
 #'
+#' @seealso
+#' * [LoggingService] for saving and loading log entries
+#' * [ServiceProvider] for accessing the logging service
+#' * `vignette("getting-started")` for logging examples
+#'
 #' @examples
 #' \dontrun{
 #' LogEntry$new(category = "MyCategory",
@@ -36,7 +41,7 @@ library("R6")
 #'              message_details = "and here are some details",
 #'              severity = "Debug")
 #' }
-LogEntry <- R6Class("LogEntry",
+LogEntry <- R6Class("LogEntry", # nolint: object_name_linter
   public = list(
     timestamp = NULL,
     message = NULL,

@@ -17,12 +17,21 @@ EntitySet$new(name = "MyEntities",
                                       alias = "WellAlias2")))
 }
 }
+\seealso{
+\itemize{
+\item \link{Entity} for entity definitions
+\item \link{RepositoryService} for managing entity sets
+\item \link{Scope} for time/depth filtering
+\item \link{MLModel} for ML training context
+\item \code{vignette("repository-service")} for examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{name}}{The name of the entity set.}
 
-\item{\code{entities}}{list of entity objects.}
+\item{\code{entities}}{List of \link{Entity} objects.}
 
 \item{\code{formula}}{The entity set's definition as string (P# syntax).}
 
@@ -60,7 +69,7 @@ Create a new EntitySet instance.
 \describe{
 \item{\code{name}}{The name of the entity set.}
 
-\item{\code{entities}}{list of entity objects.}
+\item{\code{entities}}{List of \link{Entity} objects.}
 
 \item{\code{formula}}{The entity set's definition as string (P# syntax).}
 
@@ -81,7 +90,7 @@ Create a new EntitySet instance.
 
 \subsection{Details}{
 Convert the object to a list. This function is mainly used
-by the RepositoryService to convert the objects to lists and then
+by the \link{RepositoryService} to convert the objects to lists and then
 call the web API.
 }
 

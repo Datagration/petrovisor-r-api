@@ -11,6 +11,16 @@ Class representing a PetroVisor workflow object.
 Workflow$new()
 }
 }
+\seealso{
+\itemize{
+\item \link{RepositoryService} for loading and saving workflows
+\item \link{WorkflowActivity} for workflow activity definitions
+\item \link{RWorkflowActivity} for R-based workflow activities
+\item \link{CustomWorkflowActivity} for custom activities
+\item \link{WorkflowSchedule} for scheduling workflows
+\item \code{vignette("repository-service")} for workflow examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

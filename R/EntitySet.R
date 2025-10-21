@@ -7,10 +7,18 @@ library("R6")
 #' @export EntitySet
 #'
 #' @field name The name of the entity set.
-#' @field entities list of entity objects.
+#' @field entities List of [Entity] objects.
 #' @field formula The entity set's definition as string (P# syntax).
 #' @field description The description of the item.
 #' @field labels A list of strings holding the labels of the entity set.
+#'
+#' @seealso
+#' * [Entity] for entity definitions
+#' * [RepositoryService] for managing entity sets
+#' * [Scope] for time/depth filtering
+#' * [MLModel] for ML training context
+#' * `vignette("repository-service")` for examples
+#'
 #' @examples
 #' \dontrun{
 #' EntitySet$new(name = "MyEntities",
@@ -21,7 +29,7 @@ library("R6")
 #'                                       entity_type_name = "Well",
 #'                                       alias = "WellAlias2")))
 #' }
-EntitySet <- R6Class("EntitySet",
+EntitySet <- R6Class("EntitySet", # nolint: object_name_linter
   public = list(
     name = NULL,
     entities = NULL,
@@ -32,7 +40,7 @@ EntitySet <- R6Class("EntitySet",
     #' @description Create a new EntitySet instance.
     #'
     #' @param name The name of the entity set.
-    #' @param entities list of entity objects.
+    #' @param entities List of [Entity] objects.
     #' @param formula The entity set's definition as string (P# syntax).
     #' @param description The description of the item.
     #' @param labels A list of strings holding the labels of the entity set.
@@ -49,7 +57,7 @@ EntitySet <- R6Class("EntitySet",
     },
 
     #' @details Convert the object to a list. This function is mainly used
-    #' by the RepositoryService to convert the objects to lists and then
+    #' by the [RepositoryService] to convert the objects to lists and then
     #' call the web API.
     toList = function() {
       # create list from list of entities

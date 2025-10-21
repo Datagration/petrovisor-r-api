@@ -13,6 +13,12 @@ library("R6")
 #' @field summand The unit's summand. Used for conversion between the unit and
 #'   it's base (SI) unit.
 #'
+#' @seealso
+#' * [UnitMeasurement] for measurement definitions
+#' * [Signal] for signal definitions using units
+#' * [RepositoryService] for loading and saving units
+#' * [DataServices] for data operations with units
+#'
 #' @examples
 #' \dontrun{
 #' Unit$new(name = "hyper m",
@@ -20,7 +26,7 @@ library("R6")
 #'          factor = 10000000000000,
 #'          summand = 0)
 #'}
-Unit <- R6Class("Unit",
+Unit <- R6Class("Unit", # nolint: object_name_linter
   public = list(
     name = NULL,
     measurement_name = NULL,

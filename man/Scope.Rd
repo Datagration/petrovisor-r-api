@@ -14,6 +14,16 @@ Scope$new(name = "MyScope",
           time_increment = "Daily")
 }
 }
+\seealso{
+\itemize{
+\item \link{RepositoryService} for managing scopes
+\item \link{DataServices} for using scopes in data queries
+\item \link{EntitySet} for entity filtering
+\item \link{MLModel} for ML training context
+\item \code{vignette("working-with-data")} for data examples
+\item \code{vignette("machine-learning")} for ML examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

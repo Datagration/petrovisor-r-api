@@ -15,6 +15,15 @@ Entity$new(
   is_opportunity = FALSE)
 }
 }
+\seealso{
+\itemize{
+\item \link{RepositoryService} for loading and saving entities
+\item \link{EntitySet} for grouping entities
+\item \link{EntityType} for entity type definitions
+\item \link{DataServices} for working with entity data
+\item \code{vignette("repository-service")} for repository examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -74,7 +83,7 @@ Create a new Entity instance.
 
 \subsection{Details}{
 Convert the object to a list. This function is mainly used
-by the RepositoryService to convert the objects to lists and then
+by the \link{RepositoryService} to convert the objects to lists and then
 call the web API.
 }
 

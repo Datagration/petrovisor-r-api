@@ -34,6 +34,12 @@ file <- sp$files$load("Test_File.csv")
 result <- sp$files$save("Test_File.csv")
 }
 }
+\seealso{
+\itemize{
+\item \link{ServiceProvider} for accessing the file service via \code{sp$files}
+\item \code{vignette("getting-started")} for basic usage
+}
+}
 \section{Super class}{
 \code{\link[Myrconn.PetroVisor.Client:ApiRequests]{Myrconn.PetroVisor.Client::ApiRequests}} -> \code{FileService}
 }
@@ -53,7 +59,7 @@ result <- sp$files$save("Test_File.csv")
 \if{latex}{\out{\hypertarget{method-FileService-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new FileService instance. This is done by the
-ServiceProvider automatically.
+\link{ServiceProvider} automatically.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{FileService$new()}\if{html}{\out{</div>}}
 }

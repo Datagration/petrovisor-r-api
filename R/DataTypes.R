@@ -76,7 +76,7 @@ StaticData <- R6Class("StaticData",
 #'
 #' @examples
 #' \dontrun{
-#' TimeData$new(singal_name = "produced oil per time increment",
+#' TimeData$new(signal_name = "produced oil per time increment",
 #'              entity_name = "Well01",
 #'              unit_name = "m3",
 #'              data = list(list(Date = "2020-01-01T00:00:00.000Z",
@@ -139,7 +139,7 @@ TimeData <- R6Class("TimeData",
 #'
 #' @examples
 #' \dontrun{
-#' TimeData$new(singal_name = "produced oil per depth increment",
+#' TimeData$new(signal_name = "produced oil per depth increment",
 #'              entity_name = "Well01",
 #'              unit_name = "m3",
 #'              data = list(list(Depth = 100,
@@ -203,7 +203,7 @@ DepthData <- R6Class("DepthData",
 #'
 #' @examples
 #' \dontrun{
-#' PVTData$new(singal_name = "produced oil per time increment pvt",
+#' PVTData$new(signal_name = "produced oil per time increment pvt",
 #'             entity_name = "Well01",
 #'             unit_name = "m3",
 #'             data = list(list(Pressure = 300,

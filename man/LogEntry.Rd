@@ -14,6 +14,13 @@ LogEntry$new(category = "MyCategory",
              severity = "Debug")
 }
 }
+\seealso{
+\itemize{
+\item \link{LoggingService} for saving and loading log entries
+\item \link{ServiceProvider} for accessing the logging service
+\item \code{vignette("getting-started")} for logging examples
+}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

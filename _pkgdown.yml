@@ -2,3 +2,160 @@ url: https://datagration.github.io/petrovisor-r-api/
 template:
   bootstrap: 5
 
+reference:
+  - title: "Core Classes"
+    desc: "Main classes for interacting with PetroVisor API"
+    contents:
+      - ServiceProvider
+      - AuthenticationService
+  
+  - title: "Service Classes"
+    desc: "Specialized service classes"
+    contents:
+      - DataServices
+      - RepositoryService
+      - LoggingService
+      - FileService
+      - TagEntriesService
+      - MlTrainingService
+  
+  - title: "Data Types"
+    desc: "Classes representing different data types"
+    contents:
+      - StaticData
+      - TimeData
+      - DepthData
+      - PVTData
+      - ReferenceTable
+      - ReferenceTableColumn
+      - PivotTable
+      - DataPoint
+      - NamedPoint
+      - Point
+  
+  - title: "Entity & Signal Classes"
+    desc: "Classes for entities, signals, and related objects"
+    contents:
+      - Entity
+      - EntitySet
+      - EntityType
+      - Signal
+      - Unit
+      - UnitMeasurement
+      - Hierarchy
+      - Tag
+      - TagEntry
+      - CustomField
+  
+  - title: "Workflow & Script Classes"
+    desc: "Classes for workflows and scripts"
+    contents:
+      - Workflow
+      - WorkflowActivity
+      - WorkflowSchedule
+      - ScheduleRecurrence
+      - ScheduleEnd
+      - ProcessTemplate
+      - Step
+      - RScript
+      - PSharpScript
+      - RWorkflowActivity
+      - CustomWorkflowActivity
+      - ActivityArgument
+      - ActivityMappedArgument
+  
+  - title: "Machine Learning"
+    desc: "Machine learning related classes"
+    contents:
+      - MlTrainingService
+      - MLModel
+      - MLNetModel
+      - MLTrainingContext
+      - MLTrainingOptions
+      - MLCustomTrainingOptions
+      - MLNeuralNetworkTrainingOptions
+      - MLTransformerOptions
+      - MLTrainingFeature
+      - MLTrainingOutcome
+      - MLTrainingNumericOutcome
+      - MLTrainingResult
+      - MLTrainingResults
+      - MLPreProcessor
+      - MLDataProviderConfig
+      - RProviderConfiguration
+  
+  - title: "Calculation & Analysis"
+    desc: "Classes for calculations and analysis"
+    contents:
+      - CleansingCalculation
+      - EventCalculation
+      - TableCalculation
+      - DcaFit
+      - Chart
+      - Axis
+      - SeriesSetting
+  
+  - title: "Data Integration"
+    desc: "Classes for data connections and integration"
+    contents:
+      - DataConnection
+      - DataIntegrationSet
+      - DataMapping
+      - DataSource
+  
+  - title: "Supporting Classes"
+    desc: "Helper and configuration classes"
+    contents:
+      - ApiRequests
+      - AuthContext
+      - Context
+      - DataSetRequest
+      - Filter
+      - CleansingFilter
+      - CleansingScript
+      - Scope
+      - Scenario
+      - LogEntry
+      - Event
+      - Column
+      - ConfigurationSetting
+  
+  - title: "Authentication Helpers"
+    desc: "Helper functions for authentication"
+    contents:
+      - get_auth_context
+      - with_auth_context
+      - require_authentication
+
+articles:
+  - title: "Getting Started"
+    contents:
+      - getting-started
+  
+  - title: "Guides"
+    contents:
+      - authentication
+      - working-with-data
+      - repository-service
+      - machine-learning
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news]
+    right: [search, github]
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: Getting Started
+        href: articles/getting-started.html
+      - text: -------
+      - text: Guides
+      - text: Authentication Guide
+        href: articles/authentication.html
+      - text: Working with Data
+        href: articles/working-with-data.html
+      - text: Repository Service
+        href: articles/repository-service.html
+      - text: Machine Learning
+        href: articles/machine-learning.html

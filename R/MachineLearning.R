@@ -39,6 +39,16 @@ library("R6")
 #' @field test_scope_formula Test scope formula.
 #' @field test_entity_set_formula Test entity set formula.
 #'
+#' @seealso
+#' * [MlTrainingService] for training and managing ML models
+#' * [MLTrainingResult] for training results
+#' * [MLTrainingResults] for multiple training results
+#' * [MLTrainingOptions] for training configuration
+#' * [MLPreProcessor] for preprocessing methods
+#' * [Scope] for defining training context
+#' * [EntitySet] for entity filtering
+#' * `vignette("machine-learning")` for ML workflow examples
+#'
 #' @examples
 #' \dontrun{
 #' # Create a minimal ML model (Regression)

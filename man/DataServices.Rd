@@ -123,7 +123,7 @@ result <- sp$data$save(
   time_data <- sp$data$load(
     entities = c("Well_A"),
     signals = lapply(
-      c("oil production [bbl/d]", "gas production [mcf/d]"),
+      c("oil production [bbl/d]", "gas production [MSCF/d]"),
       function(x) { sp$parse_signal(x) }
     ),
     time_increment = "Daily",
@@ -212,7 +212,7 @@ result <- sp$data$save(
     data_type = "StaticNumeric",
     data = static_numeric_data,
     signals = lapply(
-      c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+      c("initial oil reserves [bbl]", "initial gas reserves [MSCF]"),
       function(x) { sp$parse_signal(x) }
     ),
     generate_logs = TRUE,
@@ -251,7 +251,7 @@ result <- sp$data$save(
     data_type = "TimeNumeric",
     data = time_numeric_data,
     signals = lapply(
-      c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+      c("oil rate [bbl/d]", "gas rate [MSCF/d]"),
       function(x) { sp$parse_signal(x) }
     ),
     values_time_increment = "Daily"
@@ -446,6 +446,36 @@ result <- sp$data$save(
   )
 }
 }
+\seealso{
+Related classes:
+\itemize{
+\item \link{ServiceProvider} for creating a service provider instance
+\item \link{RepositoryService} for managing entities and signals
+}
+
+Data type classes:
+\itemize{
+\item \link{StaticData} for static data structure
+\item \link{TimeData} for time series data structure
+\item \link{DepthData} for depth data structure
+\item \link{PVTData} for PVT data structure
+\item \link{ReferenceTable} for reference table structure
+\item \link{PivotTable} for pivot table structure
+}
+
+Related objects:
+\itemize{
+\item \link{Signal} for signal definitions
+\item \link{Entity} for entity definitions
+\item \link{Unit} for unit definitions
+}
+
+Vignettes:
+\itemize{
+\item \code{vignette("working-with-data")} for comprehensive data operations guide
+\item \code{vignette("getting-started")} for basic usage
+}
+}
 \concept{data deletion functions}
 \concept{data loading functions}
 \concept{data saving functions}
@@ -473,7 +503,7 @@ result <- sp$data$save(
 \if{latex}{\out{\hypertarget{method-DataServices-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new DataServices instance. This is done by the
-ServiceProvider automatically.
+\link{ServiceProvider} automatically.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataServices$new(sp)}\if{html}{\out{</div>}}
 }
@@ -481,7 +511,7 @@ ServiceProvider automatically.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{sp}}{instance of the service provider}
+\item{\code{sp}}{Instance of the \link{ServiceProvider}}
 }
 \if{html}{\out{</div>}}
 }
@@ -522,15 +552,15 @@ Load signal data from PetroVisor.
 \item{\code{entities}}{List of entities to retrieve data for. Can be:
 \itemize{
 \item Character vector: \code{c("Well_001", "Well_002")}
-\item List of Entity objects: \code{list(entity1, entity2)}
+\item List of \link{Entity} objects: \code{list(entity1, entity2)}
 }}
 
-\item{\code{signals}}{List of parsed signal objects created using
+\item{\code{signals}}{List of parsed \link{Signal} objects created using
 \code{sp$parse_signal()}. Each signal should specify name and unit.}
 
 \item{\code{scenario_names}}{List of scenario names to load data for.}
 
-\item{\code{hierarchy_name}}{Hierarchy used in the data retrieval process.}
+\item{\code{hierarchy_name}}{\link{Hierarchy} used in the data retrieval process.}
 
 \item{\code{top_records}}{Number of records to return.}
 
@@ -612,7 +642,7 @@ or raw API response when reshape = FALSE.
   time_data <- sp$data$load(
     entities = c("Well_A"),
     signals = lapply(
-      c("oil production [bbl/d]", "gas production [mcf/d]"),
+      c("oil production [bbl/d]", "gas production [MSCF/d]"),
       function(x) { sp$parse_signal(x) }
     ),
     time_increment = "Daily",
@@ -836,7 +866,7 @@ the save operation.
     data_type = "StaticNumeric",
     data = static_numeric_data,
     signals = lapply(
-      c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+      c("initial oil reserves [bbl]", "initial gas reserves [MSCF]"),
       function(x) { sp$parse_signal(x) }
     ),
     generate_logs = TRUE,
@@ -875,7 +905,7 @@ the save operation.
     data_type = "TimeNumeric",
     data = time_numeric_data,
     signals = lapply(
-      c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+      c("oil rate [bbl/d]", "gas rate [MSCF/d]"),
       function(x) { sp$parse_signal(x) }
     ),
     values_time_increment = "Daily"

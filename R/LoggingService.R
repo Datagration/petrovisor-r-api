@@ -8,6 +8,11 @@ library("R6")
 #' @details A new instance of this class will be created by the ServiceProvider
 #' automatically.
 #'
+#' @seealso
+#' * [ServiceProvider] for accessing the logging service via `sp$logs`
+#' * [LogEntry] for log entry structure
+#' * `vignette("getting-started")` for basic usage
+#'
 #' @export LoggingService
 #'
 #' @examples \dontrun{
@@ -15,18 +20,18 @@ library("R6")
 #' sp <- ServiceProvider$new("Host", 8095, "WorkspaceA", "UserX", "Password")
 #'
 #' # get available categories
-#' availableCategories <- sp$logs$GetAvailableCategories()
+#' availableCategories <- sp$logs$load_categories()
 #'
 #' # get log entries
-#' allLogEntries <- sp$logs$GetLogEntries()
-#' warnings <- sp$logs$GetLogEntries(severity = "Warning")
-#' signIns <- sp$logs$GetLogEntries(category = "SignIn")
+#' allLogEntries <- sp$logs$load()
+#' warnings <- sp$logs$load(severities = "Warning")
+#' signIns <- sp$logs$load(categories = "SignIn")
 #'
 #' # add log entry
 #' entry <- LogEntry$new(message = "Test",
 #'                       category = "Tag",
 #'                       severity = "Information")
-#' sp$logs$AddLogEntry(entry)
+#' sp$logs$save(list(entry))
 #'
 #' # add several log entries at once
 #' entry1 <- LogEntry$new(message = "Test1",
@@ -35,10 +40,10 @@ library("R6")
 #' entry2 <- LogEntry$new(message = "Test2",
 #'                        category = "Tag",
 #'                        severity = "Information")
-#' sp$logs$AddLogEntries(list(entry1, entry2))
+#' sp$logs$save(list(entry1, entry2))
 #'
 #' # remove all log entries
-#' sp$logs$CleanUpLogEntries()
+#' sp$logs$delete(days_to_keep = 0)
 #' }
 LoggingService <- R6Class( # nolint: object_name_linter
   "LoggingService",
@@ -46,7 +51,7 @@ LoggingService <- R6Class( # nolint: object_name_linter
   public = list(
 
     #' @description Create a new LoggingService instance. This is done by
-    #'  the ServiceProvider automatically.
+    #'  the [ServiceProvider] automatically.
     #'
     #' @param url the URL for the API calls.
     #' @param token_type the type of the issued token.
