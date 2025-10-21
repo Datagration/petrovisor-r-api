@@ -245,6 +245,17 @@ ServiceProvider <- R6Class( # nolint: object_name_linter
     #'   )
     #' }
     send_mail = function(address, subject, body) {
+      # Validate email address
+      if (is.null(address) || !is.character(address) || length(address) != 1) {
+        stop("Error: 'address' must be a single character string.")
+      }
+
+      # Check email format using regex
+      email_pattern <- "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+      if (!grepl(email_pattern, address, perl = TRUE)) {
+        stop("Error: '", address, "' is not a valid email address format.")
+      }
+
       query <- list(
         Address = address,
         Subject = subject,
