@@ -9,7 +9,7 @@ the web API."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">Myrconn.PetroVisor.Client</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,6 +18,16 @@ the web API."></head><body>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/authentication.html">Authentication Guide</a></li>
+    <li><a class="dropdown-item" href="../articles/working-with-data.html">Working with Data</a></li>
+    <li><a class="dropdown-item" href="../articles/repository-service.html">Repository Service</a></li>
+    <li><a class="dropdown-item" href="../articles/machine-learning.html">Machine Learning</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -109,6 +119,23 @@ depth.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Related classes:</p><ul><li><p><a href="ServiceProvider.html">ServiceProvider</a> for creating a service provider instance</p></li>
+<li><p><a href="RepositoryService.html">RepositoryService</a> for managing entities and signals</p></li>
+</ul><p>Data type classes:</p><ul><li><p><a href="StaticData.html">StaticData</a> for static data structure</p></li>
+<li><p><a href="TimeData.html">TimeData</a> for time series data structure</p></li>
+<li><p><a href="DepthData.html">DepthData</a> for depth data structure</p></li>
+<li><p><a href="PVTData.html">PVTData</a> for PVT data structure</p></li>
+<li><p><a href="ReferenceTable.html">ReferenceTable</a> for reference table structure</p></li>
+<li><p><a href="PivotTable.html">PivotTable</a> for pivot table structure</p></li>
+</ul><p>Related objects:</p><ul><li><p><a href="Signal.html">Signal</a> for signal definitions</p></li>
+<li><p><a href="Entity.html">Entity</a> for entity definitions</p></li>
+<li><p><a href="Unit.html">Unit</a> for unit definitions</p></li>
+</ul><p>Vignettes:</p><ul><li><p><code><a href="../articles/working-with-data.html">vignette("working-with-data")</a></code> for comprehensive data operations guide</p></li>
+<li><p><code><a href="../articles/getting-started.html">vignette("getting-started")</a></code> for basic usage</p></li>
+</ul></div>
+    </div>
+    <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
     <p><code><a href="ApiRequests.html">Myrconn.PetroVisor.Client::ApiRequests</a></code> -&gt; <code>DataServices</code></p>
     </div>
@@ -132,7 +159,7 @@ depth.</p></dd>
 </ul></div><p></p><hr><a id="method-DataServices-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Create a new DataServices instance. This is done by the
-ServiceProvider automatically.</p><div class="section">
+<a href="ServiceProvider.html">ServiceProvider</a> automatically.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/DataServices.html">DataServices</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">sp</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -140,7 +167,7 @@ ServiceProvider automatically.</p><div class="section">
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>sp</code></dt>
-<dd><p>instance of the service provider</p></dd>
+<dd><p>Instance of the <a href="ServiceProvider.html">ServiceProvider</a></p></dd>
 
 
 </dl><p></p></div>
@@ -178,12 +205,12 @@ ServiceProvider automatically.</p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>entities</code></dt>
 <dd><p>List of entities to retrieve data for. Can be:</p><ul><li><p>Character vector: <code>c("Well_001", "Well_002")</code></p></li>
-<li><p>List of Entity objects: <code>list(entity1, entity2)</code></p></li>
+<li><p>List of <a href="Entity.html">Entity</a> objects: <code>list(entity1, entity2)</code></p></li>
 </ul></dd>
 
 
 <dt><code>signals</code></dt>
-<dd><p>List of parsed signal objects created using
+<dd><p>List of parsed <a href="Signal.html">Signal</a> objects created using
 <code>sp$parse_signal()</code>. Each signal should specify name and unit.</p></dd>
 
 
@@ -192,7 +219,7 @@ ServiceProvider automatically.</p><div class="section">
 
 
 <dt><code>hierarchy_name</code></dt>
-<dd><p>Hierarchy used in the data retrieval process.</p></dd>
+<dd><p><a href="Hierarchy.html">Hierarchy</a> used in the data retrieval process.</p></dd>
 
 
 <dt><code>top_records</code></dt>
@@ -302,7 +329,7 @@ or raw API response when reshape = FALSE.</p>
   time_data &lt;- sp$data$load(
     entities = c("Well_A"),
     signals = lapply(
-      c("oil production [bbl/d]", "gas production [mcf/d]"),
+      c("oil production [bbl/d]", "gas production [MSCF/d]"),
       function(x) { sp$parse_signal(x) }
     ),
     time_increment = "Daily",
@@ -554,7 +581,7 @@ the save operation.</p>
     data_type = "StaticNumeric",
     data = static_numeric_data,
     signals = lapply(
-      c("initial oil reserves [bbl]", "initial gas reserves [mcf]"),
+      c("initial oil reserves [bbl]", "initial gas reserves [MSCF]"),
       function(x) { sp$parse_signal(x) }
     ),
     generate_logs = TRUE,
@@ -593,7 +620,7 @@ the save operation.</p>
     data_type = "TimeNumeric",
     data = time_numeric_data,
     signals = lapply(
-      c("oil rate [bbl/d]", "gas rate [mcf/d]"),
+      c("oil rate [bbl/d]", "gas rate [MSCF/d]"),
       function(x) { sp$parse_signal(x) }
     ),
     values_time_increment = "Daily"
@@ -1034,7 +1061,7 @@ the delete operation.</p>
 <span class="r-in"><span>  <span class="va">time_data</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    entities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Well_A"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oil production [bbl/d]"</span>, <span class="st">"gas production [mcf/d]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oil production [bbl/d]"</span>, <span class="st">"gas production [MSCF/d]"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    time_increment <span class="op">=</span> <span class="st">"Daily"</span>,</span></span>
@@ -1123,7 +1150,7 @@ the delete operation.</p>
 <span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"StaticNumeric"</span>,</span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">static_numeric_data</span>,</span></span>
 <span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"initial oil reserves [bbl]"</span>, <span class="st">"initial gas reserves [mcf]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"initial oil reserves [bbl]"</span>, <span class="st">"initial gas reserves [MSCF]"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    generate_logs <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
@@ -1162,7 +1189,7 @@ the delete operation.</p>
 <span class="r-in"><span>    data_type <span class="op">=</span> <span class="st">"TimeNumeric"</span>,</span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">time_numeric_data</span>,</span></span>
 <span class="r-in"><span>    signals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oil rate [bbl/d]"</span>, <span class="st">"gas rate [mcf/d]"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"oil rate [bbl/d]"</span>, <span class="st">"gas rate [MSCF/d]"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span> <span class="va">sp</span><span class="op">$</span><span class="fu">parse_signal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">}</span></span></span>
 <span class="r-in"><span>    <span class="op">)</span>,</span></span>
 <span class="r-in"><span>    values_time_increment <span class="op">=</span> <span class="st">"Daily"</span></span></span>

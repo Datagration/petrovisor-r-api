@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Myrconn.PetroVisor.Client</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/authentication.html">Authentication Guide</a></li>
+    <li><a class="dropdown-item" href="../articles/working-with-data.html">Working with Data</a></li>
+    <li><a class="dropdown-item" href="../articles/repository-service.html">Repository Service</a></li>
+    <li><a class="dropdown-item" href="../articles/machine-learning.html">Machine Learning</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -31,9 +41,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="core-classes">Core Classes<a class="anchor" aria-label="anchor" href="#core-classes"></a></h2>
 
-
+      <div class="section-desc"><p>Main classes for interacting with PetroVisor API</p></div>
 
 
     </div><div class="section level2">
@@ -43,112 +53,116 @@
 
       <dl><dt>
 
-          <code><a href="ActivityArgument.html">ActivityArgument</a></code>
+          <code><a href="ServiceProvider.html">ServiceProvider</a></code>
 
         </dt>
-        <dd>ActivityArgument</dd>
-      </dl><dl><dt>
-
-          <code><a href="ActivityMappedArgument.html">ActivityMappedArgument</a></code>
-
-        </dt>
-        <dd>ActivityMappedArgument</dd>
-      </dl><dl><dt>
-
-          <code><a href="ApiRequests.html">ApiRequests</a></code>
-
-        </dt>
-        <dd>ApiRequests</dd>
-      </dl><dl><dt>
-
-          <code><a href="AuthContext.html">AuthContext</a></code>
-
-        </dt>
-        <dd>AuthContext</dd>
+        <dd>ServiceProvider</dd>
       </dl><dl><dt>
 
           <code><a href="AuthenticationService.html">AuthenticationService</a></code>
 
         </dt>
         <dd>AuthenticationService</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="service-classes">Service Classes<a class="anchor" aria-label="anchor" href="#service-classes"></a></h2>
 
-          <code><a href="Axis.html">Axis</a></code>
+      <div class="section-desc"><p>Specialized service classes</p></div>
 
-        </dt>
-        <dd>Axis</dd>
-      </dl><dl><dt>
 
-          <code><a href="Chart.html">Chart</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>Chart</dd>
-      </dl><dl><dt>
 
-          <code><a href="CleansingCalculation.html">CleansingCalculation</a></code>
 
-        </dt>
-        <dd>CleansingCalculation</dd>
-      </dl><dl><dt>
 
-          <code><a href="CleansingFilter.html">CleansingFilter</a></code>
+      <dl><dt>
+
+          <code><a href="DataServices.html">DataServices</a></code>
 
         </dt>
-        <dd>CleansingFilter</dd>
+        <dd>DataServices</dd>
       </dl><dl><dt>
 
-          <code><a href="CleansingScript.html">CleansingScript</a></code>
+          <code><a href="RepositoryService.html">RepositoryService</a></code>
 
         </dt>
-        <dd>CleansingScript</dd>
+        <dd>RepositoryService</dd>
       </dl><dl><dt>
 
-          <code><a href="Column.html">Column</a></code>
+          <code><a href="LoggingService.html">LoggingService</a></code>
 
         </dt>
-        <dd>Column</dd>
+        <dd>LoggingService</dd>
       </dl><dl><dt>
 
-          <code><a href="ConfigurationSetting.html">ConfigurationSetting</a></code>
+          <code><a href="FileService.html">FileService</a></code>
 
         </dt>
-        <dd>ConfigurationSetting</dd>
+        <dd>FileService</dd>
       </dl><dl><dt>
 
-          <code><a href="Context.html">Context</a></code>
+          <code><a href="TagEntriesService.html">TagEntriesService</a></code>
 
         </dt>
-        <dd>Context</dd>
+        <dd>TagEntriesService</dd>
       </dl><dl><dt>
 
-          <code><a href="CustomField.html">CustomField</a></code>
+          <code><a href="MlTrainingService.html">MlTrainingService</a></code>
 
         </dt>
-        <dd>CustomField</dd>
+        <dd>MlTrainingService</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data-types">Data Types<a class="anchor" aria-label="anchor" href="#data-types"></a></h2>
+
+      <div class="section-desc"><p>Classes representing different data types</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="StaticData.html">StaticData</a></code>
+
+        </dt>
+        <dd>StaticData</dd>
       </dl><dl><dt>
 
-          <code><a href="CustomWorkflowActivity.html">CustomWorkflowActivity</a></code>
+          <code><a href="TimeData.html">TimeData</a></code>
 
         </dt>
-        <dd>CustomWorkflowActivity</dd>
+        <dd>TimeData</dd>
       </dl><dl><dt>
 
-          <code><a href="DataConnection.html">DataConnection</a></code>
+          <code><a href="DepthData.html">DepthData</a></code>
 
         </dt>
-        <dd>DataConnection</dd>
+        <dd>DepthData</dd>
       </dl><dl><dt>
 
-          <code><a href="DataIntegrationSet.html">DataIntegrationSet</a></code>
+          <code><a href="PVTData.html">PVTData</a></code>
 
         </dt>
-        <dd>DataIntegrationSet</dd>
+        <dd>PVTData</dd>
       </dl><dl><dt>
 
-          <code><a href="DataMapping.html">DataMapping</a></code>
+          <code><a href="ReferenceTable.html">ReferenceTable</a></code>
 
         </dt>
-        <dd>DataMapping</dd>
+        <dd>ReferenceTable</dd>
+      </dl><dl><dt>
+
+          <code><a href="ReferenceTableColumn.html">ReferenceTableColumn</a></code>
+
+        </dt>
+        <dd>ReferenceTableColumn</dd>
+      </dl><dl><dt>
+
+          <code><a href="PivotTable.html">PivotTable</a></code>
+
+        </dt>
+        <dd>PivotTable</dd>
       </dl><dl><dt>
 
           <code><a href="DataPoint.html">DataPoint</a></code>
@@ -157,35 +171,28 @@
         <dd>DataPoint</dd>
       </dl><dl><dt>
 
-          <code><a href="DataServices.html">DataServices</a></code>
+          <code><a href="NamedPoint.html">NamedPoint</a></code>
 
         </dt>
-        <dd>DataServices</dd>
+        <dd>NamedPoint</dd>
       </dl><dl><dt>
 
-          <code><a href="DataSetRequest.html">DataSetRequest</a></code>
+          <code><a href="Point.html">Point</a></code>
 
         </dt>
-        <dd>DataSetRequest</dd>
-      </dl><dl><dt>
+        <dd>Point</dd>
+      </dl></div><div class="section level2">
+      <h2 id="entity-signal-classes">Entity &amp; Signal Classes<a class="anchor" aria-label="anchor" href="#entity-signal-classes"></a></h2>
 
-          <code><a href="DataSource.html">DataSource</a></code>
+      <div class="section-desc"><p>Classes for entities, signals, and related objects</p></div>
 
-        </dt>
-        <dd>DataSource</dd>
-      </dl><dl><dt>
 
-          <code><a href="DcaFit.html">DcaFit</a></code>
+    </div><div class="section level2">
 
-        </dt>
-        <dd>DcaFit</dd>
-      </dl><dl><dt>
 
-          <code><a href="DepthData.html">DepthData</a></code>
 
-        </dt>
-        <dd>DepthData</dd>
-      </dl><dl><dt>
+
+      <dl><dt>
 
           <code><a href="Entity.html">Entity</a></code>
 
@@ -205,292 +212,10 @@
         <dd>EntityType</dd>
       </dl><dl><dt>
 
-          <code><a href="Event.html">Event</a></code>
-
-        </dt>
-        <dd>Event</dd>
-      </dl><dl><dt>
-
-          <code><a href="EventCalculation.html">EventCalculation</a></code>
-
-        </dt>
-        <dd>EventCalculation</dd>
-      </dl><dl><dt>
-
-          <code><a href="FileService.html">FileService</a></code>
-
-        </dt>
-        <dd>FileService</dd>
-      </dl><dl><dt>
-
-          <code><a href="Filter.html">Filter</a></code>
-
-        </dt>
-        <dd>Filter</dd>
-      </dl><dl><dt>
-
-          <code><a href="Hierarchy.html">Hierarchy</a></code>
-
-        </dt>
-        <dd>Hierarchy</dd>
-      </dl><dl><dt>
-
-          <code><a href="LogEntry.html">LogEntry</a></code>
-
-        </dt>
-        <dd>LogEntry</dd>
-      </dl><dl><dt>
-
-          <code><a href="LoggingService.html">LoggingService</a></code>
-
-        </dt>
-        <dd>LoggingService</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLCustomTrainingOptions.html">MLCustomTrainingOptions</a></code>
-
-        </dt>
-        <dd>MLCustomTrainingOptions</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLDataProviderConfig.html">MLDataProviderConfig</a></code>
-
-        </dt>
-        <dd>MLDataProviderConfig</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLModel.html">MLModel</a></code>
-
-        </dt>
-        <dd>MLModel</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLNetModel.html">MLNetModel</a></code>
-
-        </dt>
-        <dd>MLNetModel</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLNeuralNetworkTrainingOptions.html">MLNeuralNetworkTrainingOptions</a></code>
-
-        </dt>
-        <dd>MLNeuralNetworkTrainingOptions</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLPreProcessor.html">MLPreProcessor</a></code>
-
-        </dt>
-        <dd>MLPreProcessor</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTrainingContext.html">MLTrainingContext</a></code>
-
-        </dt>
-        <dd>MLTrainingContext</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTrainingFeature.html">MLTrainingFeature</a></code>
-
-        </dt>
-        <dd>MLTrainingFeature</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTrainingNumericOutcome.html">MLTrainingNumericOutcome</a></code>
-
-        </dt>
-        <dd>MLTrainingNumericOutcome</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTrainingOptions.html">MLTrainingOptions</a></code>
-
-        </dt>
-        <dd>MLTrainingOptions</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTrainingOutcome.html">MLTrainingOutcome</a></code>
-
-        </dt>
-        <dd>MLTrainingOutcome</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTrainingResult.html">MLTrainingResult</a></code>
-
-        </dt>
-        <dd>MLTrainingResult</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTrainingResults.html">MLTrainingResults</a></code>
-
-        </dt>
-        <dd>MLTrainingResults</dd>
-      </dl><dl><dt>
-
-          <code><a href="MLTransformerOptions.html">MLTransformerOptions</a></code>
-
-        </dt>
-        <dd>MLTransformerOptions</dd>
-      </dl><dl><dt>
-
-          <code><a href="MlTrainingService.html">MlTrainingService</a></code>
-
-        </dt>
-        <dd>MlTrainingService</dd>
-      </dl><dl><dt>
-
-          <code><a href="NamedPoint.html">NamedPoint</a></code>
-
-        </dt>
-        <dd>NamedPoint</dd>
-      </dl><dl><dt>
-
-          <code><a href="PSharpScript.html">PSharpScript</a></code>
-
-        </dt>
-        <dd>PSharpScript</dd>
-      </dl><dl><dt>
-
-          <code><a href="PVTData.html">PVTData</a></code>
-
-        </dt>
-        <dd>PVTData</dd>
-      </dl><dl><dt>
-
-          <code><a href="PivotTable.html">PivotTable</a></code>
-
-        </dt>
-        <dd>PivotTable</dd>
-      </dl><dl><dt>
-
-          <code><a href="Point.html">Point</a></code>
-
-        </dt>
-        <dd>Point</dd>
-      </dl><dl><dt>
-
-          <code><a href="ProcessTemplate.html">ProcessTemplate</a></code>
-
-        </dt>
-        <dd>ProcessTemplate</dd>
-      </dl><dl><dt>
-
-          <code><a href="RProviderConfiguration.html">RProviderConfiguration</a></code>
-
-        </dt>
-        <dd>RProviderConfiguration</dd>
-      </dl><dl><dt>
-
-          <code><a href="RScript.html">RScript</a></code>
-
-        </dt>
-        <dd>RScript</dd>
-      </dl><dl><dt>
-
-          <code><a href="RWorkflowActivity.html">RWorkflowActivity</a></code>
-
-        </dt>
-        <dd>RWorkflowActivity</dd>
-      </dl><dl><dt>
-
-          <code><a href="ReferenceTable.html">ReferenceTable</a></code>
-
-        </dt>
-        <dd>ReferenceTable</dd>
-      </dl><dl><dt>
-
-          <code><a href="ReferenceTableColumn.html">ReferenceTableColumn</a></code>
-
-        </dt>
-        <dd>ReferenceTableColumn</dd>
-      </dl><dl><dt>
-
-          <code><a href="RepositoryService.html">RepositoryService</a></code>
-
-        </dt>
-        <dd>RepositoryService</dd>
-      </dl><dl><dt>
-
-          <code><a href="Scenario.html">Scenario</a></code>
-
-        </dt>
-        <dd>Scenario</dd>
-      </dl><dl><dt>
-
-          <code><a href="ScheduleEnd.html">ScheduleEnd</a></code>
-
-        </dt>
-        <dd>ScheduleEnd</dd>
-      </dl><dl><dt>
-
-          <code><a href="ScheduleRecurrence.html">ScheduleRecurrence</a></code>
-
-        </dt>
-        <dd>ScheduleRecurrence</dd>
-      </dl><dl><dt>
-
-          <code><a href="Scope.html">Scope</a></code>
-
-        </dt>
-        <dd>Scope</dd>
-      </dl><dl><dt>
-
-          <code><a href="SeriesSetting.html">SeriesSetting</a></code>
-
-        </dt>
-        <dd>SeriesSetting</dd>
-      </dl><dl><dt>
-
-          <code><a href="ServiceProvider.html">ServiceProvider</a></code>
-
-        </dt>
-        <dd>ServiceProvider</dd>
-      </dl><dl><dt>
-
           <code><a href="Signal.html">Signal</a></code>
 
         </dt>
         <dd>Signal</dd>
-      </dl><dl><dt>
-
-          <code><a href="StaticData.html">StaticData</a></code>
-
-        </dt>
-        <dd>StaticData</dd>
-      </dl><dl><dt>
-
-          <code><a href="Step.html">Step</a></code>
-
-        </dt>
-        <dd>Step</dd>
-      </dl><dl><dt>
-
-          <code><a href="TableCalculation.html">TableCalculation</a></code>
-
-        </dt>
-        <dd>TableCalculation</dd>
-      </dl><dl><dt>
-
-          <code><a href="Tag.html">Tag</a></code>
-
-        </dt>
-        <dd>Tag</dd>
-      </dl><dl><dt>
-
-          <code><a href="TagEntriesService.html">TagEntriesService</a></code>
-
-        </dt>
-        <dd>TagEntriesService</dd>
-      </dl><dl><dt>
-
-          <code><a href="TagEntry.html">TagEntry</a></code>
-
-        </dt>
-        <dd>TagEntry</dd>
-      </dl><dl><dt>
-
-          <code><a href="TimeData.html">TimeData</a></code>
-
-        </dt>
-        <dd>TimeData</dd>
       </dl><dl><dt>
 
           <code><a href="Unit.html">Unit</a></code>
@@ -504,6 +229,41 @@
         </dt>
         <dd>UnitMeasurement</dd>
       </dl><dl><dt>
+
+          <code><a href="Hierarchy.html">Hierarchy</a></code>
+
+        </dt>
+        <dd>Hierarchy</dd>
+      </dl><dl><dt>
+
+          <code><a href="Tag.html">Tag</a></code>
+
+        </dt>
+        <dd>Tag</dd>
+      </dl><dl><dt>
+
+          <code><a href="TagEntry.html">TagEntry</a></code>
+
+        </dt>
+        <dd>TagEntry</dd>
+      </dl><dl><dt>
+
+          <code><a href="CustomField.html">CustomField</a></code>
+
+        </dt>
+        <dd>CustomField</dd>
+      </dl></div><div class="section level2">
+      <h2 id="workflow-script-classes">Workflow &amp; Script Classes<a class="anchor" aria-label="anchor" href="#workflow-script-classes"></a></h2>
+
+      <div class="section-desc"><p>Classes for workflows and scripts</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="Workflow.html">Workflow</a></code>
 
@@ -523,24 +283,380 @@
         <dd>WorkflowSchedule</dd>
       </dl><dl><dt>
 
+          <code><a href="ScheduleRecurrence.html">ScheduleRecurrence</a></code>
+
+        </dt>
+        <dd>ScheduleRecurrence</dd>
+      </dl><dl><dt>
+
+          <code><a href="ScheduleEnd.html">ScheduleEnd</a></code>
+
+        </dt>
+        <dd>ScheduleEnd</dd>
+      </dl><dl><dt>
+
+          <code><a href="ProcessTemplate.html">ProcessTemplate</a></code>
+
+        </dt>
+        <dd>ProcessTemplate</dd>
+      </dl><dl><dt>
+
+          <code><a href="Step.html">Step</a></code>
+
+        </dt>
+        <dd>Step</dd>
+      </dl><dl><dt>
+
+          <code><a href="RScript.html">RScript</a></code>
+
+        </dt>
+        <dd>RScript</dd>
+      </dl><dl><dt>
+
+          <code><a href="PSharpScript.html">PSharpScript</a></code>
+
+        </dt>
+        <dd>PSharpScript</dd>
+      </dl><dl><dt>
+
+          <code><a href="RWorkflowActivity.html">RWorkflowActivity</a></code>
+
+        </dt>
+        <dd>RWorkflowActivity</dd>
+      </dl><dl><dt>
+
+          <code><a href="CustomWorkflowActivity.html">CustomWorkflowActivity</a></code>
+
+        </dt>
+        <dd>CustomWorkflowActivity</dd>
+      </dl><dl><dt>
+
+          <code><a href="ActivityArgument.html">ActivityArgument</a></code>
+
+        </dt>
+        <dd>ActivityArgument</dd>
+      </dl><dl><dt>
+
+          <code><a href="ActivityMappedArgument.html">ActivityMappedArgument</a></code>
+
+        </dt>
+        <dd>ActivityMappedArgument</dd>
+      </dl></div><div class="section level2">
+      <h2 id="machine-learning">Machine Learning<a class="anchor" aria-label="anchor" href="#machine-learning"></a></h2>
+
+      <div class="section-desc"><p>Machine learning related classes</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="MlTrainingService.html">MlTrainingService</a></code>
+
+        </dt>
+        <dd>MlTrainingService</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLModel.html">MLModel</a></code>
+
+        </dt>
+        <dd>MLModel</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLNetModel.html">MLNetModel</a></code>
+
+        </dt>
+        <dd>MLNetModel</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTrainingContext.html">MLTrainingContext</a></code>
+
+        </dt>
+        <dd>MLTrainingContext</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTrainingOptions.html">MLTrainingOptions</a></code>
+
+        </dt>
+        <dd>MLTrainingOptions</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLCustomTrainingOptions.html">MLCustomTrainingOptions</a></code>
+
+        </dt>
+        <dd>MLCustomTrainingOptions</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLNeuralNetworkTrainingOptions.html">MLNeuralNetworkTrainingOptions</a></code>
+
+        </dt>
+        <dd>MLNeuralNetworkTrainingOptions</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTransformerOptions.html">MLTransformerOptions</a></code>
+
+        </dt>
+        <dd>MLTransformerOptions</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTrainingFeature.html">MLTrainingFeature</a></code>
+
+        </dt>
+        <dd>MLTrainingFeature</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTrainingOutcome.html">MLTrainingOutcome</a></code>
+
+        </dt>
+        <dd>MLTrainingOutcome</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTrainingNumericOutcome.html">MLTrainingNumericOutcome</a></code>
+
+        </dt>
+        <dd>MLTrainingNumericOutcome</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTrainingResult.html">MLTrainingResult</a></code>
+
+        </dt>
+        <dd>MLTrainingResult</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLTrainingResults.html">MLTrainingResults</a></code>
+
+        </dt>
+        <dd>MLTrainingResults</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLPreProcessor.html">MLPreProcessor</a></code>
+
+        </dt>
+        <dd>MLPreProcessor</dd>
+      </dl><dl><dt>
+
+          <code><a href="MLDataProviderConfig.html">MLDataProviderConfig</a></code>
+
+        </dt>
+        <dd>MLDataProviderConfig</dd>
+      </dl><dl><dt>
+
+          <code><a href="RProviderConfiguration.html">RProviderConfiguration</a></code>
+
+        </dt>
+        <dd>RProviderConfiguration</dd>
+      </dl></div><div class="section level2">
+      <h2 id="calculation-analysis">Calculation &amp; Analysis<a class="anchor" aria-label="anchor" href="#calculation-analysis"></a></h2>
+
+      <div class="section-desc"><p>Classes for calculations and analysis</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="CleansingCalculation.html">CleansingCalculation</a></code>
+
+        </dt>
+        <dd>CleansingCalculation</dd>
+      </dl><dl><dt>
+
+          <code><a href="EventCalculation.html">EventCalculation</a></code>
+
+        </dt>
+        <dd>EventCalculation</dd>
+      </dl><dl><dt>
+
+          <code><a href="TableCalculation.html">TableCalculation</a></code>
+
+        </dt>
+        <dd>TableCalculation</dd>
+      </dl><dl><dt>
+
+          <code><a href="DcaFit.html">DcaFit</a></code>
+
+        </dt>
+        <dd>DcaFit</dd>
+      </dl><dl><dt>
+
+          <code><a href="Chart.html">Chart</a></code>
+
+        </dt>
+        <dd>Chart</dd>
+      </dl><dl><dt>
+
+          <code><a href="Axis.html">Axis</a></code>
+
+        </dt>
+        <dd>Axis</dd>
+      </dl><dl><dt>
+
+          <code><a href="SeriesSetting.html">SeriesSetting</a></code>
+
+        </dt>
+        <dd>SeriesSetting</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data-integration">Data Integration<a class="anchor" aria-label="anchor" href="#data-integration"></a></h2>
+
+      <div class="section-desc"><p>Classes for data connections and integration</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="DataConnection.html">DataConnection</a></code>
+
+        </dt>
+        <dd>DataConnection</dd>
+      </dl><dl><dt>
+
+          <code><a href="DataIntegrationSet.html">DataIntegrationSet</a></code>
+
+        </dt>
+        <dd>DataIntegrationSet</dd>
+      </dl><dl><dt>
+
+          <code><a href="DataMapping.html">DataMapping</a></code>
+
+        </dt>
+        <dd>DataMapping</dd>
+      </dl><dl><dt>
+
+          <code><a href="DataSource.html">DataSource</a></code>
+
+        </dt>
+        <dd>DataSource</dd>
+      </dl></div><div class="section level2">
+      <h2 id="supporting-classes">Supporting Classes<a class="anchor" aria-label="anchor" href="#supporting-classes"></a></h2>
+
+      <div class="section-desc"><p>Helper and configuration classes</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="ApiRequests.html">ApiRequests</a></code>
+
+        </dt>
+        <dd>ApiRequests</dd>
+      </dl><dl><dt>
+
+          <code><a href="AuthContext.html">AuthContext</a></code>
+
+        </dt>
+        <dd>AuthContext</dd>
+      </dl><dl><dt>
+
+          <code><a href="Context.html">Context</a></code>
+
+        </dt>
+        <dd>Context</dd>
+      </dl><dl><dt>
+
+          <code><a href="DataSetRequest.html">DataSetRequest</a></code>
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+        </dt>
+        <dd>DataSetRequest</dd>
+      </dl><dl><dt>
+
+          <code><a href="Filter.html">Filter</a></code>
+
+        </dt>
+        <dd>Filter</dd>
+      </dl><dl><dt>
+
+          <code><a href="CleansingFilter.html">CleansingFilter</a></code>
+
+        </dt>
+        <dd>CleansingFilter</dd>
+      </dl><dl><dt>
+
+          <code><a href="CleansingScript.html">CleansingScript</a></code>
+
+        </dt>
+        <dd>CleansingScript</dd>
+      </dl><dl><dt>
+
+          <code><a href="Scope.html">Scope</a></code>
+
+        </dt>
+        <dd>Scope</dd>
+      </dl><dl><dt>
+
+          <code><a href="Scenario.html">Scenario</a></code>
+
+        </dt>
+        <dd>Scenario</dd>
+      </dl><dl><dt>
+
+          <code><a href="LogEntry.html">LogEntry</a></code>
+
+        </dt>
+        <dd>LogEntry</dd>
+      </dl><dl><dt>
+
+          <code><a href="Event.html">Event</a></code>
+
+        </dt>
+        <dd>Event</dd>
+      </dl><dl><dt>
+
+          <code><a href="Column.html">Column</a></code>
+
+        </dt>
+        <dd>Column</dd>
+      </dl><dl><dt>
+
+          <code><a href="ConfigurationSetting.html">ConfigurationSetting</a></code>
+
+        </dt>
+        <dd>ConfigurationSetting</dd>
+      </dl></div><div class="section level2">
+      <h2 id="authentication-helpers">Authentication Helpers<a class="anchor" aria-label="anchor" href="#authentication-helpers"></a></h2>
+
+      <div class="section-desc"><p>Helper functions for authentication</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
           <code><a href="get_auth_context.html">get_auth_context()</a></code>
 
         </dt>
         <dd>Get Authentication Context</dd>
       </dl><dl><dt>
 
-          <code><a href="require_authentication.html">require_authentication()</a></code>
-
-        </dt>
-        <dd>Require Authentication</dd>
-      </dl><dl><dt>
-
           <code><a href="with_auth_context.html">with_auth_context()</a></code>
 
         </dt>
         <dd>With Authentication Context</dd>
+      </dl><dl><dt>
+
+          <code><a href="require_authentication.html">require_authentication()</a></code>
+
+        </dt>
+        <dd>Require Authentication</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

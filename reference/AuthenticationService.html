@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Myrconn.PetroVisor.Client</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/authentication.html">Authentication Guide</a></li>
+    <li><a class="dropdown-item" href="../articles/working-with-data.html">Working with Data</a></li>
+    <li><a class="dropdown-item" href="../articles/repository-service.html">Repository Service</a></li>
+    <li><a class="dropdown-item" href="../articles/machine-learning.html">Machine Learning</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -40,7 +50,19 @@
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This class includes methods to obtain access tokens using various
-authentication mechanisms such as API keys, user credentials, and refresh tokens.</p>
+authentication mechanisms such as API keys, user credentials, and refresh
+tokens.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Related classes:</p><ul><li><p><a href="ServiceProvider.html">ServiceProvider</a> for using tokens with the service provider</p></li>
+<li><p><a href="AuthContext.html">AuthContext</a> for managing authentication context</p></li>
+</ul><p>Authentication helpers:</p><ul><li><p><code><a href="get_auth_context.html">get_auth_context()</a></code> for accessing the global authentication context</p></li>
+<li><p><code><a href="with_auth_context.html">with_auth_context()</a></code> for executing code with specific authentication</p></li>
+<li><p><code><a href="require_authentication.html">require_authentication()</a></code> for ensuring authentication is present</p></li>
+</ul><p>Vignettes:</p><ul><li><p><code><a href="../articles/authentication.html">vignette("authentication")</a></code> for comprehensive authentication guide</p></li>
+<li><p><code><a href="../articles/getting-started.html">vignette("getting-started")</a></code> for basic setup and usage</p></li>
+</ul></div>
     </div>
 
     <div class="section level2">

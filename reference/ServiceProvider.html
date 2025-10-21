@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Myrconn.PetroVisor.Client</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/authentication.html">Authentication Guide</a></li>
+    <li><a class="dropdown-item" href="../articles/working-with-data.html">Working with Data</a></li>
+    <li><a class="dropdown-item" href="../articles/repository-service.html">Repository Service</a></li>
+    <li><a class="dropdown-item" href="../articles/machine-learning.html">Machine Learning</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -46,6 +56,23 @@
     <p>This class allows interaction with the PetroVisor API by providing
 access to various services such as logging, repository, data, and tag
 entries.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Service classes for interacting with PetroVisor:</p><ul><li><p><a href="AuthenticationService.html">AuthenticationService</a> for authentication methods</p></li>
+<li><p><a href="DataServices.html">DataServices</a> for loading and saving data</p></li>
+<li><p><a href="RepositoryService.html">RepositoryService</a> for managing items (entities, signals, units, etc.)</p></li>
+<li><p><a href="LoggingService.html">LoggingService</a> for logging operations</p></li>
+<li><p><a href="FileService.html">FileService</a> for file operations</p></li>
+<li><p><a href="MlTrainingService.html">MlTrainingService</a> for machine learning</p></li>
+<li><p><a href="TagEntriesService.html">TagEntriesService</a> for tag entry operations</p></li>
+</ul><p>Authentication helpers:</p><ul><li><p><code><a href="get_auth_context.html">get_auth_context()</a></code> for accessing the authentication context</p></li>
+<li><p><code><a href="with_auth_context.html">with_auth_context()</a></code> for executing code with specific auth context</p></li>
+<li><p><code><a href="require_authentication.html">require_authentication()</a></code> for ensuring authentication</p></li>
+</ul><p>Vignettes:</p><ul><li><p><code><a href="../articles/getting-started.html">vignette("getting-started")</a></code> for an introduction to the package</p></li>
+<li><p><code><a href="../articles/authentication.html">vignette("authentication")</a></code> for authentication details</p></li>
+<li><p><code><a href="../articles/working-with-data.html">vignette("working-with-data")</a></code> for data operations</p></li>
+</ul></div>
     </div>
     <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
@@ -121,6 +148,7 @@ all functionality related to ML model training and prediction.</p></dd>
 <li><p><a href="#method-ServiceProvider-set_workspace_data_url"><code>ServiceProvider$set_workspace_data_url()</code></a></p></li>
 <li><p><a href="#method-ServiceProvider-getDataUrl"><code>ServiceProvider$getDataUrl()</code></a></p></li>
 <li><p><a href="#method-ServiceProvider-convert_unit"><code>ServiceProvider$convert_unit()</code></a></p></li>
+<li><p><a href="#method-ServiceProvider-send_mail"><code>ServiceProvider$send_mail()</code></a></p></li>
 <li><p><a href="#method-ServiceProvider-clone"><code>ServiceProvider$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-ServiceProvider-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -231,15 +259,52 @@ values.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ServiceProvider-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
-<p>The objects of this class are cloneable with this method.</p><div class="section">
+</div><p></p><hr><a id="method-ServiceProvider-send_mail"></a><div class="section">
+<h3 id="method-send-mail-">Method <code>send_mail()</code><a class="anchor" aria-label="anchor" href="#method-send-mail-"></a></h3>
+<p>Send an email using the PetroVisor email configuration.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ServiceProvider</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ServiceProvider</span><span class="op">$</span><span class="fu">send_mail</span><span class="op">(</span><span class="va">address</span>, <span class="va">subject</span>, <span class="va">body</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>address</code></dt>
+<dd><p>The recipient email address (single string).</p></dd>
+
+
+<dt><code>subject</code></dt>
+<dd><p>The subject of the email.</p></dd>
+
+
+<dt><code>body</code></dt>
+<dd><p>The body content of the email.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
+  # Send a simple email
+  sp$send_mail(
+    address = "example@domain.com",
+    subject = "Test Subject",
+    body = "This is a test email from PetroVisor R client."
+  )
+}
+</code></pre></div><p></p></div>
+</div>
+
+
+</div><p></p><hr><a id="method-ServiceProvider-clone"></a><div class="section">
+<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p>The objects of this class are cloneable with this method.</p><div class="section">
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ServiceProvider</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -267,6 +332,19 @@ values.</p></dd>
 <span class="r-in"><span>  user <span class="op">=</span> <span class="st">"your_username"</span>,</span></span>
 <span class="r-in"><span>  password <span class="op">=</span> <span class="st">"your_password"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `ServiceProvider$send_mail`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span>  <span class="co"># Send a simple email</span></span></span>
+<span class="r-in"><span>  <span class="va">sp</span><span class="op">$</span><span class="fu">send_mail</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    address <span class="op">=</span> <span class="st">"example@domain.com"</span>,</span></span>
+<span class="r-in"><span>    subject <span class="op">=</span> <span class="st">"Test Subject"</span>,</span></span>
+<span class="r-in"><span>    body <span class="op">=</span> <span class="st">"This is a test email from PetroVisor R client."</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

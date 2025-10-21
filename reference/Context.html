@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">Myrconn.PetroVisor.Client</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Guides</h6></li>
+    <li><a class="dropdown-item" href="../articles/authentication.html">Authentication Guide</a></li>
+    <li><a class="dropdown-item" href="../articles/working-with-data.html">Working with Data</a></li>
+    <li><a class="dropdown-item" href="../articles/repository-service.html">Repository Service</a></li>
+    <li><a class="dropdown-item" href="../articles/machine-learning.html">Machine Learning</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -38,22 +48,33 @@
 
 
     <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index">
+<ul><li><p><a href="Scope.html">Scope</a> for scope definitions</p></li>
+<li><p><a href="EntitySet.html">EntitySet</a> for entity set definitions</p></li>
+<li><p><a href="Hierarchy.html">Hierarchy</a> for hierarchy definitions</p></li>
+<li><p><a href="RepositoryService.html">RepositoryService</a> for loading and saving contexts</p></li>
+<li><p><a href="DataServices.html">DataServices</a> for using contexts in data queries</p></li>
+<li><p><code><a href="../articles/working-with-data.html">vignette("working-with-data")</a></code> for data examples</p></li>
+</ul></div>
+    </div>
+    <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
     <p></p><div class="r6-fields"><dl><dt><code>name</code></dt>
 <dd><p>The name of the context.</p></dd>
 
 
 <dt><code>entity_set</code></dt>
-<dd><p>The context's entity set (object of class EntitySet).</p></dd>
+<dd><p>The context's <a href="EntitySet.html">EntitySet</a> defining which entities to
+include.</p></dd>
 
 
 <dt><code>scope</code></dt>
-<dd><p>The context's scope (object of class Scope).</p></dd>
+<dd><p>The context's <a href="Scope.html">Scope</a> defining the time or depth range.</p></dd>
 
 
 <dt><code>hierarchy</code></dt>
-<dd><p>(Optional) The hierarchy used for automatic aggregation
-(Object of type Hierarchy).</p></dd>
+<dd><p>(Optional) The <a href="Hierarchy.html">Hierarchy</a> used for automatic aggregation.</p></dd>
 
 
 <dt><code>loading_scenario_name</code></dt>
@@ -118,16 +139,17 @@ data.</p></dd>
 
 
 <dt><code>entity_set</code></dt>
-<dd><p>The context's entity set (object of class EntitySet).</p></dd>
+<dd><p>The context's <a href="EntitySet.html">EntitySet</a> defining which entities to
+include.</p></dd>
 
 
 <dt><code>scope</code></dt>
-<dd><p>The context's scope (object of class Scope).</p></dd>
+<dd><p>The context's <a href="Scope.html">Scope</a> defining the time or depth range.</p></dd>
 
 
 <dt><code>hierarchy</code></dt>
-<dd><p>(Optional) The hierarchy used for automatic aggregation
-(Object of type Hierarchy).</p></dd>
+<dd><p>(Optional) The <a href="Hierarchy.html">Hierarchy</a> used for automatic
+aggregation.</p></dd>
 
 
 <dt><code>loading_scenario_name</code></dt>
@@ -170,7 +192,7 @@ with workspace data.</p></dd>
 <div class="section">
 <h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
 <p>Convert the object to a list. This function is mainly used
-by the RepositoryService to convert the objects to lists and then
+by the <a href="RepositoryService.html">RepositoryService</a> to convert the objects to lists and then
 call the web API.</p>
 </div>
 
