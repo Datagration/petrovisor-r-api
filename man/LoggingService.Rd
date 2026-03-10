@@ -38,9 +38,6 @@ entry2 <- LogEntry$new(message = "Test2",
                        category = "Tag",
                        severity = "Information")
 sp$logs$save(list(entry1, entry2))
-
-# remove all log entries
-sp$logs$delete(days_to_keep = 0)
 }
 }
 \seealso{
@@ -60,7 +57,6 @@ sp$logs$delete(days_to_keep = 0)
 \item \href{#method-LoggingService-load_categories}{\code{LoggingService$load_categories()}}
 \item \href{#method-LoggingService-load}{\code{LoggingService$load()}}
 \item \href{#method-LoggingService-save}{\code{LoggingService$save()}}
-\item \href{#method-LoggingService-delete}{\code{LoggingService$delete()}}
 \item \href{#method-LoggingService-clone}{\code{LoggingService$clone()}}
 }
 }
@@ -163,26 +159,6 @@ Add one or several log entries to the database at once.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{log_entries}}{a list of LogEntry-objects.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-LoggingService-delete"></a>}}
-\if{latex}{\out{\hypertarget{method-LoggingService-delete}{}}}
-\subsection{Method \code{delete()}}{
-Remove log entries from the database.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{LoggingService$delete(days_to_keep = 0, category)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{days_to_keep}}{Keep the log entries of the last n days in the
-log. Defaults to 0.}
-
-\item{\code{category}}{Remove log entries of the specified category only.}
 }
 \if{html}{\out{</div>}}
 }

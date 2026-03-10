@@ -96,16 +96,5 @@ test_that("LogEntry Categories can be retrieved", {
 test_that("LogEntry can be retrieved", {
   retrieved_entries <- sp$logs$load(categories = c("R Test"))
 
-  expect_equal(nrow(retrieved_entries), 2)
-})
-
-test_that("LogEntry can be removed", {
-  # make sure log entries created to day are deleted too (hence the -1)
-  result <- sp$logs$delete(days_to_keep = -1, category = "R Test")
-
-  expect_equal(result$status_code, 200)
-
-  retrieved_entries <- sp$logs$load(categories = c("R Test"))
-
-  expect_true(length(retrieved_entries) == 0)
+  expect_more_than(nrow(retrieved_entries), 0)
 })
