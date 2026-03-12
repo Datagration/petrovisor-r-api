@@ -1,0 +1,311 @@
+# Myrconn.PetroVisor.Client
+
+This package provides a wrapper for the PetroVisor API, enabling users
+to interact with PetroVisor services directly from R. It includes
+functionalities for authentication, data retrieval, logging, and more.
+
+## Installation
+
+To install the package using `remotes`, run the following command:
+
+``` r
+# Install from GitHub
+remotes::install_github("Datagration/petrovisor-r-api")
+```
+
+## Example
+
+### Authentication
+
+Authenticate with the PetroVisor API using an API key,
+username/password, or refresh token.
+
+``` r
+library(Myrconn.PetroVisor.Client)
+
+# Create an instance of the AuthenticationService
+auth_service <- AuthenticationService$new()
+
+# Get access token using API key
+token <- auth_service$get_access_token(
+  key = "your_api_key",
+  discovery_url = "https://identity.us1.petrovisor.com"
+)
+
+# Get access token using username and password
+token <- auth_service$get_access_token(
+  username = "user",
+  password = "pass",
+  discovery_url = "https://identity.us1.petrovisor.com"
+)
+```
+
+### Service Provider
+
+Use the `ServiceProvider` class to interact with various PetroVisor
+services.
+
+``` r
+# Create a new instance of the ServiceProvider using a token
+sp <- ServiceProvider$new(
+  url = "https://identity.us1.petrovisor.com",
+  client_token = "your_token_here"
+)
+
+# Create a new instance of the ServiceProvider using username and password
+sp <- ServiceProvider$new(
+  url = "https://identity.us1.petrovisor.com",
+  workspace = "your_workspace_name",
+  user = "your_user_name",
+  password = "your_password"
+)
+
+# Load all available log entries
+log_entries <- sp$logs$load()
+
+# Load the names of all available entities
+entity_names <- sp$items$load_names("Entity")
+```
+
+## License
+
+This package is licensed under the MIT License. See the `LICENSE` file
+for details.
+
+# Package index
+
+## Core Classes
+
+Main classes for interacting with PetroVisor API
+
+- [`ServiceProvider`](https://datagration.github.io/petrovisor-r-api/reference/ServiceProvider.md)
+  : ServiceProvider
+- [`AuthenticationService`](https://datagration.github.io/petrovisor-r-api/reference/AuthenticationService.md)
+  : AuthenticationService
+
+## Service Classes
+
+Specialized service classes
+
+- [`DataServices`](https://datagration.github.io/petrovisor-r-api/reference/DataServices.md)
+  : DataServices
+- [`RepositoryService`](https://datagration.github.io/petrovisor-r-api/reference/RepositoryService.md)
+  : RepositoryService
+- [`LoggingService`](https://datagration.github.io/petrovisor-r-api/reference/LoggingService.md)
+  : LoggingService
+- [`FileService`](https://datagration.github.io/petrovisor-r-api/reference/FileService.md)
+  : FileService
+- [`TagEntriesService`](https://datagration.github.io/petrovisor-r-api/reference/TagEntriesService.md)
+  : TagEntriesService
+- [`MlTrainingService`](https://datagration.github.io/petrovisor-r-api/reference/MlTrainingService.md)
+  : MlTrainingService
+
+## Data Types
+
+Classes representing different data types
+
+- [`StaticData`](https://datagration.github.io/petrovisor-r-api/reference/StaticData.md)
+  : StaticData
+- [`TimeData`](https://datagration.github.io/petrovisor-r-api/reference/TimeData.md)
+  : TimeData
+- [`DepthData`](https://datagration.github.io/petrovisor-r-api/reference/DepthData.md)
+  : DepthData
+- [`PVTData`](https://datagration.github.io/petrovisor-r-api/reference/PVTData.md)
+  : PVTData
+- [`ReferenceTable`](https://datagration.github.io/petrovisor-r-api/reference/ReferenceTable.md)
+  : ReferenceTable
+- [`ReferenceTableColumn`](https://datagration.github.io/petrovisor-r-api/reference/ReferenceTableColumn.md)
+  : ReferenceTableColumn
+- [`PivotTable`](https://datagration.github.io/petrovisor-r-api/reference/PivotTable.md)
+  : PivotTable
+- [`DataPoint`](https://datagration.github.io/petrovisor-r-api/reference/DataPoint.md)
+  : DataPoint
+- [`NamedPoint`](https://datagration.github.io/petrovisor-r-api/reference/NamedPoint.md)
+  : NamedPoint
+- [`Point`](https://datagration.github.io/petrovisor-r-api/reference/Point.md)
+  : Point
+
+## Entity & Signal Classes
+
+Classes for entities, signals, and related objects
+
+- [`Entity`](https://datagration.github.io/petrovisor-r-api/reference/Entity.md)
+  : Entity
+- [`EntitySet`](https://datagration.github.io/petrovisor-r-api/reference/EntitySet.md)
+  : EntitySet
+- [`EntityType`](https://datagration.github.io/petrovisor-r-api/reference/EntityType.md)
+  : EntityType
+- [`Signal`](https://datagration.github.io/petrovisor-r-api/reference/Signal.md)
+  : Signal
+- [`Unit`](https://datagration.github.io/petrovisor-r-api/reference/Unit.md)
+  : Unit
+- [`UnitMeasurement`](https://datagration.github.io/petrovisor-r-api/reference/UnitMeasurement.md)
+  : UnitMeasurement
+- [`Hierarchy`](https://datagration.github.io/petrovisor-r-api/reference/Hierarchy.md)
+  : Hierarchy
+- [`Tag`](https://datagration.github.io/petrovisor-r-api/reference/Tag.md)
+  : Tag
+- [`TagEntry`](https://datagration.github.io/petrovisor-r-api/reference/TagEntry.md)
+  : TagEntry
+- [`CustomField`](https://datagration.github.io/petrovisor-r-api/reference/CustomField.md)
+  : CustomField
+
+## Workflow & Script Classes
+
+Classes for workflows and scripts
+
+- [`Workflow`](https://datagration.github.io/petrovisor-r-api/reference/Workflow.md)
+  : Workflow
+- [`WorkflowActivity`](https://datagration.github.io/petrovisor-r-api/reference/WorkflowActivity.md)
+  : WorkflowActivity
+- [`WorkflowSchedule`](https://datagration.github.io/petrovisor-r-api/reference/WorkflowSchedule.md)
+  : WorkflowSchedule
+- [`ScheduleRecurrence`](https://datagration.github.io/petrovisor-r-api/reference/ScheduleRecurrence.md)
+  : ScheduleRecurrence
+- [`ScheduleEnd`](https://datagration.github.io/petrovisor-r-api/reference/ScheduleEnd.md)
+  : ScheduleEnd
+- [`ProcessTemplate`](https://datagration.github.io/petrovisor-r-api/reference/ProcessTemplate.md)
+  : ProcessTemplate
+- [`Step`](https://datagration.github.io/petrovisor-r-api/reference/Step.md)
+  : Step
+- [`RScript`](https://datagration.github.io/petrovisor-r-api/reference/RScript.md)
+  : RScript
+- [`PSharpScript`](https://datagration.github.io/petrovisor-r-api/reference/PSharpScript.md)
+  : PSharpScript
+- [`RWorkflowActivity`](https://datagration.github.io/petrovisor-r-api/reference/RWorkflowActivity.md)
+  : RWorkflowActivity
+- [`CustomWorkflowActivity`](https://datagration.github.io/petrovisor-r-api/reference/CustomWorkflowActivity.md)
+  : CustomWorkflowActivity
+- [`ActivityArgument`](https://datagration.github.io/petrovisor-r-api/reference/ActivityArgument.md)
+  : ActivityArgument
+- [`ActivityMappedArgument`](https://datagration.github.io/petrovisor-r-api/reference/ActivityMappedArgument.md)
+  : ActivityMappedArgument
+
+## Machine Learning
+
+Machine learning related classes
+
+- [`MlTrainingService`](https://datagration.github.io/petrovisor-r-api/reference/MlTrainingService.md)
+  : MlTrainingService
+- [`MLModel`](https://datagration.github.io/petrovisor-r-api/reference/MLModel.md)
+  : MLModel
+- [`MLNetModel`](https://datagration.github.io/petrovisor-r-api/reference/MLNetModel.md)
+  : MLNetModel
+- [`MLTrainingContext`](https://datagration.github.io/petrovisor-r-api/reference/MLTrainingContext.md)
+  : MLTrainingContext
+- [`MLTrainingOptions`](https://datagration.github.io/petrovisor-r-api/reference/MLTrainingOptions.md)
+  : MLTrainingOptions
+- [`MLCustomTrainingOptions`](https://datagration.github.io/petrovisor-r-api/reference/MLCustomTrainingOptions.md)
+  : MLCustomTrainingOptions
+- [`MLNeuralNetworkTrainingOptions`](https://datagration.github.io/petrovisor-r-api/reference/MLNeuralNetworkTrainingOptions.md)
+  : MLNeuralNetworkTrainingOptions
+- [`MLTransformerOptions`](https://datagration.github.io/petrovisor-r-api/reference/MLTransformerOptions.md)
+  : MLTransformerOptions
+- [`MLTrainingFeature`](https://datagration.github.io/petrovisor-r-api/reference/MLTrainingFeature.md)
+  : MLTrainingFeature
+- [`MLTrainingOutcome`](https://datagration.github.io/petrovisor-r-api/reference/MLTrainingOutcome.md)
+  : MLTrainingOutcome
+- [`MLTrainingNumericOutcome`](https://datagration.github.io/petrovisor-r-api/reference/MLTrainingNumericOutcome.md)
+  : MLTrainingNumericOutcome
+- [`MLTrainingResult`](https://datagration.github.io/petrovisor-r-api/reference/MLTrainingResult.md)
+  : MLTrainingResult
+- [`MLTrainingResults`](https://datagration.github.io/petrovisor-r-api/reference/MLTrainingResults.md)
+  : MLTrainingResults
+- [`MLPreProcessor`](https://datagration.github.io/petrovisor-r-api/reference/MLPreProcessor.md)
+  : MLPreProcessor
+- [`MLDataProviderConfig`](https://datagration.github.io/petrovisor-r-api/reference/MLDataProviderConfig.md)
+  : MLDataProviderConfig
+- [`RProviderConfiguration`](https://datagration.github.io/petrovisor-r-api/reference/RProviderConfiguration.md)
+  : RProviderConfiguration
+
+## Calculation & Analysis
+
+Classes for calculations and analysis
+
+- [`CleansingCalculation`](https://datagration.github.io/petrovisor-r-api/reference/CleansingCalculation.md)
+  : CleansingCalculation
+- [`EventCalculation`](https://datagration.github.io/petrovisor-r-api/reference/EventCalculation.md)
+  : EventCalculation
+- [`TableCalculation`](https://datagration.github.io/petrovisor-r-api/reference/TableCalculation.md)
+  : TableCalculation
+- [`DcaFit`](https://datagration.github.io/petrovisor-r-api/reference/DcaFit.md)
+  : DcaFit
+- [`Chart`](https://datagration.github.io/petrovisor-r-api/reference/Chart.md)
+  : Chart
+- [`Axis`](https://datagration.github.io/petrovisor-r-api/reference/Axis.md)
+  : Axis
+- [`SeriesSetting`](https://datagration.github.io/petrovisor-r-api/reference/SeriesSetting.md)
+  : SeriesSetting
+
+## Data Integration
+
+Classes for data connections and integration
+
+- [`DataConnection`](https://datagration.github.io/petrovisor-r-api/reference/DataConnection.md)
+  : DataConnection
+- [`DataIntegrationSet`](https://datagration.github.io/petrovisor-r-api/reference/DataIntegrationSet.md)
+  : DataIntegrationSet
+- [`DataMapping`](https://datagration.github.io/petrovisor-r-api/reference/DataMapping.md)
+  : DataMapping
+- [`DataSource`](https://datagration.github.io/petrovisor-r-api/reference/DataSource.md)
+  : DataSource
+
+## Supporting Classes
+
+Helper and configuration classes
+
+- [`ApiRequests`](https://datagration.github.io/petrovisor-r-api/reference/ApiRequests.md)
+  : ApiRequests
+- [`AuthContext`](https://datagration.github.io/petrovisor-r-api/reference/AuthContext.md)
+  : AuthContext
+- [`Context`](https://datagration.github.io/petrovisor-r-api/reference/Context.md)
+  : Context
+- [`DataSetRequest`](https://datagration.github.io/petrovisor-r-api/reference/DataSetRequest.md)
+  **\[deprecated\]** : DataSetRequest
+- [`Filter`](https://datagration.github.io/petrovisor-r-api/reference/Filter.md)
+  : Filter
+- [`CleansingFilter`](https://datagration.github.io/petrovisor-r-api/reference/CleansingFilter.md)
+  : CleansingFilter
+- [`CleansingScript`](https://datagration.github.io/petrovisor-r-api/reference/CleansingScript.md)
+  : CleansingScript
+- [`Scope`](https://datagration.github.io/petrovisor-r-api/reference/Scope.md)
+  : Scope
+- [`Scenario`](https://datagration.github.io/petrovisor-r-api/reference/Scenario.md)
+  : Scenario
+- [`LogEntry`](https://datagration.github.io/petrovisor-r-api/reference/LogEntry.md)
+  : LogEntry
+- [`Event`](https://datagration.github.io/petrovisor-r-api/reference/Event.md)
+  : Event
+- [`Column`](https://datagration.github.io/petrovisor-r-api/reference/Column.md)
+  : Column
+- [`ConfigurationSetting`](https://datagration.github.io/petrovisor-r-api/reference/ConfigurationSetting.md)
+  : ConfigurationSetting
+
+## Authentication Helpers
+
+Helper functions for authentication
+
+- [`get_auth_context()`](https://datagration.github.io/petrovisor-r-api/reference/get_auth_context.md)
+  : Get Authentication Context
+- [`with_auth_context()`](https://datagration.github.io/petrovisor-r-api/reference/with_auth_context.md)
+  : With Authentication Context
+- [`require_authentication()`](https://datagration.github.io/petrovisor-r-api/reference/require_authentication.md)
+  : Require Authentication
+
+# Articles
+
+### Getting Started
+
+- [Getting Started with
+  Myrconn.PetroVisor.Client](https://datagration.github.io/petrovisor-r-api/articles/getting-started.md):
+
+### Guides
+
+- [Authentication
+  Guide](https://datagration.github.io/petrovisor-r-api/articles/authentication.md):
+- [Working with Data
+  Services](https://datagration.github.io/petrovisor-r-api/articles/working-with-data.md):
+- [Managing Items with Repository
+  Service](https://datagration.github.io/petrovisor-r-api/articles/repository-service.md):
+- [Machine Learning with
+  PetroVisor](https://datagration.github.io/petrovisor-r-api/articles/machine-learning.md):

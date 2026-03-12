@@ -288,13 +288,7 @@ all the services through its fields:</p>
 <span><span class="va">warnings</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">logs</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span>severities <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Warning"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load latest 10 entries</span></span>
-<span><span class="va">recent_logs</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">logs</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span>last_entries <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Delete log entries (keep last 30 days)</span></span>
-<span><span class="va">sp</span><span class="op">$</span><span class="va">logs</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span>days_to_keep <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Delete specific category</span></span>
-<span><span class="va">sp</span><span class="op">$</span><span class="va">logs</span><span class="op">$</span><span class="fu">delete</span><span class="op">(</span>days_to_keep <span class="op">=</span> <span class="fl">0</span>, category <span class="op">=</span> <span class="st">"R Test"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">recent_logs</span> <span class="op">&lt;-</span> <span class="va">sp</span><span class="op">$</span><span class="va">logs</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span>last_entries <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="utility-functions">Utility Functions<a class="anchor" aria-label="anchor" href="#utility-functions"></a>
@@ -846,7 +840,7 @@ handled automatically (e.g., <code>"bbl/d"</code>)</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

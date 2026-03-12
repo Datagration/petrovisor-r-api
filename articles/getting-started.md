@@ -1,0 +1,720 @@
+# Getting Started with Myrconn.PetroVisor.Client
+
+## Introduction
+
+The `Myrconn.PetroVisor.Client` package provides a comprehensive R
+wrapper for the PetroVisor REST API, enabling you to interact with
+PetroVisor services directly from R. This package structures API calls
+into intuitive services:
+
+- **Data Services** (`sp$data`): Load and save time series, depth,
+  static, and PVT data
+- **Repository Services** (`sp$items`): Manage entities, signals, units,
+  and hierarchies
+- **Logging Services** (`sp$logs`): Access and manage log entries
+- **File Services** (`sp$files`): Handle file operations
+- **Tag Entry Services** (`sp$tag_entries`): Work with tag entries
+- **Machine Learning Services** (`sp$ml`): Train and use ML models
+
+### Installation
+
+You can install the package from GitHub using the `remotes` package:
+
+``` r
+# Install from GitHub
+remotes::install_github("Datagration/petrovisor-r-api")
+```
+
+### Loading the Package
+
+``` r
+library(Myrconn.PetroVisor.Client)
+```
+
+## Authentication
+
+Before you can use any PetroVisor services, you need to authenticate.
+The package supports three authentication methods.
+
+### Method 1: API Key Authentication
+
+This is the simplest method if you have an API key:
+
+``` r
+# Create an authentication service instance
+auth_service <- AuthenticationService$new()
+
+# Get access token using API key
+token_response <- auth_service$get_access_token(
+  key = "your_api_key_here",
+  discovery_url = "https://identity.us1.petrovisor.com"
+)
+
+# Extract the token
+access_token <- token_response$access_token
+```
+
+### Method 2: Username and Password
+
+If you have username and password credentials:
+
+``` r
+auth_service <- AuthenticationService$new()
+
+token_response <- auth_service$get_access_token(
+  username = "your_username",
+  password = "your_password",
+  discovery_url = "https://identity.us1.petrovisor.com"
+)
+
+access_token <- token_response$access_token
+```
+
+### Method 3: Refresh Token
+
+If you have a refresh token from a previous session:
+
+``` r
+auth_service <- AuthenticationService$new()
+
+token_response <- auth_service$get_access_token(
+  refresh_token = "your_refresh_token",
+  discovery_url = "https://identity.us1.petrovisor.com"
+)
+
+access_token <- token_response$access_token
+```
+
+For more detailed information about authentication, see the
+[Authentication
+Guide](https://datagration.github.io/petrovisor-r-api/articles/authentication.md)
+vignette.
+
+## Creating a Service Provider
+
+The `ServiceProvider` class is your main entry point for interacting
+with PetroVisor. It provides access to all available services and
+handles authentication automatically.
+
+### Using Username and Password
+
+The most common way to create a service provider:
+
+``` r
+sp <- ServiceProvider$new(
+  url = "https://identity.us1.petrovisor.com",
+  workspace = "YourWorkspaceName",
+  user = "your_username",
+  password = "your_password"
+)
+```
+
+### Using a Token
+
+If you already have an access token:
+
+``` r
+sp <- ServiceProvider$new(
+  url = "https://identity.us1.petrovisor.com",
+  workspace = "YourWorkspaceName",
+  client_token = access_token
+)
+```
+
+## Quick Tour of Services
+
+Once you have a `ServiceProvider` instance, you can access all the
+services through its fields:
+
+### Repository Service (`sp$items`)
+
+Access and manage PetroVisor items like entities and signals:
+
+``` r
+# Load all entity names
+entity_names <- sp$items$load_names("Entity")
+
+# Load all signal names
+signal_names <- sp$items$load_names("Signal")
+
+# Load a specific entity by name
+entity <- sp$items$load("Entity", "WellName")
+
+# Create a new entity
+new_entity <- Entity$new(
+  name = "TestWell01",
+  entity_type_name = "Well",
+  alias = "Test Well 01",
+  is_opportunity = FALSE
+)
+sp$items$save("Entity", new_entity)
+
+# Delete an entity
+sp$items$delete("Entity", "TestWell01")
+```
+
+### Data Service (`sp$data`)
+
+Load and save data from PetroVisor:
+
+``` r
+# Parse signal strings (signal name with unit in brackets)
+oil_rate <- sp$parse_signal("Oil Rate [bbl/d]")
+gas_rate <- sp$parse_signal("Gas Rate [Mscf/d]")
+
+# Load time series data
+data <- sp$data$load_signals(
+  entities = c("Well1", "Well2"),
+  signals = list(oil_rate, gas_rate),
+  time_increment = "Daily",
+  time_start = "2024-01-01T00:00:00",
+  time_end = "2024-12-31T23:59:59",
+  reshape = TRUE
+)
+
+# The result contains TimeNumericData with columns:
+# - scenario, date, entity, and one column per signal
+head(data$TimeNumericData)
+```
+
+### Logging Service (`sp$logs`)
+
+Access log entries:
+
+``` r
+# Create log entries
+log_entry1 <- LogEntry$new(
+  severity = "Debug",
+  message = "Test log message",
+  category = "R Test",
+  item_type = "Unknown",
+  item_change = "Other"
+)
+
+log_entry2 <- LogEntry$new(
+  severity = "Information",
+  message = "Another test message",
+  category = "R Test",
+  item_type = "Unknown",
+  item_change = "Other"
+)
+
+# Save log entries (takes a list or vector)
+result <- sp$logs$save(c(log_entry1, log_entry2))
+
+# Get available log categories
+categories <- sp$logs$load_categories()
+
+# Load log entries with optional filters
+all_logs <- sp$logs$load()
+
+# Load with specific category filter
+r_test_logs <- sp$logs$load(categories = c("R Test"))
+
+# Load with severity filter
+warnings <- sp$logs$load(severities = c("Warning"))
+
+# Load latest 10 entries
+recent_logs <- sp$logs$load(last_entries = 10)
+```
+
+### Utility Functions
+
+The `ServiceProvider` also includes helpful utility functions:
+
+#### Unit Conversion
+
+Convert values between units:
+
+``` r
+# Convert a single value
+converted <- sp$convert_unit(
+  x = 100,
+  source_unit = "bbl/d",
+  target_unit = "m3/d"
+)
+
+# Convert a vector of values
+values <- c(100, 200, 300)
+converted_values <- sp$convert_unit(
+  x = values,
+  source_unit = "bbl/d",
+  target_unit = "m3/d"
+)
+
+# Handle special units
+percent_to_fraction <- sp$convert_unit(10, "%", " ")  # 0.1
+fraction_to_percent <- sp$convert_unit(0.1, " ", "%")  # 10
+```
+
+#### Signal Parsing
+
+Parse signal strings that include units:
+
+``` r
+# Parse a mapped signal string from PetroVisor
+signal <- sp$parse_signal("Oil Production Rate [bbl/d]")
+
+# Access components
+signal$Signal  # "Oil Production Rate"
+signal$Unit    # "bbl/d"
+
+# Use in data operations
+data <- sp$data$load_signals(
+  entities = c("Well1"),
+  signals = list(signal),
+  time_increment = "Daily",
+  time_start = "2024-01-01T00:00:00",
+  time_end = "2024-01-31T23:59:59",
+  reshape = TRUE
+)
+```
+
+#### Sending Email
+
+Send emails using PetroVisor’s email configuration:
+
+``` r
+sp$send_mail(
+  address = "recipient@example.com",
+  subject = "Analysis Complete",
+  body = "The production analysis has been completed successfully."
+)
+```
+
+## Working with Entities
+
+Entities represent wells, fields, reservoirs, and other assets in
+PetroVisor.
+
+### Creating Entities
+
+``` r
+# Create a new entity
+well <- Entity$new(
+  name = "Well-001",
+  entity_type_name = "Well",
+  alias = "Production Well 001",
+  is_opportunity = FALSE
+)
+
+# Save to PetroVisor
+result <- sp$items$save("Entity", well)
+```
+
+### Loading Entities
+
+``` r
+# Load a specific entity
+well <- sp$items$load("Entity", "Well-001")
+
+# Get all entity names
+all_entities <- sp$items$load_names("Entity")
+```
+
+### Updating Entities
+
+``` r
+# Load entity
+well <- sp$items$load("Entity", "Well-001")
+
+# Modify properties
+well$alias <- "Updated Alias"
+
+# Save changes
+sp$items$save("Entity", well)
+```
+
+### Deleting Entities
+
+``` r
+# Delete an entity
+sp$items$delete("Entity", "Well-001")
+```
+
+## Working with Signals
+
+Signals represent measured or calculated values in PetroVisor. Creating
+signals requires specifying all required properties.
+
+### Creating Signals
+
+``` r
+# Create a comprehensive signal definition
+oil_rate_signal <- Signal$new(
+  name = "Oil Rate",
+  short_name = "qo",
+  measurement_name = "VolumetricFlowRate",
+  storage_unit_name = "bbl/d",
+  aggregation_type = "Sum",
+  container_aggregation_type = "Sum",
+  signal_type = "TimeDependent",
+  default_color = 0,
+  default_line_type = "Solid",
+  setting_name = NULL,
+  labels = list(),
+  description = "Oil production rate"
+)
+
+# Save signal
+sp$items$save("Signal", oil_rate_signal)
+```
+
+### Signal Types
+
+Different signal types are used for different data:
+
+- `"Static"`: Entity-level data that doesn’t change
+- `"TimeDependent"`: Numeric data that varies over time
+- `"StringTimeDependent"`: Text data that varies over time
+- `"DepthDependent"`: Numeric data that varies with depth
+- `"StringDepthDependent"`: Text data that varies with depth
+- `"PVT"`: Pressure-Volume-Temperature dependent data
+
+### Loading Signals
+
+``` r
+# Load a specific signal
+signal <- sp$items$load("Signal", "Oil Rate")
+
+# Get all signal names
+all_signals <- sp$items$load_names("Signal")
+```
+
+## Working with Data
+
+### Loading Different Data Types
+
+#### Static Data
+
+``` r
+# Load static (non-time-varying) data
+static_data <- sp$data$load_signals(
+  entities = c("Well-001", "Well-002"),
+  signals = lapply(
+    c("Latitude [deg]", "Longitude [deg]"),
+    function(x) {
+      sp$parse_signal(x)
+    }
+  ),
+  reshape = TRUE
+)
+
+# Access the data
+static_data$StaticNumericData
+```
+
+#### Time Series Data
+
+``` r
+# Load daily time series data
+time_data <- sp$data$load_signals(
+  entities = c("Well-001"),
+  signals = lapply(
+    c("Oil Rate [bbl/d]", "Gas Rate [Mscf/d]"),
+    function(x) {
+      sp$parse_signal(x)
+    }
+  ),
+  time_increment = "Daily",
+  time_start = "2024-01-01T00:00:00",
+  time_end = "2024-01-31T23:59:59",
+  reshape = TRUE
+)
+
+# Access the data
+time_data$TimeNumericData
+```
+
+#### Depth Data
+
+``` r
+# Load depth-dependent data
+depth_data <- sp$data$load_signals(
+  entities = c("Well-001"),
+  signals = lapply(
+    c("Porosity [frac]", "Permeability [mD]"),
+    function(x) {
+      sp$parse_signal(x)
+    }
+  ),
+  depth_increment = "Meter",
+  depth_start = 5000,
+  depth_end = 7000,
+  reshape = TRUE
+)
+
+# Access the data
+depth_data$DepthNumericData
+```
+
+#### PVT Data
+
+``` r
+# Load PVT data
+pvt_data <- sp$data$load_signals(
+  entities = c("Reservoir-A"),
+  signals = lapply(
+    c("Oil FVF [rb/stb]", "Gas FVF [rcf/scf]"),
+    function(x) {
+      sp$parse_signal(x)
+    }
+  ),
+  pressure_unit = "psi",
+  temperature_unit = "degC",
+  reshape = TRUE
+)
+
+# Access the data
+pvt_data$PVTNumericData
+```
+
+### Saving Data
+
+#### Saving Time Series Data
+
+``` r
+# Prepare data frame with correct structure
+time_data <- data.frame(
+  scenario = c("", ""),
+  date = c("2024-01-01T00:00:00", "2024-01-02T00:00:00"),
+  entity = c("Well-001", "Well-001"),
+  oil_rate = c(500, 520),
+  gas_rate = c(1500, 1560)
+)
+
+# Column names must match signal names (without units)
+colnames(time_data) <- c(
+  "scenario", "date", "entity",
+  "Oil Rate", "Gas Rate"
+)
+
+# Save data
+result <- sp$data$save_signals(
+  "TimeNumeric",  # Data type
+  time_data,
+  signals = lapply(
+    c("Oil Rate [bbl/d]", "Gas Rate [Mscf/d]"),
+    function(x) {
+      sp$parse_signal(x)
+    }
+  )
+)
+```
+
+#### Saving Static Data
+
+``` r
+# Prepare static data
+static_data <- data.frame(
+  scenario = c(""),
+  entity = c("Well-001"),
+  latitude = c(45.123),
+  longitude = c(-110.456)
+)
+
+colnames(static_data) <- c(
+  "scenario", "entity",
+  "Latitude", "Longitude"
+)
+
+# Save static data
+result <- sp$data$save_signals(
+  "StaticNumeric",
+  static_data,
+  signals = lapply(
+    c("Latitude [deg]", "Longitude [deg]"),
+    function(x) {
+      sp$parse_signal(x)
+    }
+  )
+)
+```
+
+### Deleting Data
+
+``` r
+# Delete signal data for specific entities
+result <- sp$data$delete_signals(
+  entities = c("Well-001", "Well-002"),
+  signals = c("Oil Rate", "Gas Rate"),
+  time_start = "2024-01-01T00:00:00",
+  time_end = "2024-01-31T23:59:59"
+)
+```
+
+## Working with Reference Tables
+
+Reference tables are structured tabular data with defined schemas.
+
+### Creating a Reference Table
+
+``` r
+# Define columns
+key_column <- ReferenceTableColumn$new(
+  name = "ID",
+  column_type = "Numeric",
+  unit_name = " "
+)
+
+name_column <- ReferenceTableColumn$new(
+  name = "Name",
+  column_type = "String",
+  unit_name = " "
+)
+
+value_column <- ReferenceTableColumn$new(
+  name = "Value",
+  column_type = "Numeric",
+  unit_name = "m3"
+)
+
+# Create reference table
+ref_table <- ReferenceTable$new(
+  name = "Parameters",
+  description = "Parameter lookup table",
+  key = key_column,
+  values = list(name_column, value_column)
+)
+
+# Save reference table definition
+sp$items$save("ReferenceTable", ref_table)
+```
+
+### Saving Reference Table Data
+
+``` r
+# Prepare data
+ref_data <- data.frame(
+  Entity = c(NA, "Well-001"),
+  Timestamp = c(NA, "2024-01-01T00:00:00"),
+  ID = c(1, 2),
+  Name = c("Parameter1", "Parameter2"),
+  Value = c(100, 200)
+)
+
+# Save data
+result <- sp$data$save_reference_table("Parameters", ref_data)
+```
+
+### Loading Reference Table Data
+
+``` r
+# Load reference table data
+data <- sp$data$load_reference_table("Parameters")
+```
+
+## Common Patterns
+
+### Handling Missing Values
+
+Use `NA` or `NaN` for missing numeric values:
+
+``` r
+# Data with missing values
+data <- data.frame(
+  scenario = c("", "", ""),
+  date = c("2024-01-01T00:00:00", "2024-01-02T00:00:00", "2024-01-03T00:00:00"),
+  entity = c("Well-001", "Well-001", "Well-001"),
+  oil_rate = c(500, NA, 520),  # Missing value on Jan 2
+  gas_rate = c(1500, 1550, NaN)  # NaN on Jan 3
+)
+
+colnames(data) <- c("scenario", "date", "entity", "Oil Rate", "Gas Rate")
+
+# PetroVisor handles NA/NaN appropriately
+result <- sp$data$save_signals("TimeNumeric", data, signals)
+```
+
+### Working with Multiple Entities
+
+``` r
+# Get all entity names
+all_entities <- sp$items$load_names("Entity")
+
+# Filter to specific entity types (e.g., wells starting with "PROD-")
+production_wells <- all_entities[grepl("^PROD-", all_entities)]
+
+# Load data for all production wells
+production_data <- sp$data$load_signals(
+  entities = production_wells,
+  signals = list(sp$parse_signal("Oil Rate [bbl/d]")),
+  time_increment = "Monthly",
+  time_start = "2024-01-01T00:00:00",
+  time_end = "2024-12-31T23:59:59",
+  reshape = TRUE
+)
+```
+
+### Error Handling
+
+Always wrap API calls in error handling:
+
+``` r
+# Wrap operations in tryCatch
+result <- tryCatch({
+  sp$data$save_signals("TimeNumeric", my_data, my_signals)
+}, error = function(e) {
+  cat("Error saving data:", e$message, "\n")
+  return(NULL)
+})
+
+if (!is.null(result) && result$status_code == 200) {
+  cat("Data saved successfully\n")
+}
+```
+
+## Next Steps
+
+Now that you understand the basics, explore these guides for more
+detailed information:
+
+- **[Authentication
+  Guide](https://datagration.github.io/petrovisor-r-api/articles/authentication.md)**:
+  Deep dive into authentication methods and best practices
+- **[Working with
+  Data](https://datagration.github.io/petrovisor-r-api/articles/working-with-data.md)**:
+  Comprehensive guide to loading and saving different data types
+- **[Repository
+  Service](https://datagration.github.io/petrovisor-r-api/articles/repository-service.md)**:
+  Managing entities, signals, hierarchies, and more
+- **[Machine
+  Learning](https://datagration.github.io/petrovisor-r-api/articles/machine-learning.md)**:
+  Training models and making predictions
+
+## Getting Help
+
+- Check the function documentation:
+  [`?ServiceProvider`](https://datagration.github.io/petrovisor-r-api/reference/ServiceProvider.md),
+  [`?DataServices`](https://datagration.github.io/petrovisor-r-api/reference/DataServices.md),
+  etc.
+- Browse the [reference
+  documentation](https://datagration.github.io/petrovisor-r-api/reference/index.md)
+- Visit the [GitHub
+  repository](https://github.com/Datagration/petrovisor-r-api) to report
+  issues or request features
+
+## Important Notes
+
+### Date/Time Format
+
+Always use ISO 8601 format for dates and times: - Correct:
+`"2024-01-01T00:00:00"` - Incorrect: `"2024-01-01"` or `"01/01/2024"`
+
+### Column Names in Data Frames
+
+When saving data, column names in your data frame must match the signal
+names (without units): - Signal: `"Oil Rate [bbl/d]"` - Column name:
+`"Oil Rate"`
+
+### Data Type Names
+
+Use the correct data type names when saving: - `"StaticNumeric"`,
+`"StaticString"` - `"TimeNumeric"`, `"TimeString"` - `"DepthNumeric"`,
+`"DepthString"` - `"PVTNumeric"`
+
+### Units with Special Characters
+
+Some units require special handling: - Space (dimensionless): `" "` -
+Percent: `"%"` - Units with slashes: handled automatically (e.g.,
+`"bbl/d"`)

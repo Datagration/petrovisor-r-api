@@ -43,7 +43,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="myrconnpetrovisorclient-development-version">Myrconn.PetroVisor.Client (development version)<a class="anchor" aria-label="anchor" href="#myrconnpetrovisorclient-development-version"></a></h2>
-<ul><li>add <code>send_mail()</code> method to <code>ServiceProvider</code> class for sending emails using PetroVisor email configuration</li>
+<ul><li>remove <code>delete()</code> method from <code>LoggingService</code> class - the underlying <code>LogEntries/Clean</code> and <code>LogEntries/CleanCategory</code> API endpoints have been removed from the PetroVisor Web API</li>
+<li>add <code>send_mail()</code> method to <code>ServiceProvider</code> class for sending emails using PetroVisor email configuration</li>
 <li>deprecate <code>DataSetRequest</code> class - never integrated into DataServices, use DataServices methods directly instead</li>
 <li>add comprehensive documentation with @seealso cross-references and vignette integration across all major classes</li>
 </ul></div>
@@ -148,7 +149,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
