@@ -41,9 +41,6 @@ library("R6")
 #'                        category = "Tag",
 #'                        severity = "Information")
 #' sp$logs$save(list(entry1, entry2))
-#'
-#' # remove all log entries
-#' sp$logs$delete(days_to_keep = 0)
 #' }
 LoggingService <- R6Class( # nolint: object_name_linter
   "LoggingService",
@@ -129,29 +126,6 @@ LoggingService <- R6Class( # nolint: object_name_linter
       # add entries to database
       super$post(body = dl,
                  route = "LogEntries/AddMultiple")
-    },
-
-    #' @description Remove log entries from the database.
-    #'
-    #' @param days_to_keep Keep the log entries of the last n days in the
-    #'  log. Defaults to 0.
-    #' @param category Remove log entries of the specified category only.
-    delete = function(days_to_keep = 0, category) {
-      # if no category is given, use the normal /Clean call
-      # else use /CleanCategory
-      if (missing(category)) {
-        query <- list(KeepTimeSpan = days_to_keep)
-        route <- "LogEntries/Clean"
-      } else {
-        query <- list(KeepTimeSpan = days_to_keep,
-                      Category = category)
-        route <- "LogEntries/CleanCategory"
-      }
-
-      super$post(body = NULL,
-                 route = route,
-                 expect_data = FALSE,
-                 query = query)
     }
   )
 )

@@ -219,12 +219,6 @@ warnings <- sp$logs$load(severities = c("Warning"))
 
 # Load latest 10 entries
 recent_logs <- sp$logs$load(last_entries = 10)
-
-# Delete log entries (keep last 30 days)
-sp$logs$delete(days_to_keep = 30)
-
-# Delete specific category
-sp$logs$delete(days_to_keep = 0, category = "R Test")
 ```
 
 ## Utility Functions

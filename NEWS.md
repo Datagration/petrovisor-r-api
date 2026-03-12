@@ -1,5 +1,6 @@
 # Myrconn.PetroVisor.Client (development version)
 
+* remove `delete()` method from `LoggingService` class - the underlying `LogEntries/Clean` and `LogEntries/CleanCategory` API endpoints have been removed from the PetroVisor Web API
 * add `send_mail()` method to `ServiceProvider` class for sending emails using PetroVisor email configuration
 * deprecate `DataSetRequest` class - never integrated into DataServices, use DataServices methods directly instead
 * add comprehensive documentation with @seealso cross-references and vignette integration across all major classes
